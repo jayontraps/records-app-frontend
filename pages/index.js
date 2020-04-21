@@ -1,9 +1,12 @@
 import App from '../components/App'
 import InfoBox from '../components/InfoBox'
 import Header from '../components/Header'
-import Submit from '../components/Submit'
-import PostList from '../components/PostList'
+import RecordsList from '../components/RecordsList'
 import { withApollo } from '../lib/apollo'
+
+
+
+
 
 const IndexPage = () => (
   <App>
@@ -21,8 +24,7 @@ const IndexPage = () => (
       </a>{' '}
       in favour of full Server-Side-Rendering.
     </InfoBox>
-    <Submit />
-    <PostList />
+    <RecordsList />
   </App>
 )
 

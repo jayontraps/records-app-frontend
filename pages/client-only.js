@@ -1,9 +1,8 @@
 import App from '../components/App'
 import InfoBox from '../components/InfoBox'
 import Header from '../components/Header'
-import Submit from '../components/Submit'
-import PostList from '../components/PostList'
 import { withApollo } from '../lib/apollo'
+import RecordsList from '../components/RecordsList'
 
 const ClientOnlyPage = props => (
   <App>
@@ -18,11 +17,9 @@ const ClientOnlyPage = props => (
         rel="noopener noreferrer"
       >
         automatic static optimization
-      </a>
-      .
+      </a>      
     </InfoBox>
-    <Submit />
-    <PostList />
+    <RecordsList />
   </App>
 )
 
