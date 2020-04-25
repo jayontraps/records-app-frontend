@@ -24,7 +24,7 @@ query getRecords(
         location {
           site
         }
-        observer {
+        author {
           name
         }
         date

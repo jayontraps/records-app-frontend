@@ -1,7 +1,12 @@
 import App from '../components/App'
 import Header from '../components/Header'
-import CreateRecordForm from '../components/CreateRecordForm'
+import CreateRecordForm from '../components/CreateRecordFormFunc'
 import { withApollo } from '../lib/apollo'
+import styled from 'styled-components'
+
+const StyledPage = styled.div`
+  margin: 30px 0;
+`
 
 
 
@@ -10,7 +15,10 @@ import { withApollo } from '../lib/apollo'
 const IndexPage = () => (
   <App>
     <Header />
-    <CreateRecordForm />
+    <StyledPage>
+      <CreateRecordForm />
+    </StyledPage>
+   
   </App>
 )
 

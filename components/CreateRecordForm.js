@@ -1,193 +1,113 @@
 import React, { Component, useState, useEffect } from 'react'
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks';
-import CreatableSelect from 'react-select/creatable';
-import Select from 'react-select'
-// import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-// import MomentUtils from '@date-io/moment';
 import styled from 'styled-components';
-import { GET_SPECIES } from '../queries'
 
-const CLASSES_QUERY = gql`
-  query {
-    classes {
-      name
-      id
-    }
-  }
-`
-const LOCATIONS_QUERY = gql`
-  query {
-    locations {
-      id
-      site
-    }
-  }
-`
+import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import {
+  ClassesOptions,
+  LocationsOptions,
+  SpeciesOptions,
+  ObserverOptions,
+  BreedingOptions
+} from './fields'
 
-const USERS_QUERY = gql`
-  query {
-    users {
-      name
-      id
-    }
-  }
-`
-
-// const DatePickerUI = (props) => {
-//   const [selectedDate, handleDateChange] = useState(new Date());
-//   useEffect(() => {
-//     props.onDateChange(selectedDate)
-//     return () => {      
-//     }
-//   }, [selectedDate])
-//   return (
-//     <MuiPickersUtilsProvider utils={MomentUtils}>
-//       <DatePicker value={selectedDate} onChange={handleDateChange} />
-//     </MuiPickersUtilsProvider>
-//   );
-// }
-
-const ClassesOptions = props => {
-  const { changeHandler, currentClassification } = props
-  const { loading, error, data } = useQuery(CLASSES_QUERY);
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
-  const classes = data.classes
-  return (
-    <div className="select__class">
-      {classes.map(cl => (       
-        <label key={cl.id}>
-          <input 
-            onChange={(e) => { changeHandler(e) }} 
-            type="radio" 
-            name="class" 
-            value={cl.name}
-            checked={cl.name === currentClassification}                        
-            />
-          {cl.name}
-        </label>           
-      ))}
-    </div>
-  );
-}
-
-const LocationsOptions = props => {
-  const { changeHandler, fieldName } = props
-  const { loading, error, data } = useQuery(LOCATIONS_QUERY);
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
-  const locations = data.locations.map(loc => ({
-    value: loc.id,
-    label: loc.site
-  }))
-  return <CreatableSingle {...{fieldName}} {...{changeHandler}} options={locations} />
-}
-
-
-const ObserverOptions = props => {
-  const { changeHandler, fieldName } = props
-  const { loading, error, data } = useQuery(USERS_QUERY);
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
-  const observers = data.users.map(observer => ({
-    value: observer.id,
-    label: observer.name
-  }))
-  return <CreatableSingle {...{fieldName}} {...{changeHandler}} options={observers} />
-}
-
-const SpeciesOptions = props => {
-  const { changeHandler, speciesClass } = props
-  const { loading, error, data } = useQuery(
-    GET_SPECIES,
-    {
-      variables: { 
-        where: {
-          class: { 
-            name: speciesClass
-          }
-        }},
-    });
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
-  const species = data.specieses.map(species => ({
-    value: species.id,
-    label: species.name
-  }))
-  return <Select {...{changeHandler}} options={species} />
-}
-
-
-
-
-
-const StyledFrom = styled.form`
+const StyledFrom = styled.div`
   .select__class {
     display: flex;
     label {
       margin-right: 10px;
+    }    
+  }
+
+  .field {
+    margin-bottom: 20px;
+    h3 {
+      margin-bottom: 5px;
+    }
+  }
+
+  .input {
+    border-radius: 4;
+    border: 1px solid ${props => props.theme.colors.borderColor};
+    font-size: 1rem;
+    font-family: ${props => props.theme.fontFamily};  
+    color: ${props => props.theme.colors.primary};   
+    padding: 8px;
+    &.textarea {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .DateInput_input  {
+    appearance: none;
+    font-size: 1rem;
+    font-family: ${props => props.theme.fontFamily};  
+    color: ${props => props.theme.colors.primary};   
+    padding: 8px;
+  }
+
+  .button__submit {
+    appearance: none;
+    border: 1px solid ${props => props.theme.colors.borderColor}; 
+    padding: 10px;
+    font-size: 1rem;
+    &:hover {
+      cursor: pointer;
     }
   }
 `
-class CreatableSingle extends Component {
-  handleChange = (newValue, actionMeta) => {
-    // console.group('Value Changed');
-    // console.log(newValue);
-    // console.log(`action: ${actionMeta.action}`);
-    // console.groupEnd();
-    this.props.changeHandler(newValue)
-  };
-  handleInputChange = (inputValue, actionMeta) => {
-    // console.group('Input Changed');
-    // console.log(inputValue);
-    // console.log(`action: ${actionMeta.action}`);
-    // console.groupEnd();
-  };
-  render() {
-    return (
-      <CreatableSelect
-        isClearable
-        onChange={this.handleChange}
-        onInputChange={this.handleInputChange}
-        options={this.props.options}
-        placeholder={`Select or create new${this.props.fieldName ? ` ${this.props.fieldName}`: ''}...`}
-      />
-    );
-  }
-}
 
 class CreateRecordForm extends Component {
   state = {
     class: 'bird',
     observer: {},
-    species: {},
-    location: {},
-    date: '',
-    dateTo: '',
+    species: '',
+    location: '',
+    date: null,
+    dateTo: null,
     count: 0,
     notes: '',
-    breeding_code: ''  
+    breeding_code: '' ,
+    focusedInput: null
   }
 
-  onDateChange = date => this.setState({ date })
-  onDateToChange = date => this.setState({ dateTo: date })
-
-  locationChangeHandler = value => {
-    this.setState({
-      location: value
+  onDatesChange = ({ startDate, endDate }) => {
+    this.setState({ 
+      date: startDate, 
+      dateTo: endDate 
     })
   }
 
-  observerChangeHandler = value => {
+  onCountChange = (e) => {
     this.setState({
-      observer: value
+      count: e.target.value
     })
   }
 
-  speciesChangeHandler = value => {
+  onNotesChange = (e) => {
     this.setState({
-      species: value
+      notes: e.target.value
+    })
+  }
+
+  locationChangeHandler = location => {
+    // console.log('this is the locationChangeHandler')
+    this.setState({
+      location: location.value
+    })
+  }
+
+  observerChangeHandler = user => {
+    // console.log('this is the observerChangeHandler')
+    this.setState({
+      observer: user
+    })
+  }
+
+  speciesChangeHandler = species => {
+    // console.log(value)
+    this.setState({
+      species: species.value
     })
   }
 
@@ -196,47 +116,69 @@ class CreateRecordForm extends Component {
       class: e.target.value
     })
   }
+
+  breedingChangeHandler = (e) => {
+    this.setState({
+      breeding_code: e.target.value
+    })
+  }
+
+  handleSubmit = (event) => {
+    console.log('the for was submitted: ', this.state);
+    event.preventDefault();
+  }
   
   render() {
     return (
-      <div>
         <StyledFrom>
-          <h3>Select class:</h3>         
-          <ClassesOptions currentClassification={this.state.class} changeHandler={this.classChangeHandler} />
-          <h3>Species:</h3>
-          <SpeciesOptions speciesClass={this.state.class} changeHandler={this.speciesChangeHandler} />
-          <h3>Location:</h3>
-          <LocationsOptions fieldName="location" changeHandler={this.locationChangeHandler} />
-          <h3>Observer:</h3>
-          <ObserverOptions fieldName="observer" changeHandler={this.observerChangeHandler} />
-          <h3>Date From:</h3>
-          {/* <DatePickerUI onDateChange={this.onDateChange} /> */}
-          {/* <TextField
-            id="date"
-            label="Birthday"
-            type="date"
-            defaultValue="2017-05-24"
-            // className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          /> */}
-
-          {/* <div>
-            <DatePicker
-              onChange={this.onDateChange}
-              selected={this.state.date}
-            />
-          </div>
-          <h3>Date To:</h3>
-          <div>
-            <DatePicker
-              onChange={this.onDateToChange}
-              selected={this.state.dateTo}
-            />
-          </div> */}
+          <form onSubmit={this.handleSubmit}>
+            <div className="field">
+              <h3>Select class:</h3>         
+              <ClassesOptions currentClassification={this.state.class} changeHandler={this.classChangeHandler} />
+            </div>            
+            <div className="field">
+              <h3>Species:</h3>
+              <SpeciesOptions speciesClass={this.state.class} changeHandler={this.speciesChangeHandler} />
+            </div>
+            <div className="field">
+              <h3>Location:</h3>
+              <LocationsOptions fieldName="location" changeHandler={this.locationChangeHandler} />
+            </div>
+            <div className="field">
+              <h3>Observer:</h3>
+              <ObserverOptions fieldName="observer" changeHandler={this.observerChangeHandler} />
+            </div>
+            <div className="field">
+              <h3>Dates:</h3>
+              <DateRangePicker
+                startDate={this.state.date} // momentPropTypes.momentObj or null,
+                startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                endDate={this.state.dateTo} // momentPropTypes.momentObj or null,
+                endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+                onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
+                focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                showClearDates
+                block
+              />      
+            </div>
+            <div className="field">
+              <h3><label htmlFor="count">Count:</label></h3>             
+              <input type="number" className="input" name="count" value={this.state.count} onChange={this.onCountChange} />
+            </div>
+            <div className="field">
+              <h3>Notes:</h3>
+              <input type="textarea" rows={10} className="input textarea" name="notes" value={this.state.notes} onChange={this.onNotesChange} />
+            </div>
+            <div className="field">
+              <h3>Breeding Code:</h3>         
+              <BreedingOptions currentBreedingCode={this.state.breeding_code} changeHandler={this.breedingChangeHandler} />
+            </div>
+            <div className="field">
+              <input className="button__submit" type="submit" value="Submit" />
+            </div>
+          </form>
         </StyledFrom>
-      </div>
     )
   }
 }

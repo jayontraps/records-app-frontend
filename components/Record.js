@@ -23,8 +23,8 @@ const Record = ({record}) => {
         site
       },
       status,
-      observer: {
-        name: observerrName
+      author: {
+        name: authorrName
       }, 
       count,
       date,
@@ -34,7 +34,7 @@ const Record = ({record}) => {
     return (
     <StyledRecord>
       <div>{name}</div>
-      <div>{observerrName}</div>
+      <div>{authorrName}</div>
       <div>{status}</div>
       <div>{count}</div>
       <div>{format(new Date(date), 'MM/dd/yyyy')}</div>
