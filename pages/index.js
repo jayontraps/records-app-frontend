@@ -2,13 +2,16 @@ import App from '../components/App'
 import InfoBox from '../components/InfoBox'
 import Header from '../components/Header'
 import RecordsList from '../components/RecordsList'
+import { useRouter } from 'next/router'
 import { withApollo } from '../lib/apollo'
 
 
 
 
 
-const IndexPage = () => (
+const IndexPage = props => {
+  const router = useRouter()
+  return (
   <App>
     <Header />
     <InfoBox>
@@ -24,8 +27,8 @@ const IndexPage = () => (
       </a>{' '}
       in favour of full Server-Side-Rendering.
     </InfoBox>
-    <RecordsList />
+    <RecordsList queryParams={router.query} />
   </App>
-)
+)}
 
 export default withApollo({ ssr: true })(IndexPage)

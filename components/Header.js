@@ -35,6 +35,9 @@ const Header = ({ router: { pathname } }) => (
     <Link href="/setup">
       <a className={pathname === '/setup' ? 'is-active' : ''}>setup</a>
     </Link>
+    <Link href="/records">
+      <a className={pathname === '/records' ? 'is-active' : ''}>records</a>
+    </Link>
   </StyledHeader>
 )
 

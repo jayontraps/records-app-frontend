@@ -1,7 +1,10 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components';
-
+import { ADD_RECORD } from '../mutations'
+import { useMutation } from '@apollo/react-hooks';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import Select from 'react-select'
+import moment from 'moment'
 import {
   ClassesOptions,
   LocationsOptions,
@@ -10,6 +13,10 @@ import {
   BreedingOptions
 } from './fields'
 import { func } from 'prop-types';
+
+const hours = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"]
+
+const times = hours.map(time => ({ value: time, label: time }))
 
 const StyledFrom = styled.div`
   .select__class {
@@ -47,6 +54,10 @@ const StyledFrom = styled.div`
     padding: 8px;
   }
 
+  .CalendarDay__today_3 {
+    background-color: #e4e7e7;
+  }
+
   .button__submit {
     appearance: none;
     border: 1px solid ${props => props.theme.colors.borderColor}; 
@@ -69,6 +80,10 @@ const CreateRecordForm = () => {
   const [notes, setNotes] = useState('')
   const [breedingCode, setBreedingCode] = useState('')
   const [focusedInput, setFocusedInput] = useState(null)
+  const [startTime, setStartTime] = useState(null)
+  const [endTime, setEndTime] = useState(null)
+
+  const [addRecord, { data }] = useMutation(ADD_RECORD)
 
   function onDatesChange({ startDate, endDate }) {
     setDate(startDate)
@@ -79,18 +94,53 @@ const CreateRecordForm = () => {
     setClassification(e.target.value)
   }
 
+  function onStartTimeChange({value}) {
+    setStartTime(value)
+  }
+
+  function onEndTimeChange({value}) {
+    setEndTime(value)
+  }
+
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log('classification: ', classification)
-    console.log('observer: ', observer)
-    console.log('species: ', species)
-    console.log('location: ', location)
-    console.log('date: ', date)
-    console.log('dateTo: ', dateTo)
-    console.log('count: ', count)
-    console.log('notes: ', notes)
-    console.log('breedingCode: ', breedingCode)        
+    const formattedDate = date ? date.format() : null
+    const formattedDateTo = dateTo ? dateTo.format() : null
+    const vars = {
+      data: {
+        status: "DRAFT",
+        author: {
+          connect: {
+            id: observer.value
+          }
+        },
+        species: {
+          connect: {
+            id: species.value
+          }
+        },   
+        location: {
+          connect: {
+            id: location.value
+          }
+        },
+        breeding_code: {
+          connect: {
+            id: breedingCode
+          }
+        },
+        date: formattedDate,
+        dateTo: formattedDateTo,
+        startTime: startTime,
+        endTime: endTime,
+        notes: notes,
+        count: count,
+      }
+    }
+
+    console.log(vars)
+    addRecord({ variables: vars });
   }
   
   
@@ -123,9 +173,18 @@ const CreateRecordForm = () => {
               onDatesChange={onDatesChange} // PropTypes.func.isRequired,
               focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
               onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
+              isOutsideRange={() => false}
               showClearDates
               block
             />      
+          </div>
+          <div className="field">
+            <h3>Start time:</h3>
+            <Select onChange={onStartTimeChange} options={times} />
+          </div>
+          <div className="field">
+            <h3>End time:</h3>
+            <Select onChange={onEndTimeChange} options={times} />
           </div>
           <div className="field">
             <h3><label htmlFor="count">Count:</label></h3>             

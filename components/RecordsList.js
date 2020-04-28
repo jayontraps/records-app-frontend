@@ -1,15 +1,26 @@
+import Raect from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import ErrorMessage from './ErrorMessage'
 import { GET_RECORDS }from '../queries'
 import Record from './Record'
+import styled from 'styled-components'
+import Pagination from './Pagination'
+import { perPage } from '../config'
 
-export const recordsQueryVars = {
-  orderBy: `date_DESC`,
-  skip: 0,
-  first: 10,
-}
+const StyledRecordList = styled.div``
 
-export default function RecordsList() {
+
+
+
+const RecordsList = props => {
+  const page = props.queryParams.page
+
+  const recordsQueryVars = {
+    orderBy: `date_DESC`,
+    skip: page * perPage - perPage,
+    first: perPage
+  }
+
   const { loading, error, data } = useQuery(
     GET_RECORDS,
     {
@@ -23,13 +34,16 @@ export default function RecordsList() {
   const { records } = data
   
   return (
-    <section>            
+    <StyledRecordList>            
       {records.map((rec, index) => (
         <Record 
           record={rec}
           key={`${rec.id}-${index}`} 
         />
-      ))}                  
-    </section>
+      ))}      
+      <Pagination page={parseFloat(props.queryParams.page) || 1} />            
+    </StyledRecordList>
   )
 }
+
+export default RecordsList
