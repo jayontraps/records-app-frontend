@@ -2,38 +2,7 @@ import React from 'react'
 import styled from "styled-components"
 import { format } from 'date-fns';
 import { get } from 'lodash'
-
-const StyledRecord = styled.div`
-  .species { 
-    grid-area: species; 
-  }
-  .observer { 
-    grid-area: observer; 
-  }
-  .count { 
-    grid-area: count; 
-  }
-  .date { 
-    grid-area: date; 
-  }
-  .location { 
-    grid-area: location; 
-  }
-  .notes { 
-    grid-area: notes; 
-  }
-  .breeding__code { 
-    grid-area: breeding__code; 
-  }
-
-  display: grid;
-  grid-gap: 20px;
-  grid-template-areas:
-  "species observer count date location breeding__code notes";
-  grid-template-columns: 1fr 1fr 20px 1fr 1fr 1fr 300px;
-  margin-bottom: 20px;
-
-`
+import StyledRecord from './styles/StyledRecord'
 
 const Record = ({record}) => {
     const { 
@@ -56,15 +25,14 @@ const Record = ({record}) => {
      const breedingCode = get(breeding_code, 'code', '')
      const breedingDescription = get(breeding_code, 'description', '')
     return (
-    <StyledRecord>
-      <div className="species">{name}</div>      
-      <div className="observer">
-      {authorrName === 'Legacy' ? `${legacyObserver}: legacy` : authorrName}</div>
-      <div className="count">{count}</div>
-      <div className="date">{format(new Date(date), 'MM/dd/yyyy')}</div>
-      <div className="location">{site}</div>      
-      <div className="breeding__code">{breedingCode} : {breedingDescription}</div>
-      <div className="notes">{notes}</div>
+    <StyledRecord className="record">
+      <div className="cell species">{name}</div>      
+      <div className={`cell observer ${authorrName === 'Legacy' ? 'legacy-observer' : ''}`}>
+      {authorrName === 'Legacy' ? `${legacyObserver}` : authorrName}</div>
+      <div className="cell count">{count}</div>
+      <div className="cell date">{format(new Date(date), 'dd/MM/yyyy')}</div>
+      <div className="cell location">{site}</div>      
+      <div className="cell notes">{notes}</div>
     </StyledRecord>
   )}
 

@@ -4,7 +4,7 @@ import Select from 'react-select'
 import { GET_SPECIES } from '../../queries'
 
 const SpeciesOptions = props => {
-  const { changeHandler, speciesClass } = props
+  const { changeHandler, speciesClass, isClearable, placeholder, name } = props
   const { loading, error, data } = useQuery(
     GET_SPECIES,
     {
@@ -21,7 +21,12 @@ const SpeciesOptions = props => {
     value: species.id,
     label: species.name
   }))
-  return <Select onChange={changeHandler} options={species} />
+  return <Select 
+            {...{name}}
+            {...{isClearable}} 
+            {...{placeholder}} 
+            onChange={changeHandler} 
+            options={species} />
 }
 
 export default SpeciesOptions

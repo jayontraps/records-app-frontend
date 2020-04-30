@@ -5,14 +5,26 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 const theme = {
-  colors: {
-    primary: '#777',
-    borderColor: '#dbdbdb',
-    description: '#bbbbbb'
-  },
-  fontFamily: ` Menlo, Monaco, 'Lucida Console', 'Liberation Mono',
+  fonts: {
+    fontFamily: ` Menlo, Monaco, 'Lucida Console', 'Liberation Mono',
   'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New',
-  monospace, serif`
+  monospace, serif`,
+    sizes: {
+      body: '13px'
+    }
+  },
+  colors: {
+    primary: '#616161',
+    borderColor: '#d8d8d8',
+    description: '#bbbbbb',
+    legacy: '#999'
+  },
+  list: {
+    spacing: {
+      vertical: '.75rem'
+    }
+  },
+  borderRadius: '4px'  
 }
 
 export default class MyApp extends App {

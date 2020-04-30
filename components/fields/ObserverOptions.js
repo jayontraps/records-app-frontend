@@ -40,7 +40,7 @@ class CreatableSingle extends Component {
 }
 
 const ObserverOptions = props => {
-  const { changeHandler, fieldName } = props
+  const { changeHandler, fieldName, name = 'author' } = props
   const { loading, error, data } = useQuery(USERS_QUERY);
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
@@ -48,7 +48,11 @@ const ObserverOptions = props => {
     value: observer.id,
     label: observer.name
   }))
-  return <CreatableSingle {...{fieldName}} {...{changeHandler}} options={observers} />
-}
+  return <CreatableSingle 
+            {...{name}} 
+            {...{fieldName}} 
+            {...{changeHandler}} 
+            options={observers} />
+}     
 
 export default ObserverOptions

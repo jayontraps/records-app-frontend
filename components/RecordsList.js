@@ -1,32 +1,21 @@
 import Raect from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import ErrorMessage from './ErrorMessage'
-import { GET_RECORDS }from '../queries'
+import { GET_RECORDS, getRecordsVariables }from '../queries'
 import Record from './Record'
 import styled from 'styled-components'
-import Pagination from './Pagination'
-import { perPage } from '../config'
 
-const StyledRecordList = styled.div``
-
-
-
+const StyledRecordList = styled.div`
+  .record:nth-of-type(odd) {
+    background-color: whitesmoke;
+  }
+`
 
 const RecordsList = props => {
-  const page = props.queryParams.page
+  const { queryParams } = props
+  const variables = getRecordsVariables(queryParams)  
 
-  const recordsQueryVars = {
-    orderBy: `date_DESC`,
-    skip: page * perPage - perPage,
-    first: perPage
-  }
-
-  const { loading, error, data } = useQuery(
-    GET_RECORDS,
-    {
-      variables: recordsQueryVars,
-    }
-  )
+  const { loading, error, data } = useQuery(GET_RECORDS, {variables})
 
   if (error) return <ErrorMessage message="Error loading records." />
   if (loading) return <div>Loading</div>
@@ -40,8 +29,7 @@ const RecordsList = props => {
           record={rec}
           key={`${rec.id}-${index}`} 
         />
-      ))}      
-      <Pagination page={parseFloat(props.queryParams.page) || 1} />            
+      ))}                       
     </StyledRecordList>
   )
 }

@@ -52,21 +52,20 @@ const GlobalStyle = createGlobalStyle`
     }
   }
   * { 
-    font-family: ${props => props.theme.fontFamily};
+    font-family: ${props => props.theme.fonts.fontFamily};
   }
   body {
     color: ${props => props.theme.colors.primary};
-    font-family: ${props => props.theme.fontFamily};
+    font-family: ${props => props.theme.fonts.fontFamily};
+    font-size: ${props => props.theme.fonts.sizes.body};
+    line-height: 1.5em;
     margin: 0;
     padding: 25px 50px;
   }
   a {
     color: #22bad9;
   }
-  p {
-    font-size: 14px;
-    line-height: 24px;
-  }
+
   article {
     margin: 0 auto;
     max-width: 650px;

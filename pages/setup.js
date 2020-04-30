@@ -20,18 +20,19 @@ const ADD_LOCATION = gql`
   }
 `
 
-const locationData = `Lavell's Lake,47841730
-Sandford Lake,47821728
-Black Swan Lake,47821723
-White Swan Lake,47771722
-Middle Mersh,47791725
-Mortimer's Meadow,47741721
-Lea Farm Lake,47841734
-Car park field,47861728
-Dinton Pastures,47811724`
+const locationData = `LL,Lavell's Lake,47841730
+SA,Sandford Lake,47821728
+BS,Black Swan Lake,47821723
+WS,White Swan Lake,47771722
+MM,Middle Mersh,47791725
+MO,Mortimer's Meadow,47741721
+LF,Lea Farm Lake,47841734
+CP,Car park field,47861728
+DP,Dinton Pastures,47811724`
 
 // data: {
-//   site: data[0],
+//   siteCode: data[0],
+//   site: data[1],
 //   gridRef: data[1]     
 // }
 
@@ -512,8 +513,9 @@ function Add() {
               await waitFor(1000);              
               addRecord({ variables: { 
                 data: {
-                  site: data[0],
-                  gridRef: data[1]     
+                  siteCode: data[0],
+                  site: data[1],
+                  gridRef: data[2]     
                 }
                } 
                });   

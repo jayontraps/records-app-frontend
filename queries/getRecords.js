@@ -3,8 +3,12 @@ import gql from 'graphql-tag'
 import {perPage} from '../config'
 
 const GET_RECORDS = gql`
-  query getRecords($orderBy: RecordOrderByInput!, $skip: Int = 0, $first: Int = ${perPage}){
-    records(orderBy: $orderBy, skip: $skip, first: $first) {
+  query getRecords(
+    $where: RecordWhereInput, 
+    $orderBy: RecordOrderByInput!, 
+    $skip: Int = 0, 
+    $first: Int = ${perPage}){
+    records(where: $where, orderBy: $orderBy, skip: $skip, first: $first) {
       id
       status
       author {

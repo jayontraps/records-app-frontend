@@ -31,121 +31,134 @@ const ADD_RECORD = gql`
   }
 `
 
-const recordsData = `Treecreeper,WS,22/04/2011,,1,"Carrying food, WSL/BSL.",FF,P Gipson
-Whitethroat,DP,23/04/2011,,10,,,B Reeve
-Common Tern,WS,23/04/2011,,4,,,B Reeve
-Common Tern,BS,23/04/2011,,3,Chasing each other high over Black Swan,,I D Paine
-Nightingale,DP,23/04/2011,,2,pointed out to me  by  another birder who was present and who had found them before i arrived. In the scrub between   the Point and  Middle Marsh m and f,,I D Paine
-Cuckoo,LL,23/04/2011,,1,"Seen in trees out to right of hide, behind scrape.",,R Marsh
-Garden Warbler,DP,23/04/2011,,1,singing,,V Forster
-Bullfinch,DP,23/04/2011,,1,,,B Reeve
-Cuckoo,DP,23/04/2011,,,only heard,,B Reeve
-Egyptian Goose,LL,25/04/2011,,4,,,M F Walford
-Blackcap,DP,27/04/2011,,30,Difficult to get an exact number as almost none of these were actually seen!!,,A Berryman
-Common Tern,DP,27/04/2011,,9,,,K I Tubb
-Teal,DP,27/04/2011,,6,3m 3f,,K I Tubb
-Egyptian Goose,DP,27/04/2011,,4,,,K I Tubb
-Nightingale,DP,27/04/2011,,4,"2-3 birds singing in Middle Marsh, 2 birds in scrub between WSL and BSL. One bird showed fairly well for a couple of mins. I will post some pics later.",,A Berryman
-Sedge Warbler,DP,27/04/2011,,3,,,K I Tubb
-Little Ringed Plover,DP,27/04/2011,,2,On island in Sandford Lake,,B N Pavey
-Redshank,DP,27/04/2011,,2,,,K I Tubb
-Sedge Warbler,LL,27/04/2011,,2,1 Seen from bittern hide and another singing near garden warbler.,,A Berryman
-Garden Warbler,DP,27/04/2011,,2,,,K I Tubb
-Wigeon,DP,27/04/2011,,1,f,,K I Tubb
-Red Kite,DP,27/04/2011,,1,Low over Lavell's Lake,,K I Tubb
-Buzzard,DP,27/04/2011,,1,Over Sandford Lake,,K I Tubb
-Cuckoo,DP,27/04/2011,,1,,,K I Tubb
-Grey Wagtail,DP,27/04/2011,,1,f,,K I Tubb
-Cetti's Warbler,DP,27/04/2011,,1,,,K I Tubb
-Garden Warbler,LL,27/04/2011,,1,In usual place between the two benches near bittern hide.,,A Berryman
-Garden Warbler,LL,28/04/2011,,5,"3 along Loddon fp, and 2 more on S side of lake, just E of Teal hide. m",,P Bright-Thomas
-Cuckoo,LL,28/04/2011,,1,"Singing from island, visible from Bittern Hide side m",S,P Bright-Thomas
-Little Ringed Plover,SA,29/04/2011,,2,On shingle island.,,R Marsh
-Kestrel,LL,29/04/2011,,1,"Also: Garden Warbler, 2 x G. Heron, L. Egret, pair Shoveler.",,R Marsh
-Nightingale,DP,30/04/2011,,4,,,L R Blundell
-Sedge Warbler,DP,30/04/2011,,4,,,L R Blundell
-Whitethroat,DP,30/04/2011,,4,,,L R Blundell
-Cetti's Warbler,DP,30/04/2011,,2,One WSL near reed bed. 1 BSL near the spit.,,L R Blundell
-Garden Warbler,DP,30/04/2011,,2,Numerous blackcaps.,,L R Blundell
-Little Egret,LL,30/04/2011,,1,"Presumed first-summer, lacking aigrettes or any bright bare parts colouring, but with some shaggy plumes on breast and tertials. Also had swollen and/or encrusted knee joints, being proportionally much thicker than those of adjacent Grey Heron. 1s",,P Bright-Thomas
-Reed Warbler,DP,30/04/2011,,1,,,L R Blundell
-Reed Bunting,DP,30/04/2011,,1,,,L R Blundell
-Common Tern,SA,02/05/2011,,8,,,R C Watts
-Gadwall,LL,02/05/2011,,7,"1 male displaying to/with 2 of the females - head bobbing, etc. 4 m. 3 fem.",,R Marsh
-Lesser Black-backed Gull,SA,02/05/2011,,3,,,R C Watts
-Chiffchaff,LL,02/05/2011,,3,,,R C Watts
-Little Grebe,LL,02/05/2011,,1,From Teal hide. 1st I've seen here for about 2 weeks.  Also Grey Heron on the scrape and fem. Mallard still with 11 young.,,R Marsh
-Sparrowhawk,DP,02/05/2011,,1,Flew across f/p which runs from WSL to Sandford.  Headed towards Loddon.,,R Marsh
-Common Sandpiper,LL,02/05/2011,,1,"Seen here by observers at same time as 2 seen at LFGP, so at least 3 on the patch.  This 1 was in immaculate plumage.  Cuckoo heard from here as well as LFGP and BSL but none seen today.",,R Marsh
-Kingfisher,SA,02/05/2011,,1,Flashed past in front of hide.  Whitethroat singing fom tree top at mill end of lake.,,R Marsh
-Garden Warbler,LL,02/05/2011,,1,,,R C Watts
-Cuckoo,DP,05/05/2011,,1,,,A Booth
-Mallard,LL,06/05/2011,,10,10juvs,,M F Walford
-Chiffchaff,LL,06/05/2011,,3,Adult feeding 2 juvs in a bush near car park footbridge.,,R Marsh
-Blue Tit,LL,06/05/2011,,3,"Initially 2 adults in and out of nest box with food, later a fledgling was seen in nearby tree demanding to be fed.",,R Marsh
-Little Ringed Plover,SA,06/05/2011,,2,On the shingle fringed island again.,,R Marsh
-Grey Heron,SA,06/05/2011,,1,Came down and took a mallard chick despite frantic defensive tactics of male mallard.,,L Garner-Langham
-Great Spotted Woodpecker,LL,06/05/2011,,1,Across the Loddon from Teal hide. Male later seen at Black Swan lake. fem.,,R Marsh
-Reed Warbler,LL,06/05/2011,,1,"Seen from Bittern hide, at least 4 male Sedge Warblers in the vicinity.",,R Marsh
-Garden Warbler,LL,06/05/2011,,1,Near Jerrys bench.  Blackcap and Chiffchaffs nearby.,,R Marsh
-Common Sandpiper,BS,08/05/2011,,2,At BSL sailing club for EEG walk,,R Reedman
-Little Egret,SA,08/05/2011,,1,,,R C Watts
-Little Ringed Plover,DP,08/05/2011,,1,With Common Sandpipers,,R Reedman
-Mallard,LL,09/05/2011,,11,Still 10 juvs of the original 11 which seems good going after over a week. fem.,,R Marsh
-Common Tern,LL,09/05/2011,,3,2 of them seen on new raft in front of Bittern hide for at least 10 mins.,,R Marsh
-Little Egret,LL,09/05/2011,,1,From Bittern hide.,,R Marsh
-Little Ringed Plover,SA,09/05/2011,,1,Only 1 seen today on usual island.  2nd sat on nest?,,R Marsh
-Common Tern,SA,11/05/2011,,2,"Also seen: LBB Gulls - 2 adult + 2 imm.   Herring Gull, BH Gulls (2 pairs on nests).",,R Marsh
-Bullfinch,DP,11/05/2011,,1,Flew across the road up to aviation museum and disappeared into undergrowth. m.,,R Marsh
-Little Ringed Plover,SA,12/05/2011,,1,Still only 1 bird showing.  Also on the lake: G.C. Grebe sat on nest.,,R Marsh
-Green Woodpecker,LL,12/05/2011,,1,"Flushed from area between benches, nr Bittern hide. m.",,R Marsh
-Cetti's Warbler,DP,12/05/2011,,1,"In bushes on bank of Loddon, 150 m from footbridge.  Seen occasionally over 15 mins, heard regularly. 2nd similar looking bird flew in at one stage (poor view) and evoked immediate singing - poss. female? m.",,R Marsh
-Willow Warbler,WS,12/05/2011,,1,"1st here this year for me.  Also in reedbed: Reed Bunting, Sedge Warbler, Reed Warbler, all males. m.",,R Marsh
-Swift,SA,13/05/2011,,10,over the lake,,D Lloyd
-Great Spotted Woodpecker,DP,16/05/2011,,2,"Pair at nest, fem. emerged from hole. Dead tree next to Loddon.",,R Marsh
-Reed Warbler,LL,16/05/2011,,2,Pair in reedbed by f/p to Bittern hide.,,R Marsh
-Song Thrush,DP,16/05/2011,,1,"With a beak full of worms, on meadow near children's play area.",,R Marsh
-Gadwall,SA,17/05/2011,,9,,,R Marsh
-Great Spotted Woodpecker,DP,17/05/2011,,2,"At nest hole, with a poss. 3rd heard nearby. With Gray B.  We also saw a fem. carrying food into a tree around Black Swan Lake. m. & fem.",,R Marsh
-Little Egret,LL,17/05/2011,,1,"Seen from Bittern hide, with a Grey Heron close by.",,R Marsh
-Sparrowhawk,DP,17/05/2011,,1,"Amazing what you can find when looking for a GSW nest hole.  Could live close by as there is a suitable looking nest 3 trees along, also on bank of Loddon. fem.",,R Marsh
-Little Ringed Plover,SA,17/05/2011,,1,On the usual island.  1 was also seen by other observers at Lea Fm GP this a.m.,,R Marsh
-Treecreeper,DP,17/05/2011,,1,Between White Swan Lake and the R. Loddon.,,R Marsh
-Common Sandpiper,LL,18/05/2011,,2,Seen from Bittern hide with Ian Paine.,,R Marsh
-Redshank,LL,18/05/2011,,2,"Flitted from Teal hide to Bittern hide, then back. Good view on scrape in front of Teal hide, where they settled.",,R Marsh
-Kestrel,DP,18/05/2011,,1,Flew over R. Loddon footbridge > showcase cinema. fem.,,R Marsh
-Pied Wagtail,LL,18/05/2011,,1,"On the bund.  Also around the lake: Reed Buntings, Reed Warbler, Sedge Warbler, Wren.",,R Marsh
-Willow Warbler,WS,18/05/2011,,1,"On the f/path, appeared to be collecting nesting material.",,R Marsh
-Little Ringed Plover,SA,19/05/2011,,1,On the usual island.,,R Marsh
-Great Spotted Woodpecker,DP,19/05/2011,,1,Taking a beak full of food into a nest hole. m.,,R Marsh
-Bullfinch,WS,19/05/2011,,1,Near fisherman's car park. m.,,R Marsh
-Mallard,LL,20/05/2011,,8,2 broods of 4,,M F Walford
-Coot,SA,20/05/2011,,7,"broods of 3,2,1 & 1",,M F Walford
-Mallard,WS,20/05/2011,,6,6juv,,M F Walford
-Great Crested Grebe,SA,20/05/2011,,2,"On nest on small island 1m, 1f",,L Garner-Langham
-Reed Warbler,LL,20/05/2011,,2,From Teal hide.,,R Marsh
-Little Ringed Plover,SA,20/05/2011,,1,,,M F Walford
-Redshank,LL,20/05/2011,,1,,,M F Walford
-Kingfisher,LL,20/05/2011,,1,Teal hide. 2nd seen later from Bittern hide.,,R Marsh
-Green Woodpecker,LL,20/05/2011,,1,Teal hide.,,R Marsh
-Grey Wagtail,LL,20/05/2011,,1,,,M F Walford
-Great Spotted Woodpecker,DP,21/05/2011,,2,Feeding at nest hole beside Loddon. fem. + juv.,,R Marsh
-Whitethroat,DP,21/05/2011,,2,male feeding a juvenile,,S P Adam
-House Sparrow,DP,21/05/2011,,2,1 male & 1 female,,S P Adam
-Egyptian Goose,DP,21/05/2011,,1,seen from look-out,,S P Adam
-Little Grebe,LL,21/05/2011,,1,"From Bittern hide, foraging beside the bund.",,R Marsh
-Red Kite,DP,21/05/2011,,1,,,S P Adam
-Redshank,LL,21/05/2011,,1,On the scrape in front of Teal hide.,,R Marsh
-Cuckoo,LL,21/05/2011,,1,"Seen from Teal hide flying over lake > Bittern hide.  Later saw 1 fly back > Lea Fm, approx. 11:45, also seen from Teal hide.",,R Marsh
-Kingfisher,LL,21/05/2011,,1,Seen from Teal hide - 1st picked up by Tim James as it flew down lake > Bittern hide.,,R Marsh
-Nightingale,WS,21/05/2011,,1,"singing, seen briefly",,L Forster
-Song Thrush,DP,21/05/2011,,1,,,P Adam
-Reed Warbler,LL,21/05/2011,,1,"In front of Bittern hide, collecting cobwebs from a dead branch. With Paul Foulds, who may have a pic to share?",,R Marsh
-Chiffchaff,DP,21/05/2011,,1,singing,,S P Adam
-Jay,WS,21/05/2011,,1,,,S P Adam
-Reed Bunting,DP,21/05/2011,,1,male singing,,S P Adam
-Great Spotted Woodpecker,DP,22/05/2011,,2,Feeding at nest hole beside Loddon. m. + juv.,,R Marsh
-Little Grebe,LL,22/05/2011,,1,,,S P Adam`
+const recordsData = `Reed Bunting,WS,09/11/2011,,7,,,F J Cottington
+Goldcrest,WS,09/11/2011,,5,So many Goldcrests across DP currently,,F J Cottington
+Water Rail,WS,09/11/2011,,2,"At least 2 heard, plus same odd call as a few nights ago",,F J Cottington
+Fieldfare,LL,09/11/2011,,2,In tall trees at Teal hide end of lake.,,R Marsh
+Cetti's Warbler,LL,09/11/2011,,2,Calling near Teal Hide,,F J Cottington
+Ferruginous Duck,SA,09/11/2011,,1,Still there - slightly left of hide and level with 1st island. With Steve Day.,,R Marsh
+Water Rail,LL,09/11/2011,,1,spotted by steve day in front of bittern hide two brief appearances,,R A G Price
+Kingfisher,SA,09/11/2011,,1,Flew past hide.  Seen fishing around main island later by Steve Day.,,R Marsh
+Barn Owl,LL,10/11/2011,,1,Showing in entrance to box.,,P Bright-Thomas
+Chiffchaff,LL,10/11/2011,,1,Ordinary-looking bird in top of oak by Bitter hide,,P Bright-Thomas
+Ferruginous Duck,SA,12/11/2011,,1,,,B Lyle
+Water Rail,LL,12/11/2011,,1,Weaving in and out of reeds in front of teal hide,,J Goodchild
+Snipe,LL,12/11/2011,,1,,,J Goodchild
+Barn Owl,LL,12/11/2011,,1,Sleeping in entrance of box,,J Goodchild
+Little Grebe,LL,13/11/2011,,6,Teal hide.,,R Marsh
+Snipe,LL,13/11/2011,,2,"From Bittern hide. Both at the r/h end of the scrape, about 5 m apart. 1st in clear view, 2nd further back and harder to see.",,R Marsh
+Water Rail,LL,13/11/2011,,1,Only 1 picked up by me although Alan Rymer saw 2 before they disappeared behind the reeds to right of the Bittern hide.,,R Marsh
+Kingfisher,LL,13/11/2011,,1,Near the footbridge over the Emmbrook.,,R Marsh
+Bearded Tit,LL,13/11/2011,,1,Seen with Mary Jacobs from bittern hide right hand side  close in  very good views. Genuine sighting of bird.. (per  RICHARD  SAJDAK),,R C Watts
+Pochard,SA,14/11/2011,,10,"5m, 5f.",,R Marsh
+Little Grebe,LL,14/11/2011,,5,Total seen from Bittern + Teal hides.,,R Marsh
+Common Gull,LL,14/11/2011,,2,"On the Tern raft, then chasing BH Gulls around the lake.",,R Marsh
+Kingfisher,SA,14/11/2011,,2,"Low across lake, beyond islands.",,R Marsh
+Buzzard,LL,14/11/2011,,1,"Sat in a tree on the main island, just above line of reedbed. Extremely dark plumage.",,R Marsh
+Kingfisher,LL,14/11/2011,,1,2 passes across the lake.,,R Marsh
+Great Spotted Woodpecker,LL,14/11/2011,,1,In a tree along the boundary with Lea Fm GP. fem.,,R Marsh
+Treecreeper,LL,14/11/2011,,1,In the feeder area.,,R Marsh
+Black-headed Gull,DP,15/11/2011,,700,,,R M Borwick
+Canada Goose,DP,15/11/2011,,120,,,R M Borwick
+Gadwall,DP,15/11/2011,,100,,,R M Borwick
+Coot,DP,15/11/2011,,90,,,R M Borwick
+Tufted Duck,DP,15/11/2011,,65,,,R M Borwick
+Mute Swan,DP,15/11/2011,,55,,,R M Borwick
+Siskin,SA,15/11/2011,,30,"Fock of at least 70 finches, inc Goldfinch and Chaffinch, at w end in alders",,P Bright-Thomas
+Mallard,DP,15/11/2011,,25,,,R M Borwick
+Lapwing,DP,15/11/2011,,25,,,R M Borwick
+Wigeon,DP,15/11/2011,,22,,,R M Borwick
+Woodpigeon,DP,15/11/2011,,15,,,R M Borwick
+Cormorant,DP,15/11/2011,,10,,,R M Borwick
+Long-tailed Tit,DP,15/11/2011,,10,,,R M Borwick
+Great Crested Grebe,DP,15/11/2011,,8,,,R M Borwick
+Shoveler,DP,15/11/2011,,5,,,R M Borwick
+Moorhen,DP,15/11/2011,,5,,,R M Borwick
+Wren,DP,15/11/2011,,5,,,R M Borwick
+Blue Tit,DP,15/11/2011,,5,,,R M Borwick
+Carrion Crow,DP,15/11/2011,,5,,,R M Borwick
+Pochard,DP,15/11/2011,,4,,,R M Borwick
+Goldeneye,DP,15/11/2011,,4,,,R M Borwick
+Robin,DP,15/11/2011,,4,,,R M Borwick
+Great Tit,DP,15/11/2011,,4,,,R M Borwick
+Magpie,DP,15/11/2011,,4,,,R M Borwick
+Chaffinch,DP,15/11/2011,,4,,,R M Borwick
+Common Gull,DP,15/11/2011,,3,,,R M Borwick
+Chiffchaff,DP,15/11/2011,,3,,,R M Borwick
+Jackdaw,DP,15/11/2011,,3,,,R M Borwick
+Starling,DP,15/11/2011,,3,,,R M Borwick
+Greenfinch,DP,15/11/2011,,3,,,R M Borwick
+Egyptian Goose,DP,15/11/2011,,2,,,R M Borwick
+Little Grebe,DP,15/11/2011,,2,,,R M Borwick
+Grey Heron,DP,15/11/2011,,2,,,R M Borwick
+Goldcrest,DP,15/11/2011,,2,,,R M Borwick
+Teal,DP,15/11/2011,,1,,,R M Borwick
+Ferruginous Duck,DP,15/11/2011,,1,,,R M Borwick
+Red Kite,DP,15/11/2011,,1,,,R M Borwick
+Buzzard,LL,15/11/2011,,1,Flew low through back of Lavell's Lake,,R Reedman
+Water Rail,LL,15/11/2011,,1,Heard from Teal hide.,,P Bright-Thomas
+Snipe,LL,15/11/2011,,1,Edge of reeds near Water Rail,,R Reedman
+Lesser Black-backed Gull,DP,15/11/2011,,1,,,R M Borwick
+Herring Gull,DP,15/11/2011,,1,,,R M Borwick
+Kingfisher,DP,15/11/2011,,1,,,R M Borwick
+Pied Wagtail,DP,15/11/2011,,1,,,R M Borwick
+Bearded Tit,LL,15/11/2011,,1,"Per Tim Alexander, ringed at back of Teal scrape, on release flew towards Tern scrape/main island reed bed. Any calls post this time up to around 11:00 were a tape, but no further sign by then male",,F J Cottington
+Treecreeper,DP,15/11/2011,,1,,,R M Borwick
+Jay,DP,15/11/2011,,1,,,R M Borwick
+Siskin,DP,15/11/2011,,1,,,R M Borwick
+Siskin,DP,16/11/2011,,20,Round sandford Lake.,,L R Blundell
+Redwing,LL,16/11/2011,,3,Over - seen from Teal hide.,,R Marsh
+Goldeneye,SA,16/11/2011,,1,"Tricky one to spot, eventually found by Steve Day. fem.",,R Marsh
+Kingfisher,SA,16/11/2011,,1,Flashed past the hide.,,R Marsh
+Great Spotted Woodpecker,LL,16/11/2011,,1,,,R Marsh
+Chiffchaff,LL,16/11/2011,,1,In gardens across Loddon from Teal Hide,,P Bright-Thomas
+Goldcrest,DP,16/11/2011,,1,Round Sandford Lake with tit flock.,,L R Blundell
+Pochard,SA,17/11/2011,,24,Highest count so far for us this season. With Steve Day. 13 m. 11 f.,,R Marsh
+Snipe,LL,17/11/2011,,3,"2 seen on scrape, near bund, then moved closer to reeds at rear. 3rd found in a gap in the reedbed, sleeping till flushed by 2 squabbling Grey Herons. With Steve Day et al.",,R Marsh
+Ferruginous Duck,SA,17/11/2011,,1,Still there. Seen with Steve Day.,,R Marsh
+Water Rail,LL,17/11/2011,,1,to right of bittern hide different bird from last week,,R A G Price
+Fieldfare,LL,18/11/2011,,40,"Over from NW. Also 50+ at S end of Dinton, so numbers have risen recently.",,P Bright-Thomas
+Water Rail,LL,18/11/2011,,2,Having along conversation from opposite ends of sluice in front of hide,,P Bright-Thomas
+Snipe,LL,18/11/2011,,1,Great views at it worked it's way along the bund towards Bittern hide.,,R Marsh
+Bearded Tit,LL,18/11/2011,,1,"From Teal hide, appeared at back of island reedbed, and the moved left opposite hide. m",,P Bright-Thomas
+Lesser Redpoll,LL,18/11/2011,,1,Over Teal Hide,,P Bright-Thomas
+Water Rail,LL,19/11/2011,,2,in dispute right of bittern hide,,R A G Price
+Snipe,LL,19/11/2011,,1,,,M F Walford
+Reed Bunting,LL,20/11/2011,,6,,,R Marsh
+Snipe,LL,20/11/2011,,3,"On the bund side of Bittern scrape, which was just as well as we could barely see to the far side through the fog!",,R Marsh
+Ferruginous Duck,SA,20/11/2011,,1,"Emerged as the mist cleared at around 12:00, to the far right as viewed from the hide. Other posts suggest it hasn't been seen since Sunday?",,B N Pavey
+Water Rail,LL,20/11/2011,,1,Around the edge of Bittern hide scrape.,,R Marsh
+Barn Owl,LL,20/11/2011,,1,"Seen flying into box at around this time, presumed to have left again  by 15:30 as corvids were freely going into the box.",,A Berryman
+Cetti's Warbler,LL,20/11/2011,,1,Seen briefly as we left the hide - 1st willow on the l/h side of footpath. Heard frequently  around hide throughout our time there.,,R Marsh
+Shoveler,SA,21/11/2011,,4,two ad drake.,,P E Hutchins
+Goldeneye,SA,21/11/2011,,4,two duck / two 1w drake.,,P E Hutchins
+Wigeon,SA,21/11/2011,,2,pair,,P E Hutchins
+Water Rail,LL,21/11/2011,,1,Called near Teal hide,,F J Cottington
+Kingfisher,SA,21/11/2011,,1,"Noted frmo this time, on-and-off towards dusk.",,P E Hutchins
+Treecreeper,LL,21/11/2011,,1,in feeder area bittern hide,,R A G Price
+Ferruginous Duck,SA,21/11/2011,,,No sign of this bird between this time and 16:22. 1w drk No sign of,,P E Hutchins
+Song Thrush,LL,22/11/2011,,2,Both singing vigorously from outside Teal Hide m,,P Bright-Thomas
+Bullfinch,LL,22/11/2011,,2,"Near Teal hide. 1m, 1f.",,R Marsh
+Water Rail,LL,22/11/2011,,1,bittern hide reedbeds to right,,R A G Price
+Great Spotted Woodpecker,LL,22/11/2011,,1,Bittern hide feeder area. imm. m.,,R Marsh
+Cetti's Warbler,LL,22/11/2011,,1,Singing from reedbed opposite Teal Hide. m,,P Bright-Thomas
+Bearded Tit,LL,22/11/2011,,1,"Showed well in reeds at back of scrape, opposite Teal Hide. m",,P Bright-Thomas
+Treecreeper,LL,22/11/2011,,1,Bittern hide feeder area.,,R Marsh
+Tufted Duck,SA,23/11/2011,,74,Minimum count.,,P E Hutchins
+Coot,SA,23/11/2011,,73,Minimum count.,,P E Hutchins
+Tufted Duck,WS,23/11/2011,,60,"Reasonable number here, flew off North 16:35",,F J Cottington
+Gadwall,SA,23/11/2011,,40,Minimum count.,,P E Hutchins
+Fieldfare,WS,23/11/2011,,15,Circling in to roost nearby,,F J Cottington
+Pochard,SA,23/11/2011,,14,Minimum count.,,P E Hutchins
+Redwing,SA,23/11/2011,,6,Moving south-west.,,P E Hutchins
+Mallard,SA,23/11/2011,,5,Minimum count.,,P E Hutchins
+Moorhen,SA,23/11/2011,,3,Minimum count.,,P E Hutchins
+Mute Swan,SA,23/11/2011,,2,,,P E Hutchins
+Shoveler,SA,23/11/2011,,2,ad drakes.,,P E Hutchins
+Great Crested Grebe,SA,23/11/2011,,2,,,P E Hutchins
+Kingfisher,SA,23/11/2011,,2,"Showy, mobile and vocal to shortly before dusk.",,P E Hutchins
+Grey Heron,SA,23/11/2011,,1,Again moving off to the ditch at the western end of the lake late in the day. adult.,,P E Hutchins
+Water Rail,WS,23/11/2011,,1,Heard,,F J Cottington`
 
 // data: {
 //   species: data[0]
