@@ -75,9 +75,15 @@ const GlobalStyle = createGlobalStyle`
     background-color: #22bad9;
     border: 0;
     color: white;
+    font-family: ${props => props.theme.fonts.fontFamily};
+    font-size: ${props => props.theme.fonts.sizes.body};
     display: flex;
     padding: 5px 7px;
     transition: background-color 0.3s;
+    &:hover {
+      cursor: pointer;
+      background-color: #12758C;
+    }
   }
   button:active {
     background-color: #1b9db7;

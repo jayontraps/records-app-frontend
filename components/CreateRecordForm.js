@@ -29,7 +29,7 @@ const StyledFrom = styled.div`
     border-radius: 4;
     border: 1px solid ${props => props.theme.colors.borderColor};
     font-size: 1rem;
-    font-family: ${props => props.theme.fontFamily};  
+    font-family: ${props => props.theme.fonts.fontFamily};  
     color: ${props => props.theme.colors.primary};   
     padding: 8px;
     &.textarea {
@@ -41,7 +41,7 @@ const StyledFrom = styled.div`
   .DateInput_input  {
     appearance: none;
     font-size: 1rem;
-    font-family: ${props => props.theme.fontFamily};  
+    font-family: ${props => props.theme.fonts.fontFamily};  
     color: ${props => props.theme.colors.primary};   
     padding: 8px;
   }

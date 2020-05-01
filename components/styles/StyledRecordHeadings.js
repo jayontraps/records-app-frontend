@@ -19,7 +19,7 @@ const StyledRecordHeadings = styled.div`
     grid-template-areas:
     "filter-options filter-options filter-options order-by-options order-by-options notes";
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 400px;
-    padding: 10px 10px 0 10px; 
+    padding: 0px; 
   `
 
   export default StyledRecordHeadings

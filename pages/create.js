@@ -18,7 +18,6 @@ const IndexPage = () => (
     <StyledPage>
       <CreateRecordForm />
     </StyledPage>
-   
   </App>
 )
 

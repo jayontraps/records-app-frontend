@@ -30,6 +30,13 @@ const StyledRecord = styled.div`
   "species observer location count date  notes";
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 400px;  
   padding: ${props => props.theme.list.spacing.vertical};
+  &.filter-list {
+    padding: .25rem 0 ${props => props.theme.list.spacing.vertical} 0;
+    .notes {
+      display: flex;
+      align-items: flex-end;
+    }
+  }
   border-bottom: 1px solid ${props => props.theme.colors.borderColor};
 
   .legacy-observer {
