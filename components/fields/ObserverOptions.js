@@ -14,10 +14,10 @@ const USERS_QUERY = gql`
 
 class CreatableSingle extends Component {
   handleChange = (newValue, actionMeta) => {
-    // console.group('Value Changed');
-    // console.log(newValue);
-    // console.log(`action: ${actionMeta.action}`);
-    // console.groupEnd();
+    console.group('Value Changed');
+    console.log(newValue);
+    console.log(`action: ${actionMeta.action}`);
+    console.groupEnd();
     this.props.changeHandler(newValue)
   };
   handleInputChange = (inputValue, actionMeta) => {

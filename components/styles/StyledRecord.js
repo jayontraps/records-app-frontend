@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+
 const StyledRecord = styled.div` 
   
   .species { 
@@ -41,6 +42,11 @@ const StyledRecord = styled.div`
 
   .legacy-observer {
     color: ${props => props.theme.colors.legacy};
+  }
+
+  &.loading {
+    font-size: ${props => props.theme.fonts.sizes.body};
+    height: calc(${props => props.theme.fonts.bodyLineHeight} + 24.5px);    
   }
 `
 

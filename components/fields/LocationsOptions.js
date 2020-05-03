@@ -13,7 +13,12 @@ const LOCATIONS_QUERY = gql`
 `
 
 const LocationsOptions = props => {
-  const {  isClearable, placeholder, changeHandler, name = 'location' } = props
+  const {  
+    isClearable, 
+    placeholder, 
+    changeHandler, 
+    name = 'location',
+    value } = props
   const { loading, error, data } = useQuery(LOCATIONS_QUERY);
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
@@ -23,6 +28,7 @@ const LocationsOptions = props => {
   }))
   
   return <Select 
+          {...{value}}
           {...{name}}
           {...{isClearable}} 
           {...{placeholder}}

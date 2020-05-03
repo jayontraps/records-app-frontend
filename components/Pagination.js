@@ -3,7 +3,6 @@ import PaginationStyles from './styles/PaginationStyles'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import Link from 'next/link'
-import { get } from 'lodash'
 import ErrorMessage from './ErrorMessage'
 import { perPage } from '../config'
 import { getRecordsVariables } from '../queries'
@@ -19,13 +18,19 @@ const PAGINATION_QUERY = gql`
   }
 `
 
+const Loading = () => (
+  <PaginationStyles className="loading">
+    <p>Loading..</p>
+  </PaginationStyles>
+)
+
 const Pagination = props => { 
   const { queryParams } = props
   const variables = getRecordsVariables(queryParams)
   const { loading, error, data } = useQuery(PAGINATION_QUERY, { variables })
 
   if (error) return <ErrorMessage message="Error loading records." />
-  if (loading) return <p>loading</p>
+  if (loading) return <Loading />
 
   
   const page = parseFloat(queryParams.page) || 1

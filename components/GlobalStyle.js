@@ -58,12 +58,12 @@ const GlobalStyle = createGlobalStyle`
     color: ${props => props.theme.colors.primary};
     font-family: ${props => props.theme.fonts.fontFamily};
     font-size: ${props => props.theme.fonts.sizes.body};
-    line-height: 1.5em;
+    line-height: ${props => props.theme.fonts.bodyLineHeight};
     margin: 0;
     padding: 25px 50px;
   }
   a {
-    color: #22bad9;
+    color: ${props => props.theme.colors.active};
   }
 
   article {
@@ -72,7 +72,7 @@ const GlobalStyle = createGlobalStyle`
   }
   button {
     align-items: center;
-    background-color: #22bad9;
+    background-color: ${props => props.theme.colors.active};
     border: 0;
     color: white;
     font-family: ${props => props.theme.fonts.fontFamily};
@@ -81,8 +81,8 @@ const GlobalStyle = createGlobalStyle`
     padding: 5px 7px;
     transition: background-color 0.3s;
     &:hover {
-      cursor: pointer;
-      background-color: #12758C;
+      cursor: pointer;      
+      background-color: ${props => props.theme.colors.activeHover};
     }
   }
   button:active {

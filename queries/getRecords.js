@@ -13,6 +13,7 @@ const GET_RECORDS = gql`
       status
       author {
         name
+        id
       }
       legacyObserver
       species {

@@ -1,11 +1,16 @@
 import React from 'react'
 import { useQuery } from '@apollo/react-hooks';
 import Select from 'react-select'
-import { GET_USER } from '../../queries'
+import { GET_USERS } from '../../queries'
 
 const UserOptions = props => {
-  const { changeHandler, isClearable, placeholder, name } = props
-  const { loading, error, data } = useQuery(GET_USER);
+  const { 
+    changeHandler, 
+    isClearable, 
+    placeholder, 
+    name,
+    value } = props
+  const { loading, error, data } = useQuery(GET_USERS);
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
   
@@ -16,6 +21,7 @@ const UserOptions = props => {
   
   return (
       <Select 
+        {...{value}}
         {...{name}}
         {...{isClearable}} 
         {...{placeholder}} 

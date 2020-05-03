@@ -11,9 +11,12 @@ const theme = {
   monospace, serif`,
     sizes: {
       body: '13px'
-    }
+    },
+    bodyLineHeight: '1.5em',
   },
   colors: {
+    active: '#22bad9',
+    activeHover: '#12758C',
     primary: '#616161',
     borderColor: '#d8d8d8',
     description: '#bbbbbb',

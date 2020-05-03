@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 const PaginationStyles = styled.div`
+  min-height: 45px;
+  min-width: 376px;
   text-align: center;
   display: inline-grid;
   grid-template-columns: repeat(4, auto);
@@ -20,6 +22,11 @@ const PaginationStyles = styled.div`
   a[aria-disabled='true'] {
     color: grey;
     pointer-events: none;
+  }
+
+  &.loading {
+    display: block;
+    text-align: left;
   }
 `;
 

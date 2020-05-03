@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { ADD_RECORD } from '../mutations'
-import { GET_RECORDS, getRecordsVariables } from '../queries'
+import { GET_USERS, GET_RECORDS, getRecordsVariables } from '../queries'
 import { useMutation } from '@apollo/react-hooks';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import Select from 'react-select'
@@ -31,13 +31,19 @@ const CreateRecordForm = props => {
   const [focusedInput, setFocusedInput] = useState(null)
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
-  const { queryParams } = props
+  const [showRequiredMsg, setShowRequiredMsg] = useState(false)
+
+  const { queryParams, parentEl } = props
   const variables = getRecordsVariables(queryParams)
-  console.log('variables from the form: ', variables)
-  const [addRecord] = useMutation(
+
+  const [
+    addRecord,
+    { loading: mutationLoading, error: mutationError, data: mutationDat }
+  ] = useMutation(
     ADD_RECORD,
     {
       update(cache, { data: { createRecord } }) {
+        console.log('createRecord: ', createRecord)
         const { records } = cache.readQuery({ 
           query: GET_RECORDS,
           variables: variables
@@ -48,8 +54,23 @@ const CreateRecordForm = props => {
           variables: variables,
           data: { records: [createRecord, ...records] }
         });
+
+        const { users } = cache.readQuery({ 
+          query: GET_USERS,
+          // variables: variables
+        });
+
+        cache.writeQuery({
+          query: GET_USERS,
+          // variables: variables,
+          data: { users: [createRecord.author, ...users] }
+        });
+      },
+      onCompleted: () => {
+        console.log('complete!');
+        props.setOpen(false);
       }
-    } )
+    })
 
   function onDatesChange({ startDate, endDate }) {
     setDate(startDate)
@@ -60,81 +81,134 @@ const CreateRecordForm = props => {
     setClassification(e.target.value)
   }
 
-  function onStartTimeChange({value}) {
-    setStartTime(value)
+  function onStartTimeChange(newValue, metaAction) {
+    if (metaAction.action === 'select-option') {
+      setStartTime(newValue.value)
+    }      
   }
 
-  function onEndTimeChange({value}) {
-    setEndTime(value)
+  function onEndTimeChange(newValue, metaAction) {
+    if (metaAction.action === 'select-option') {
+      setEndTime(newValue.value)
+    } 
   }
 
+  function requiredFieldsComplete() {
+    if (!species) return false
+    if (!date) return false
+    if (!location) return false
+    if (!observer || !observer.label) return false
+
+    return true    
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
     const formattedDate = date ? date.format() : null
     const formattedDateTo = dateTo ? dateTo.format() : null
-    const vars = {
-      data: {
-        status: "DRAFT",
-        author: {
+            
+    // validate required fields
+    if (requiredFieldsComplete()) {
+      // if no author id provided, create a new one
+      let author
+      if (observer.__isNew__) {
+        author = {
+          create: {
+            name: observer.value
+          }
+        }        
+      } else {
+        author = {
           connect: {
             id: observer.value
           }
-        },
-        species: {
-          connect: {
-            id: species.value
-          }
-        },   
-        location: {
-          connect: {
-            id: location.value
-          }
-        },
-        breeding_code: {
-          connect: {
-            id: breedingCode
-          }
-        },
-        date: formattedDate,
-        dateTo: formattedDateTo,
-        startTime: startTime,
-        endTime: endTime,
-        notes: notes,
-        count: count,
+        }
       }
+      const vars = {
+        data: {
+          status: "DRAFT",
+          author,
+          species: {
+            connect: {
+              id: species.value
+            }
+          },   
+          location: {
+            connect: {
+              id: location.value
+            }
+          },
+          breeding_code: {
+            connect: {
+              id: breedingCode
+            }
+          },
+          date: formattedDate,
+          dateTo: formattedDateTo,
+          startTime: startTime,
+          endTime: endTime,
+          notes: notes,
+          count: count,
+        }
+      }
+      console.log('vars: ', vars)
+      addRecord({ variables: vars })
+    } else {
+      setShowRequiredMsg(true)
+      parentEl.current.scrollTop = 0;
     }
-
-    console.log(vars)
-    addRecord({ variables: vars });
+       
   }
   
   
   return (
-      <StyledRecordsForm className="create-record-form" onSubmit={e => handleSubmit(e)}>
+      <StyledRecordsForm 
+        className="create-record-form" 
+        onSubmit={e => handleSubmit(e)}>
         <div className="field field__classification">
           <h3>Classification:</h3>         
-          <ClassesOptions currentClassificationId={classification} changeHandler={e => onClassificationChange(e)} />
+          <ClassesOptions 
+              currentClassificationId={classification} 
+              changeHandler={e => onClassificationChange(e)} />
         </div>            
+        
         <div className="field field__species">
-          <h3>Species:</h3>
+
+          <div className="field-status">
+            <h3>Species:</h3>
+            {showRequiredMsg && !species && <span className="required">Required field</span>}
+          </div>
+         
           <SpeciesOptions 
-            isClearable={true}
+            isClearable
             placeholder="Speices"
             name="species"
             speciesClass={classification} 
             changeHandler={setSpecies} />
         </div>
+
         <div className="field field__location">
-          <h3>Location:</h3>
-          <LocationsOptions fieldName="location" changeHandler={setLocation} />
+          <div className="field-status">
+            <h3>Location:</h3>
+            {(showRequiredMsg && !location) && <span className="required">Required field</span>}
+          </div>
+          <LocationsOptions 
+            isClearable 
+            fieldName="location" 
+            changeHandler={setLocation} />
         </div>
         <div className="field field__observer">
-          <h3>Observer:</h3>
+          <div className="field-status">
+            <h3>Observer:</h3>
+            {showRequiredMsg && (observer === null || !observer.label) && <span className="required">Required field</span>}
+          </div>
           <ObserverOptions fieldName="observer" changeHandler={setObserver} />
         </div>
         <div className="field field__date">
-          <h3>Dates:</h3>
+          <div className="field-status">
+            <h3>Dates:</h3>
+            {showRequiredMsg && !date && <span className="required">Start date is required</span>}
+          </div>
           <DateRangePicker
             startDate={date} // momentPropTypes.momentObj or null,
             startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
@@ -150,26 +224,44 @@ const CreateRecordForm = props => {
         </div>
         <div className="field field__starttime">
           <h3>Start time:</h3>
-          <Select onChange={onStartTimeChange} options={times} />
+          <Select 
+            isClearable
+            onChange={onStartTimeChange} 
+            options={times} />
         </div>
         <div className="field field__endtime">
           <h3>End time:</h3>
-          <Select onChange={onEndTimeChange} options={times} />
+          <Select 
+            isClearable
+            onChange={onEndTimeChange} 
+            options={times} />
         </div>
         <div className="field field__count">
           <h3><label htmlFor="count">Count:</label></h3>             
-          <input type="number" className="input" name="count" value={count} onChange={e => setCount(e.target.value)} />
+          <input 
+            type="number" 
+            className="input" 
+            name="count" 
+            value={count} 
+            onChange={e => setCount(e.target.value)} />
         </div>
         <div className="field field__notes">
           <h3>Notes:</h3>
-          <input type="textarea" rows={10} className="input textarea" name="notes" value={notes} onChange={e => setNotes(e.target.value)} />
+          <input type="textarea" 
+            rows={10} 
+            className="input textarea" 
+            name="notes" 
+            value={notes} 
+            onChange={e => setNotes(e.target.value)} />
         </div>
         <div className="field field__breeding">
           <h3>Breeding Code:</h3>         
           <BreedingOptions currentBreedingCode={breedingCode} changeHandler={e => setBreedingCode(e.target.value)} />
         </div>
         <div className="field field__submit">
-          <input className="button__submit" type="submit" value="Submit" />
+          <button 
+            className="button__submit" 
+            type="submit">{mutationLoading ? 'Submitting' : 'Submit'}</button>
         </div>
       </StyledRecordsForm>
     )

@@ -4,7 +4,13 @@ import Select from 'react-select'
 import { GET_SPECIES } from '../../queries'
 
 const SpeciesOptions = props => {
-  const { changeHandler, speciesClass, isClearable, placeholder, name } = props
+  const { 
+    changeHandler, 
+    speciesClass, 
+    isClearable, 
+    placeholder, 
+    name, 
+    value } = props
   const { loading, error, data } = useQuery(
     GET_SPECIES,
     {
@@ -22,6 +28,7 @@ const SpeciesOptions = props => {
     label: species.name
   }))
   return <Select 
+            {...{value}}
             {...{name}}
             {...{isClearable}} 
             {...{placeholder}} 

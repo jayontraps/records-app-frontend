@@ -7,6 +7,7 @@ const ADD_RECORD = gql`
       status
       author {
         name
+        id
       }
       legacyObserver
       species {

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import ClientOnlyPortal from './ClientOnlyPortal'
 
 export default function Modal(props) {
   const { children, buttonText = 'Open Modal' } = props
   const [open, setOpen] = useState()
+  const modalEl = useRef(null)
 
   return (
     <React.Fragment>
@@ -13,8 +14,14 @@ export default function Modal(props) {
       {open && (
         <ClientOnlyPortal selector="#modal">
           <div className="backdrop">
-            <div className="modal">
-              {children}
+            <div 
+              ref={modalEl}
+              className="modal"
+              >              
+              {React.cloneElement(props.children, { 
+                parentEl: modalEl,
+                setOpen: setOpen
+              })}
               <button className="close-modal" type="button" onClick={event => setOpen(false)}>
                 Close Modal
               </button>

@@ -33,6 +33,15 @@ const StyledRecordsForm = styled.form`
     }    
   }
 
+  .field-status {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .required {
+    color: red;
+  }
+
   .field {
     h3 {
       margin-bottom: 5px;

@@ -2,6 +2,7 @@ import App from '../components/App'
 import Header from '../components/Header'
 import CreateRecordForm from '../components/CreateRecordFormFunc'
 import { withApollo } from '../lib/apollo'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 const StyledPage = styled.div`
@@ -12,13 +13,16 @@ const StyledPage = styled.div`
 
 
 
-const IndexPage = () => (
-  <App>
-    <Header />
-    <StyledPage>
-      <CreateRecordForm />
-    </StyledPage>
-  </App>
-)
+const IndexPage = () => {
+  const router = useRouter()
+  return (
+    <App>
+      <Header />
+      <StyledPage>
+        <CreateRecordForm queryParams={router.query} />
+      </StyledPage>
+    </App>
+  )
+}
 
 export default withApollo({ ssr: true })(IndexPage)
