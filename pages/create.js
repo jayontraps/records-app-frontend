@@ -1,6 +1,6 @@
 import App from '../components/App'
 import Header from '../components/Header'
-import CreateRecordForm from '../components/CreateRecordFormFunc'
+import CreateRecordForm from '../components/CreateRecordForm'
 import { withApollo } from '../lib/apollo'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'

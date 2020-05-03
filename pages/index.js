@@ -5,7 +5,7 @@ import RecordsList from '../components/RecordsList'
 import FilterList from '../components/FilterList'
 import Pagination from '../components/Pagination'
 import Modal from '../components/Modal'
-import CreateRecordForm from '../components/CreateRecordFormFunc'
+import CreateRecordForm from '../components/CreateRecordForm'
 import { useRouter } from 'next/router'
 import { withApollo } from '../lib/apollo'
 

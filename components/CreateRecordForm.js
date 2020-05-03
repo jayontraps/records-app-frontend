@@ -1,7 +1,9 @@
-import React, { Component, useState, useEffect } from 'react'
-import styled from 'styled-components';
-
+import React, { useState, useRef } from 'react'
+import { ADD_RECORD } from '../mutations'
+import { GET_USERS, GET_RECORDS, getRecordsVariables } from '../queries'
+import { useMutation } from '@apollo/react-hooks';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import Select from 'react-select'
 import {
   ClassesOptions,
   LocationsOptions,
@@ -9,178 +11,261 @@ import {
   ObserverOptions,
   BreedingOptions
 } from './fields'
+import StyledRecordsForm from './styles/StyledRecordsForm'
+import { birdClassId } from '../config'
 
-const StyledFrom = styled.div`
-  .select__class {
-    display: flex;
-    label {
-      margin-right: 10px;
-    }    
-  }
+const hours = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"]
 
-  .field {
-    margin-bottom: 20px;
-    h3 {
-      margin-bottom: 5px;
-    }
-  }
+const times = hours.map(time => ({ value: time, label: time }))
 
-  .input {
-    border-radius: 4;
-    border: 1px solid ${props => props.theme.colors.borderColor};
-    font-size: 1rem;
-    font-family: ${props => props.theme.fonts.fontFamily};  
-    color: ${props => props.theme.colors.primary};   
-    padding: 8px;
-    &.textarea {
-      display: block;
-      width: 100%;
-    }
-  }
+const CreateRecordForm = props => {  
+  const [classification, setClassification] = useState(birdClassId);
+  const [observer, setObserver] = useState({})
+  const [species, setSpecies] = useState('')
+  const [location, setLocation] = useState('')
+  const [date, setDate] = useState(null)
+  const [dateTo, setDateTo] = useState(null)
+  const [count, setCount] = useState('0')
+  const [notes, setNotes] = useState('')
+  const [breedingCode, setBreedingCode] = useState('')
+  const [focusedInput, setFocusedInput] = useState(null)
+  const [startTime, setStartTime] = useState(null)
+  const [endTime, setEndTime] = useState(null)
+  const [showRequiredMsg, setShowRequiredMsg] = useState(false)
 
-  .DateInput_input  {
-    appearance: none;
-    font-size: 1rem;
-    font-family: ${props => props.theme.fonts.fontFamily};  
-    color: ${props => props.theme.colors.primary};   
-    padding: 8px;
-  }
+  const { queryParams, parentEl } = props
+  const variables = getRecordsVariables(queryParams)
 
-  .button__submit {
-    appearance: none;
-    border: 1px solid ${props => props.theme.colors.borderColor}; 
-    padding: 10px;
-    font-size: 1rem;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-`
+  const [
+    addRecord,
+    { loading: mutationLoading, error: mutationError, data: mutationDat }
+  ] = useMutation(
+    ADD_RECORD,
+    {
+      update(cache, { data: { createRecord } }) {
+        console.log('createRecord: ', createRecord)
+        const { records } = cache.readQuery({ 
+          query: GET_RECORDS,
+          variables: variables
+        });
 
-class CreateRecordForm extends Component {
-  state = {
-    class: 'bird',
-    observer: {},
-    species: '',
-    location: '',
-    date: null,
-    dateTo: null,
-    count: 0,
-    notes: '',
-    breeding_code: '' ,
-    focusedInput: null
-  }
+        cache.writeQuery({
+          query: GET_RECORDS,
+          variables: variables,
+          data: { records: [createRecord, ...records] }
+        });
 
-  onDatesChange = ({ startDate, endDate }) => {
-    this.setState({ 
-      date: startDate, 
-      dateTo: endDate 
+        const { users } = cache.readQuery({ 
+          query: GET_USERS,
+          // variables: variables
+        });
+
+        cache.writeQuery({
+          query: GET_USERS,
+          // variables: variables,
+          data: { users: [createRecord.author, ...users] }
+        });
+      },
+      onCompleted: () => {
+        console.log('complete!');
+        props.setOpen(false);
+      }
     })
+
+  function onDatesChange({ startDate, endDate }) {
+    setDate(startDate)
+    setDateTo(endDate)
   }
 
-  onCountChange = (e) => {
-    this.setState({
-      count: e.target.value
-    })
+  function onClassificationChange(e) {    
+    setClassification(e.target.value)
   }
 
-  onNotesChange = (e) => {
-    this.setState({
-      notes: e.target.value
-    })
+  function onStartTimeChange(newValue, metaAction) {
+    if (metaAction.action === 'select-option') {
+      setStartTime(newValue.value)
+    }      
   }
 
-  locationChangeHandler = location => {
-    // console.log('this is the locationChangeHandler')
-    this.setState({
-      location: location.value
-    })
+  function onEndTimeChange(newValue, metaAction) {
+    if (metaAction.action === 'select-option') {
+      setEndTime(newValue.value)
+    } 
   }
 
-  observerChangeHandler = user => {
-    // console.log('this is the observerChangeHandler')
-    this.setState({
-      observer: user
-    })
+  function requiredFieldsComplete() {
+    if (!species) return false
+    if (!date) return false
+    if (!location) return false
+    if (!observer || !observer.label) return false
+
+    return true    
   }
 
-  speciesChangeHandler = species => {
-    // console.log(value)
-    this.setState({
-      species: species.value
-    })
-  }
-
-  classChangeHandler = (e) => {
-    this.setState({
-      class: e.target.value
-    })
-  }
-
-  breedingChangeHandler = (e) => {
-    this.setState({
-      breeding_code: e.target.value
-    })
-  }
-
-  handleSubmit = (event) => {
-    console.log('the for was submitted: ', this.state);
+  function handleSubmit(event) {
     event.preventDefault();
+    const formattedDate = date ? date.format() : null
+    const formattedDateTo = dateTo ? dateTo.format() : null
+            
+    // validate required fields
+    if (requiredFieldsComplete()) {
+      // if no author id provided, create a new one
+      let author
+      if (observer.__isNew__) {
+        author = {
+          create: {
+            name: observer.value
+          }
+        }        
+      } else {
+        author = {
+          connect: {
+            id: observer.value
+          }
+        }
+      }
+      const vars = {
+        data: {
+          status: "DRAFT",
+          author,
+          species: {
+            connect: {
+              id: species.value
+            }
+          },   
+          location: {
+            connect: {
+              id: location.value
+            }
+          },
+          breeding_code: {
+            connect: {
+              id: breedingCode
+            }
+          },
+          date: formattedDate,
+          dateTo: formattedDateTo,
+          startTime: startTime,
+          endTime: endTime,
+          notes: notes,
+          count: count,
+        }
+      }
+      console.log('vars: ', vars)
+      addRecord({ variables: vars })
+    } else {
+      setShowRequiredMsg(true)
+      parentEl.current.scrollTop = 0;
+    }
+       
   }
   
-  render() {
-    return (
-        <StyledFrom>
-          <form onSubmit={this.handleSubmit}>
-            <div className="field">
-              <h3>Select class:</h3>         
-              <ClassesOptions currentClassification={this.state.class} changeHandler={this.classChangeHandler} />
-            </div>            
-            <div className="field">
-              <h3>Species:</h3>
-              <SpeciesOptions speciesClass={this.state.class} changeHandler={this.speciesChangeHandler} />
-            </div>
-            <div className="field">
-              <h3>Location:</h3>
-              <LocationsOptions fieldName="location" changeHandler={this.locationChangeHandler} />
-            </div>
-            <div className="field">
-              <h3>Observer:</h3>
-              <ObserverOptions fieldName="observer" changeHandler={this.observerChangeHandler} />
-            </div>
-            <div className="field">
-              <h3>Dates:</h3>
-              <DateRangePicker
-                startDate={this.state.date} // momentPropTypes.momentObj or null,
-                startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-                endDate={this.state.dateTo} // momentPropTypes.momentObj or null,
-                endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-                onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
-                focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
-                showClearDates
-                block
-              />      
-            </div>
-            <div className="field">
-              <h3><label htmlFor="count">Count:</label></h3>             
-              <input type="number" className="input" name="count" value={this.state.count} onChange={this.onCountChange} />
-            </div>
-            <div className="field">
-              <h3>Notes:</h3>
-              <input type="textarea" rows={10} className="input textarea" name="notes" value={this.state.notes} onChange={this.onNotesChange} />
-            </div>
-            <div className="field">
-              <h3>Breeding Code:</h3>         
-              <BreedingOptions currentBreedingCode={this.state.breeding_code} changeHandler={this.breedingChangeHandler} />
-            </div>
-            <div className="field">
-              <input className="button__submit" type="submit" value="Submit" />
-            </div>
-          </form>
-        </StyledFrom>
+  
+  return (
+      <StyledRecordsForm 
+        className="create-record-form" 
+        onSubmit={e => handleSubmit(e)}>
+        <div className="field field__classification">
+          <h3>Classification:</h3>         
+          <ClassesOptions 
+              currentClassificationId={classification} 
+              changeHandler={e => onClassificationChange(e)} />
+        </div>            
+        
+        <div className="field field__species">
+
+          <div className="field-status">
+            <h3>Species:</h3>
+            {showRequiredMsg && !species && <span className="required">Required field</span>}
+          </div>
+         
+          <SpeciesOptions 
+            isClearable
+            placeholder="Speices"
+            name="species"
+            speciesClass={classification} 
+            changeHandler={setSpecies} />
+        </div>
+
+        <div className="field field__location">
+          <div className="field-status">
+            <h3>Location:</h3>
+            {(showRequiredMsg && !location) && <span className="required">Required field</span>}
+          </div>
+          <LocationsOptions 
+            isClearable 
+            fieldName="location" 
+            changeHandler={setLocation} />
+        </div>
+        <div className="field field__observer">
+          <div className="field-status">
+            <h3>Observer:</h3>
+            {showRequiredMsg && (observer === null || !observer.label) && <span className="required">Required field</span>}
+          </div>
+          <ObserverOptions fieldName="observer" changeHandler={setObserver} />
+        </div>
+        <div className="field field__date">
+          <div className="field-status">
+            <h3>Dates:</h3>
+            {showRequiredMsg && !date && <span className="required">Start date is required</span>}
+          </div>
+          <DateRangePicker
+            startDate={date} // momentPropTypes.momentObj or null,
+            startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+            endDate={dateTo} // momentPropTypes.momentObj or null,
+            endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+            onDatesChange={onDatesChange} // PropTypes.func.isRequired,
+            focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+            onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
+            isOutsideRange={() => false}
+            showClearDates
+            block
+          />      
+        </div>
+        <div className="field field__starttime">
+          <h3>Start time:</h3>
+          <Select 
+            isClearable
+            onChange={onStartTimeChange} 
+            options={times} />
+        </div>
+        <div className="field field__endtime">
+          <h3>End time:</h3>
+          <Select 
+            isClearable
+            onChange={onEndTimeChange} 
+            options={times} />
+        </div>
+        <div className="field field__count">
+          <h3><label htmlFor="count">Count:</label></h3>             
+          <input 
+            type="number" 
+            className="input" 
+            name="count" 
+            value={count} 
+            onChange={e => setCount(e.target.value)} />
+        </div>
+        <div className="field field__notes">
+          <h3>Notes:</h3>
+          <textarea
+            rows={3} 
+            className="input textarea" 
+            name="notes" 
+            value={notes} 
+            onChange={e => setNotes(e.target.value)} />
+        </div>
+        <div className="field field__breeding">
+          <h3>Breeding Code:</h3>         
+          <BreedingOptions currentBreedingCode={breedingCode} changeHandler={e => setBreedingCode(e.target.value)} />
+        </div>
+        <div className="field field__submit">
+          <button 
+            className="button__submit" 
+            type="submit">{mutationLoading ? 'Submitting' : 'Submit'}</button>
+        </div>
+      </StyledRecordsForm>
     )
   }
-}
+
 
 export default CreateRecordForm

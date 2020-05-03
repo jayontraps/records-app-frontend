@@ -23,7 +23,7 @@ export default function Modal(props) {
                 setOpen: setOpen
               })}
               <button className="close-modal" type="button" onClick={event => setOpen(false)}>
-                Close Modal
+                Close
               </button>
             </div>
             <style jsx>{`
