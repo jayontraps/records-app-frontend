@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import { format } from 'date-fns';
 import StyledRecord from './styles/StyledRecord'
 import Icon from './Icon'
-// import RecordOptions from './RecordOptions'
 
 const Record = ({record}) => {
     const { 
@@ -37,7 +36,6 @@ const Record = ({record}) => {
       <div className="cell notes">{notes}</div>
       <div className="cell more">
         <Icon onClick={() =>setShowMore(true)} className="more__icon" name="more_vert" />
-        {/* <RecordOptions id={id} /> */}
       </div> 
     </StyledRecord>
   )}
