@@ -1,10 +1,8 @@
 import React, {useState} from 'react'
-import styled from "styled-components"
 import { format } from 'date-fns';
-import { get } from 'lodash'
 import StyledRecord from './styles/StyledRecord'
 import Icon from './Icon'
-import RecordOptions from './RecordOptions'
+// import RecordOptions from './RecordOptions'
 
 const Record = ({record}) => {
     const { 
@@ -25,8 +23,8 @@ const Record = ({record}) => {
       notes,
       breeding_code
      } = record
-     const breedingCode = get(breeding_code, 'code', '')
-     const breedingDescription = get(breeding_code, 'description', '')
+    //  const breedingCode = get(breeding_code, 'code', '')
+    //  const breedingDescription = get(breeding_code, 'description', '')
      const [showMore, setShowMore] = useState(false)
     return (
     <StyledRecord className="record">

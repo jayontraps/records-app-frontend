@@ -40,7 +40,7 @@ const IndexPage = props => {
   const router = useRouter()
   return (
   <App>
-    {/* <Header />   */}
+    <Header />  
     <StyledPage>
       <div className="nav">
         <Pagination queryParams={router.query} />
