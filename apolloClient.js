@@ -4,6 +4,7 @@ import { HttpLink } from 'apollo-link-http'
 import { ApolloLink } from 'apollo-link'
 import { setContext } from 'apollo-link-context'
 import fetch from 'isomorphic-unfetch'
+import { devEndpoint, prodEndpoint} from './config'
 
 const delay = setContext(
   request =>
@@ -15,7 +16,7 @@ const delay = setContext(
   )
 
 const http = new HttpLink({
-  uri: 'http://localhost:4444', // Server URL (must be absolute)
+  uri: process.env.NODE_ENV === 'development' ? devEndpoint : prodEndpoint,
   credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
   fetch,
 })
