@@ -27,7 +27,12 @@ const theme = {
       vertical: '.75rem'
     }
   },
-  borderRadius: '4px'  
+  borderRadius: '4px'  ,
+  icon: {
+    width: '1rem',
+    height: '1rem',
+    fill: '#616161'
+  }
 }
 
 export default class MyApp extends App {

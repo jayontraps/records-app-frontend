@@ -23,8 +23,8 @@ const StyledRecordHeadings = styled.div`
     display: grid; 
     grid-gap: 20px;          
     grid-template-areas:
-    "filter-options filter-options filter-options order-by-options order-by-options clear-filters";
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 400px; ;
+    "filter-options filter-options filter-options order-by-options order-by-options clear-filters clear-filters";
+    grid-template-columns: 1fr 1fr 1fr 100px 1fr 400px 1rem;
     padding: 0px; 
   `
 

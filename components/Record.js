@@ -1,11 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from "styled-components"
 import { format } from 'date-fns';
 import { get } from 'lodash'
 import StyledRecord from './styles/StyledRecord'
+import Icon from './Icon'
+import RecordOptions from './RecordOptions'
 
 const Record = ({record}) => {
     const { 
+      id,
       species: {
         name
       },
@@ -24,6 +27,7 @@ const Record = ({record}) => {
      } = record
      const breedingCode = get(breeding_code, 'code', '')
      const breedingDescription = get(breeding_code, 'description', '')
+     const [showMore, setShowMore] = useState(false)
     return (
     <StyledRecord className="record">
       <div className="cell species">{name}</div>      
@@ -33,6 +37,10 @@ const Record = ({record}) => {
       <div className="cell date">{format(new Date(date), 'dd/MM/yyyy')}</div>
       <div className="cell location">{site}</div>      
       <div className="cell notes">{notes}</div>
+      <div className="cell more">
+        <Icon onClick={() =>setShowMore(true)} className="more__icon" name="more_vert" />
+        {/* <RecordOptions id={id} /> */}
+      </div> 
     </StyledRecord>
   )}
 
