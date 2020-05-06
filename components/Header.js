@@ -21,11 +21,7 @@ const Header = ({ router: { pathname } }) => (
     <Link href="/">
       <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
     </Link>
-    {/* <Link href="/client-only">
-      <a className={pathname === '/client-only' ? 'is-active' : ''}>
-        Client-Only
-      </a>
-    </Link>    
+    {/*    
     <Link href="/create">
       <a className={pathname === '/create' ? 'is-active' : ''}>Create</a>
     </Link>
@@ -34,7 +30,8 @@ const Header = ({ router: { pathname } }) => (
     </Link>
     <Link href="/records">
       <a className={pathname === '/records' ? 'is-active' : ''}>records</a>
-    </Link> */}
+    </Link> 
+    */}
   </StyledHeader>
 )
 
