@@ -11,6 +11,7 @@ import {
   ObserverOptions,
   BreedingOptions
 } from './fields'
+import ExpandPanel from '../components/ExpandPanel'
 import StyledRecordsForm from './styles/StyledRecordsForm'
 import { birdClassId } from '../config'
 
@@ -123,7 +124,8 @@ const CreateRecordForm = props => {
             id: observer.value
           }
         }
-      }
+      }      
+      
       const vars = {
         data: {
           status: "DRAFT",
@@ -138,11 +140,6 @@ const CreateRecordForm = props => {
               id: location.value
             }
           },
-          breeding_code: {
-            connect: {
-              id: breedingCode
-            }
-          },
           date: formattedDate,
           dateTo: formattedDateTo,
           startTime: startTime,
@@ -151,6 +148,16 @@ const CreateRecordForm = props => {
           count: count,
         }
       }
+
+      // add breeding code if available
+      if (breedingCode) {
+        vars.data.breeding_code = {
+          connect: {
+            id: breedingCode
+          }
+        }
+      }
+
       console.log('vars: ', vars)
       addRecord({ variables: vars })
     } else {
@@ -181,7 +188,7 @@ const CreateRecordForm = props => {
          
           <SpeciesOptions 
             isClearable
-            placeholder="Speices"
+            placeholder="Species"
             name="species"
             speciesClass={classification} 
             changeHandler={setSpecies} />
@@ -199,14 +206,14 @@ const CreateRecordForm = props => {
         </div>
         <div className="field field__observer">
           <div className="field-status">
-            <h3>Observer:</h3>
+            <h3>Observer</h3>
             {showRequiredMsg && (observer === null || !observer.label) && <span className="required">Required field</span>}
           </div>
           <ObserverOptions fieldName="observer" changeHandler={setObserver} />
         </div>
         <div className="field field__date">
           <div className="field-status">
-            <h3>Dates:</h3>
+            <h3>Dates</h3>
             {showRequiredMsg && !date && <span className="required">Start date is required</span>}
           </div>
           <DateRangePicker
@@ -223,21 +230,21 @@ const CreateRecordForm = props => {
           />      
         </div>
         <div className="field field__starttime">
-          <h3>Start time:</h3>
+          <h3>Start time</h3>
           <Select 
             isClearable
             onChange={onStartTimeChange} 
             options={times} />
         </div>
         <div className="field field__endtime">
-          <h3>End time:</h3>
+          <h3>End time</h3>
           <Select 
             isClearable
             onChange={onEndTimeChange} 
             options={times} />
         </div>
         <div className="field field__count">
-          <h3><label htmlFor="count">Count:</label></h3>             
+          <h3><label htmlFor="count">Count</label></h3>             
           <input 
             type="number" 
             className="input" 
@@ -246,7 +253,7 @@ const CreateRecordForm = props => {
             onChange={e => setCount(e.target.value)} />
         </div>
         <div className="field field__notes">
-          <h3>Notes:</h3>
+          <h3>Notes</h3>
           <textarea
             rows={3} 
             className="input textarea" 
@@ -255,8 +262,10 @@ const CreateRecordForm = props => {
             onChange={e => setNotes(e.target.value)} />
         </div>
         <div className="field field__breeding">
-          <h3>Breeding Code:</h3>         
-          <BreedingOptions currentBreedingCode={breedingCode} changeHandler={e => setBreedingCode(e.target.value)} />
+          <ExpandPanel heading="Breeding Code">
+            <BreedingOptions currentBreedingCode={breedingCode} changeHandler={e => setBreedingCode(e.target.value)} />
+          </ExpandPanel> 
+          
         </div>
         <div className="field field__submit">
           <button 

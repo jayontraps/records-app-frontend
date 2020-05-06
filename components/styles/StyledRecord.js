@@ -26,14 +26,21 @@ const StyledRecord = styled.div`
   }
 
   .more {
-    grid-area: more
+    grid-area: more;    
+    position: relative;
+  }
+
+  .popup-trigger {    
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   display: grid;
   grid-gap: 20px;
   grid-template-areas:
   "species observer location count date notes more";
-  grid-template-columns: 1fr 1fr 1fr 100px 1fr 400px 1rem;  
+  grid-template-columns: 1fr 1fr 1fr 100px 1fr 400px 2rem;  
   padding: ${props => props.theme.list.spacing.vertical};
   &.filter-list {
     padding: .25rem 0 ${props => props.theme.list.spacing.vertical} 0;

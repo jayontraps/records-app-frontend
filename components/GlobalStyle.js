@@ -71,22 +71,24 @@ const GlobalStyle = createGlobalStyle`
     max-width: 650px;
   }
   button {
-    align-items: center;
-    background-color: ${props => props.theme.colors.active};
-    border: 0;
-    color: white;
+    appearance: none;
+    align-items: center; 
+    border: 1px solid ${props => props.theme.colors.borderColor};
+    border-radius: ${props => props.theme.borderRadius};
     font-family: ${props => props.theme.fonts.fontFamily};
     font-size: ${props => props.theme.fonts.sizes.body};
     display: flex;
-    padding: 5px 7px;
-    transition: background-color 0.3s;
+    padding: .5rem 1rem;
+    transition: all 0.3s;
     &:hover {
       cursor: pointer;      
-      background-color: ${props => props.theme.colors.activeHover};
+      border-color: ${props => props.theme.colors.activeHover};
+      color: ${props => props.theme.colors.activeHover};
     }
   }
   button:active {
-    background-color: #1b9db7;
+    border-color: ${props => props.theme.colors.activeHover};
+    color: ${props => props.theme.colors.activeHover};
   }
   button:disabled {
     background-color: #b5bebf;

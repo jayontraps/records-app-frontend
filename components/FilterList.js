@@ -107,7 +107,7 @@ const FilterList = props => {
         <div className="species">
           <SpeciesOptions 
             isClearable={true}
-            placeholder="Speices"
+            placeholder="Species"
             name="species"
             value={speciesValue}
             speciesClass={birdClassId} 

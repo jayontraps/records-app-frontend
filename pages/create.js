@@ -1,15 +1,15 @@
+import { useRouter } from 'next/router'
+import styled from 'styled-components'
 import App from '../components/App'
 import Header from '../components/Header'
 import CreateRecordForm from '../components/CreateRecordForm'
+import ExpandPanel from '../components/ExpandPanel'
+import BreedingOptions from '../components/fields/BreedingOptions'
 import { withApollo } from '../lib/apollo'
-import { useRouter } from 'next/router'
-import styled from 'styled-components'
 
 const StyledPage = styled.div`
   margin: 30px 0;
 `
-
-
 
 
 
@@ -19,7 +19,10 @@ const IndexPage = () => {
     <App>
       <Header />
       <StyledPage>
-        <CreateRecordForm queryParams={router.query} />
+        <ExpandPanel heading="Breeding Code">
+          <BreedingOptions currentBreedingCode={''} changeHandler={e => {}} />
+        </ExpandPanel>
+        {/* <CreateRecordForm queryParams={router.query} /> */}
       </StyledPage>
     </App>
   )

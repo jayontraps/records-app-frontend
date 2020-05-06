@@ -48,10 +48,10 @@ const StyledRecordsForm = styled.form`
     }
   }
 
-  .input {
-    border-radius: 4;
+  .input {    
     border: 1px solid ${props => props.theme.colors.borderColor};
-    font-size: 1rem;
+    border-radius: ${props => props.theme.borderRadius};
+    font-size: .8rem;
     font-family: ${props => props.theme.fonts.fontFamily};  
     color: ${props => props.theme.colors.primary};   
     padding: 8px;

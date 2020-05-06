@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react'
 import ClientOnlyPortal from './ClientOnlyPortal'
+import StyledDialog from './styles/StyledDialog'
+import Icon from './Icon'
 
 export default function Modal(props) {
   const { children, buttonText = 'Open Modal' } = props
@@ -13,56 +15,34 @@ export default function Modal(props) {
       </button>
       {open && (
         <ClientOnlyPortal selector="#modal">
+        <StyledDialog>
           <div className="backdrop">
             <div 
               ref={modalEl}
               className="modal"
               >              
-              {React.cloneElement(props.children, { 
+              {React.cloneElement(children, { 
                 parentEl: modalEl,
                 setOpen: setOpen
               })}
-              <button className="close-modal" type="button" onClick={event => setOpen(false)}>
-                Close
-              </button>
+              <div className="close-modal">
+                <Icon className="icon" name="close" onClick={event => setOpen(false)} />
+              </div>
             </div>
+            
             <style jsx>{`
               :global(body) {
                 overflow: hidden;
               }
-
-              .backdrop {
-                position: fixed;
-                background-color: rgba(0, 0, 0, 0.7);
-                top: 0;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              }
-
+              
               .modal {
-                width: 60vw;
-                max-width: 800px;
                 height: 75vh;
-                max-height: 700px;                                    
-                overflow: auto;            
-                background-color: white; 
-                border-radius: 4px;               
-                padding: 30px; 
-                position: relative;               
+                max-height: 700px;                                               
               }
-
-              .close-modal {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-              }
-
+               
             `}</style>
           </div>
+          </StyledDialog>
         </ClientOnlyPortal>
       )}
     </React.Fragment>

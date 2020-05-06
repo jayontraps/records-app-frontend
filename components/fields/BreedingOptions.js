@@ -2,12 +2,7 @@ import React, { Fragment } from 'react'
 import { useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components'
 import gql from 'graphql-tag'
-
-function capitalize(str) {
-  const firstLetter = str.charAt(0)
-  const rest = str.slice(1)
-  return firstLetter.toUpperCase() + rest
-}
+import { capitalize } from '../../utils'
 
 const StyledBreedingOptions = styled.div`
   margin-bottom: 20px;
