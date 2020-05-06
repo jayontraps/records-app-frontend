@@ -1,5 +1,5 @@
 const dialog = (state = {}, action) => {
-  switch(action.type){
+  switch(action.type) {
       case "SET_DIALOG":
           return {
               ...state,

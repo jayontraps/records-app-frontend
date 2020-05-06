@@ -3,7 +3,7 @@ const initialState = {
 }
 
 const popupMenu = (state = initialState, action) => {
-  switch(action.type){
+  switch(action.type) {
       case "SET_MENU_ID":
           return {
               ...state,
