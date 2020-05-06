@@ -25,9 +25,6 @@ const Header = ({ router: { pathname } }) => (
       <a className={pathname === '/client-only' ? 'is-active' : ''}>
         Client-Only
       </a>
-    </Link>
-    <Link href="/about">
-      <a className={pathname === '/about' ? 'is-active' : ''}>About</a>
     </Link>    
     <Link href="/create">
       <a className={pathname === '/create' ? 'is-active' : ''}>Create</a>
