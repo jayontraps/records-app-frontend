@@ -10,7 +10,7 @@ import {perPage} from '../config'
 const backgroundColor = 'whitesmoke'
 const animationColor = 'white'
 
-const StyledRecordList = styled.div`
+const StyledRecordList = styled.div`  
   .record:nth-of-type(odd) {
     background-color: whitesmoke;
   }
@@ -47,7 +47,16 @@ const RecordsList = props => {
   const { records } = data
   
   return (    
-    <StyledRecordList className="records-list">            
+    <StyledRecordList className="records-list">  
+      <StyledRecord>
+        <div className="headings row first">
+          <h4 className="date">Date</h4>
+          <h4 className="species">Species</h4>
+          <h4 className="location">Location</h4>
+          <h4 className="count">Count</h4>
+          <h4 className="observer">Observer</h4>
+        </div>
+      </StyledRecord>
       {records.map((rec, index) => (
         <Record 
           record={rec}

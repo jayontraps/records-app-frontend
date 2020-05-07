@@ -17,6 +17,7 @@ const GET_RECORDS = gql`
       }
       location {
         site
+        gridRef
       }
       date
       dateTo

@@ -15,6 +15,7 @@ const ADD_RECORD = gql`
       }
       location {
         site
+        gridRef
       }
       date
       dateTo

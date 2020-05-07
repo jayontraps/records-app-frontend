@@ -34,6 +34,7 @@ const GlobalStyle = createGlobalStyle`
 
   html {
     box-sizing: border-box;
+    font-size: ${props => props.theme.fonts.sizes.body};
   }
   *,
   *:before,

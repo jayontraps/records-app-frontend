@@ -18,7 +18,12 @@ const mapDispatchToProps = dispatch => ({
 
 class Record extends Component {
   state = {
-    openMenu: false
+    openMenu: false,
+    openPanel: false
+  }
+
+  openPanel = (e) => {
+    this.setState({ openPanel: !this.state.openPanel })
   }
 
   openMenu = (e) => {
@@ -51,7 +56,8 @@ class Record extends Component {
         name
       },
       location: {
-        site
+        site,
+        gridRef
       },
       status,
       author: {
@@ -60,30 +66,59 @@ class Record extends Component {
       legacyObserver,
       count,
       date,
+      startTime,
+      endTime,
       notes,
       breeding_code
-    } = record
-    
+    } = record    
+    const collapsedStatus = this.state.openPanel ? 'open' : 'closed'
     return (
-      <StyledRecord className="record">
-        <div className="cell species">{name}</div>      
-        <div className={`cell observer ${authorrName === 'Legacy' ? 'legacy-observer' : ''}`}>
-        {authorrName === 'Legacy' ? `${legacyObserver}` : authorrName}</div>
-        <div className="cell count">{count}</div>
-        <div className="cell date">{format(new Date(date), 'dd/MM/yyyy')}</div>
-        <div className="cell location">{site}</div>      
-        <div className="cell notes">{notes}</div>
-        <div className="cell more">
-          <div 
-            className="popup-trigger"
-            ref={el => this.popupTrigger = el}
-            onClick={e => this.openMenu(e)}>
+      <StyledRecord className={`record ${collapsedStatus}`}>
+        <div className="record-data" onClick={(e) => this.openPanel(e)}>
+          <div className="row first">
+            <div className="cell date">{format(new Date(date), 'dd/MM/yyyy')}</div>
+            <div className="cell species">{name}</div>
+            <div className="cell location">{site}</div> 
+            <div className="cell count">{count}</div>
+            <div className={`cell observer ${authorrName === 'Legacy' ? 'legacy-observer' : ''}`}>
+              {authorrName === 'Legacy' ? `${legacyObserver}` : authorrName}
+            </div>
+            
+          </div>
+          <div className="expandpanel__content">
+            <div className="row second">
+              <div className="cell times">Times: {startTime}</div> 
+              <div className="cell breeding_code">Breeding code: {breeding_code ? breeding_code.code : ''}</div> 
+              <div className="cell gridref">Grid ref: {gridRef}</div>           
+            </div>
+            {notes && <div className="row third">
+              <div className="cell notes">Notes: {notes}</div>
+            </div>}
+          </div>
+        </div>
+                
+        <div className="record-options">                     
+
+          <div onClick={(e) => this.openPanel(e)} className="cell view-more" >
             <Icon   
               className="more__icon" 
-              name="more_vert" />            
-          </div> 
-          {this.state.openMenu && <RecordOptions recordId={id} />}                    
-        </div>         
+              name="down-arow" /> 
+          </div>
+
+          <div className="cell crud-options">
+            <div 
+              className="popup-trigger"
+              ref={el => this.popupTrigger = el}
+              onClick={e => this.openMenu(e)}>
+              <Icon   
+                className="more__icon" 
+                name="more_vert" />            
+            </div> 
+            {this.state.openMenu && <RecordOptions recordId={id} />}                    
+          </div>
+
+        </div>
+                          
       </StyledRecord>
     )
   }

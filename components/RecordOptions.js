@@ -4,8 +4,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setDialog } from '../actions'
 import Popup from './Popup'
 
-const StyledPopup = styled.ul`
+const StyledList = styled.ul`
+  padding: 0 .5rem;
   li {
+    line-height: 2.5;
     &:hover {
       cursor: pointer;
       text-decoration: underline;
@@ -22,11 +24,11 @@ const RecordOptions = ({recordId}) => {
 
   return (
     <Popup align="right" className="record-options">
-      <StyledPopup className="options">
+      <StyledList className="options">
         <li>Publish</li>        
         <li onClick={() => handleClick({action: 'update', id: recordId})}>Update</li>
         <li onClick={() => handleClick({action: 'delete', id: recordId})}>Delete</li>       
-      </StyledPopup>
+      </StyledList>
     </Popup>
   )
 }

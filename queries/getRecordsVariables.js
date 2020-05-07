@@ -6,10 +6,9 @@ const getRecordsVariables = queryParams => {
   const species = get(queryParams, 'species', null)
   const author = get(queryParams, 'author', null)
   const location = get(queryParams, 'location', null)
-  const date = get(queryParams, 'date', null)
-  const count = get(queryParams, 'count', null)
+  const sort = get(queryParams, 'sort', null)
 
-  const orderBy = date || count || 'date_DESC'
+  const orderBy = sort || 'date_DESC'
 
   const variables = {
     orderBy: orderBy,

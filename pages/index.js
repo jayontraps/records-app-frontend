@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { withRedux } from '../lib/redux'
 import { compose } from 'redux'
 import App from '../components/App'
-import Header from '../components/Header'
 import RecordsList from '../components/RecordsList'
 import FilterList from '../components/FilterList'
 import Pagination from '../components/Pagination'
@@ -14,6 +13,7 @@ import { useRouter } from 'next/router'
 import { withApollo } from '../lib/apollo'
 
 const StyledPage = styled.div`
+  max-width: 1080px;
   margin: 30px 0;
   .nav,
   .records-list {
@@ -21,12 +21,10 @@ const StyledPage = styled.div`
   }
 
   .nav {
-    display: flex;
-    justify-content: space-between;    
+  
   }
 
-  .btn-group {
-    width: 50%;
+  .btn-group {   
     display: flex;
     justify-content: flex-end;
     button {
@@ -45,10 +43,8 @@ const IndexPage = props => {
   const router = useRouter()
   return (
   <App>
-    <Header />  
     <StyledPage>
-      <div className="nav">
-        <Pagination queryParams={router.query} />
+      <div className="nav"> 
         <div className="btn-group">
           <div className="btn">
             <Modal buttonText="Create record">
