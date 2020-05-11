@@ -27,6 +27,7 @@ const ADD_RECORD = gql`
         description
         code
       }
+      images
       createdAt       
     }
   }

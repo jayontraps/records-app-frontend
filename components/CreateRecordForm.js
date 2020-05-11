@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import styled from 'styled-components'
 import { ADD_RECORD } from '../mutations'
 import { GET_USERS, GET_RECORDS, getRecordsVariables } from '../queries'
 import { useMutation } from '@apollo/react-hooks';
@@ -19,6 +20,20 @@ const hours = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "0
 
 const times = hours.map(time => ({ value: time, label: time }))
 
+const StyledImageUpload = styled.div`
+.progress-bar{
+  width: 200px;
+  position: relative;
+  height: 8px;
+  margin-top: 4px;
+}
+.progress-bar .progress{
+  height: 8px;
+  background-color: #ff0000;
+  width: 0;
+}
+`
+
 const CreateRecordForm = props => {  
   const [classification, setClassification] = useState(birdClassId);
   const [observer, setObserver] = useState({})
@@ -33,6 +48,7 @@ const CreateRecordForm = props => {
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
   const [showRequiredMsg, setShowRequiredMsg] = useState(false)
+  const [images, setImages] = useState([])
 
   const { queryParams, parentEl } = props
   const variables = getRecordsVariables(queryParams)
@@ -102,6 +118,41 @@ const CreateRecordForm = props => {
 
     return true    
   }
+  
+
+  async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  }
+
+
+  async function uploadFile(file) {
+    const data = new FormData()
+    data.append('file', file)    
+    data.append('upload_preset', 'records')
+    const res = await fetch('https://api.cloudinary.com/v1_1/dtceo0fjk/image/upload', {
+      method: 'POST',
+      body: data
+    })
+
+    const result = await res.json();
+    return result.secure_url  
+  }
+    
+
+  async function handleFiles(e) {    
+    e.preventDefault()
+    const files = Array.from(e.target.files)
+    await asyncForEach(files, async (file) => {    
+      const newImage = await uploadFile(file);   
+      if (newImage) {
+        setImages(images => [...images, newImage])
+      }      
+    });
+    
+  }
+
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -124,8 +175,8 @@ const CreateRecordForm = props => {
             id: observer.value
           }
         }
-      }      
-      
+      }
+                 
       const vars = {
         data: {
           status: "DRAFT",
@@ -145,7 +196,13 @@ const CreateRecordForm = props => {
           startTime: startTime,
           endTime: endTime,
           notes: notes,
-          count: count,
+          count: count
+        }
+      }
+
+      if (images.length) {
+        vars.data.images = {
+          set: images
         }
       }
 
@@ -261,12 +318,24 @@ const CreateRecordForm = props => {
             value={notes} 
             onChange={e => setNotes(e.target.value)} />
         </div>
+        <div className="field field__images">
+          <h3>Images</h3>
+            <StyledImageUpload> 
+              <div className="progress-bar" id="progress-bar">
+                <div className="progress" id="progress"></div>
+              </div>
+              <input type="file" id="fileElem" multiple accept="image/*" onChange={e => handleFiles(e)} />
+              <div id="gallery" />
+            </StyledImageUpload>         
+        </div> 
         <div className="field field__breeding">
           <ExpandPanel heading="Breeding Code">
             <BreedingOptions currentBreedingCode={breedingCode} changeHandler={e => setBreedingCode(e.target.value)} />
-          </ExpandPanel> 
-          
+          </ExpandPanel>           
         </div>
+
+
+
         <div className="field field__submit">
           <button 
             className="button__submit" 

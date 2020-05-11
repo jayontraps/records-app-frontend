@@ -29,6 +29,7 @@ const GET_RECORDS = gql`
         description
         code
       }
+      images
       createdAt    
     }
   }

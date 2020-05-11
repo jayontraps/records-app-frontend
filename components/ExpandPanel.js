@@ -48,8 +48,6 @@ const ExpandPanel = props => {
     setOpen(!open)
   }
 
-  console.log(open)
-
   const collapsedStatus = open ? 'open' : 'closed'
 
   return (

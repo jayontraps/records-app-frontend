@@ -18,11 +18,8 @@ const IndexPage = () => {
   return (
     <App>
       <Header />
-      <StyledPage>
-        <ExpandPanel heading="Breeding Code">
-          <BreedingOptions currentBreedingCode={''} changeHandler={e => {}} />
-        </ExpandPanel>
-        {/* <CreateRecordForm queryParams={router.query} /> */}
+      <StyledPage>        
+        <CreateRecordForm queryParams={router.query} />
       </StyledPage>
     </App>
   )
