@@ -19,7 +19,7 @@ const IndexPage = () => {
     <App>
       <Header />
       <StyledPage>        
-        <CreateRecordForm queryParams={router.query} />
+        <CreateRecordForm setOpen={() => {console.log('setOpen')}} queryParams={router.query} />
       </StyledPage>
     </App>
   )

@@ -15,11 +15,11 @@ const StyledExpandPanel = styled.div`
     }
 
     h3 {
-      margin: 0;
+      margin-bottom: 0 !important;
       line-height: 1em;
     }
-
   }
+  
   .expandpanel__icon {
 
   }

@@ -27,8 +27,14 @@ const ADD_RECORD = gql`
         description
         code
       }
-      images
-      createdAt       
+      images {
+        src
+      }
+      latlng {
+        lat 
+        lng
+      }
+      createdAt      
     }
   }
 `

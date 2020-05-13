@@ -10,29 +10,19 @@ import {
   LocationsOptions,
   SpeciesOptions,
   ObserverOptions,
-  BreedingOptions
+  BreedingOptions,
+  MapContainer,
+  ImageUploading
 } from './fields'
 import ExpandPanel from '../components/ExpandPanel'
+import Icon from '../components/Icon'
+import Spinner from '../components/Spinner'
 import StyledRecordsForm from './styles/StyledRecordsForm'
-import { birdClassId } from '../config'
+import { birdClassId, cloudinaryCloudName } from '../config'
 
 const hours = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"]
 
 const times = hours.map(time => ({ value: time, label: time }))
-
-const StyledImageUpload = styled.div`
-.progress-bar{
-  width: 200px;
-  position: relative;
-  height: 8px;
-  margin-top: 4px;
-}
-.progress-bar .progress{
-  height: 8px;
-  background-color: #ff0000;
-  width: 0;
-}
-`
 
 const CreateRecordForm = props => {  
   const [classification, setClassification] = useState(birdClassId);
@@ -49,7 +39,9 @@ const CreateRecordForm = props => {
   const [endTime, setEndTime] = useState(null)
   const [showRequiredMsg, setShowRequiredMsg] = useState(false)
   const [images, setImages] = useState([])
-
+  const [latlng, setLatlng] = useState(null)
+  const [uploading, setUploading] = useState(false)
+  
   const { queryParams, parentEl } = props
   const variables = getRecordsVariables(queryParams)
 
@@ -60,7 +52,6 @@ const CreateRecordForm = props => {
     ADD_RECORD,
     {
       update(cache, { data: { createRecord } }) {
-        console.log('createRecord: ', createRecord)
         const { records } = cache.readQuery({ 
           query: GET_RECORDS,
           variables: variables
@@ -136,21 +127,36 @@ const CreateRecordForm = props => {
       body: data
     })
 
-    const result = await res.json();
-    return result.secure_url  
+    const result = await res.json();    
+    return result  
   }
     
 
   async function handleFiles(e) {    
     e.preventDefault()
+    setUploading(true)
     const files = Array.from(e.target.files)
     await asyncForEach(files, async (file) => {    
       const newImage = await uploadFile(file);   
       if (newImage) {
         setImages(images => [...images, newImage])
       }      
-    });
-    
+    });    
+    setUploading(false)
+    console.log('Uploading done');
+  }
+
+  async function deleteImage(index) {     
+    const data = new FormData()    
+    data.append('token', images[index].delete_token)   
+    data.append('upload_preset', 'records')
+    const res = await fetch('https://api.cloudinary.com/v1_1/dtceo0fjk/image/delete_by_token', {
+      method: 'POST',
+      body: data
+    })
+    const result = await res.json(); 
+
+    return result
   }
 
 
@@ -199,10 +205,25 @@ const CreateRecordForm = props => {
           count: count
         }
       }
+      if (latlng) {
+        vars.data.latlng = {
+          create: {
+            ...latlng 
+          }
+        }
+      }
 
       if (images.length) {
+        const imgArr = images.map(img => img.secure_url)        
+        const createArr = []
+        imgArr.forEach(imgSrc => { 
+          createArr.push({
+            src: imgSrc,
+            author
+          })
+        })
         vars.data.images = {
-          set: images
+          create: createArr
         }
       }
 
@@ -215,13 +236,12 @@ const CreateRecordForm = props => {
         }
       }
 
-      console.log('vars: ', vars)
+      // console.log('vars: ', vars)
       addRecord({ variables: vars })
     } else {
       setShowRequiredMsg(true)
       parentEl.current.scrollTop = 0;
-    }
-       
+    }       
   }
   
   
@@ -286,6 +306,15 @@ const CreateRecordForm = props => {
             block
           />      
         </div>
+
+        <div className="field field__altlocation">
+          <ExpandPanel heading="Alternative Location">
+            <div className="altlocation">
+              <MapContainer setLatlng={setLatlng} />
+              </div>
+            </ExpandPanel>
+        </div>
+                        
         <div className="field field__starttime">
           <h3>Start time</h3>
           <Select 
@@ -318,23 +347,20 @@ const CreateRecordForm = props => {
             value={notes} 
             onChange={e => setNotes(e.target.value)} />
         </div>
-        <div className="field field__images">
-          <h3>Images</h3>
-            <StyledImageUpload> 
-              <div className="progress-bar" id="progress-bar">
-                <div className="progress" id="progress"></div>
-              </div>
-              <input type="file" id="fileElem" multiple accept="image/*" onChange={e => handleFiles(e)} />
-              <div id="gallery" />
-            </StyledImageUpload>         
+                      
+        <div className="field field__images">        
+          <ImageUploading 
+            images={images} 
+            uploading={uploading} 
+            handleFiles={handleFiles}
+            deleteImage={deleteImage} />       
         </div> 
+
         <div className="field field__breeding">
           <ExpandPanel heading="Breeding Code">
             <BreedingOptions currentBreedingCode={breedingCode} changeHandler={e => setBreedingCode(e.target.value)} />
           </ExpandPanel>           
         </div>
-
-
 
         <div className="field field__submit">
           <button 

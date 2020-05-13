@@ -12,6 +12,8 @@ const StyledRecordsForm = styled.form`
   .field__breeding { grid-area: breeding; }
   .field__notes { grid-area: notes; }
   .field__submit { grid-area: submit; }
+  .field__altlocation { grid-area: altlocation; }
+
   
   display: grid;
   grid-gap: 20px;
@@ -19,6 +21,7 @@ const StyledRecordsForm = styled.form`
   "classification classification"
   "species observer"
   "date location"
+  "altlocation altlocation"
   "starttime endtime"
   "count ..."
   "breeding breeding"
@@ -81,6 +84,12 @@ const StyledRecordsForm = styled.form`
     &:hover {
       cursor: pointer;
     }
+  }
+
+  .altlocation {
+    height: 600px;
+    width: 100%;
+    position: relative;
   }
 `;
 

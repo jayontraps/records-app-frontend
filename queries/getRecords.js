@@ -29,7 +29,13 @@ const GET_RECORDS = gql`
         description
         code
       }
-      images
+      images {
+        src
+      }
+      latlng {
+        lat 
+        lng
+      }
       createdAt    
     }
   }

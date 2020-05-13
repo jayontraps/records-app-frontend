@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
-const DELETE_RECORD = gql`
-  mutation deleteRecord($where: RecordWhereUniqueInput!) {
-    deleteRecord(where: $where) {
+const DELETE_IMAGE = gql`
+  mutation deleteImageFromCloudinary($public_id: String!) {
+    deleteImageFromCloudinary(public_id: $public_id) {
       id
       status
       author {
@@ -39,4 +39,4 @@ const DELETE_RECORD = gql`
   }
 `
 
-export default DELETE_RECORD
+export default DELETE_IMAGE
