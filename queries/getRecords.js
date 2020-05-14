@@ -12,8 +12,14 @@ const GET_RECORDS = gql`
         id
       }
       legacyObserver
-      species {
+      species {        
+        id
         name
+        rarity
+        classification {
+          name
+          id
+        }
       }
       location {
         site
