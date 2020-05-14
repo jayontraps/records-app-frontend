@@ -38,7 +38,6 @@ const LoadingList = () => (
 const RecordsList = props => {
   const { queryParams } = props
   const variables = getRecordsVariables(queryParams)  
-  
   const { loading, error, data } = useQuery(GET_RECORDS, {variables})
 
   if (error) return <ErrorMessage message="Error loading records." />

@@ -3,6 +3,7 @@ import { perPage } from '../config'
 
 const getRecordsVariables = queryParams => {
   const page = parseFloat(queryParams.page) || 1
+  const classification = get(queryParams, 'classification', null)
   const species = get(queryParams, 'species', null)
   const author = get(queryParams, 'author', null)
   const location = get(queryParams, 'location', null)
@@ -15,10 +16,24 @@ const getRecordsVariables = queryParams => {
     skip: page * perPage - perPage,
     where: {}
   }
-
+ 
   if (species) {    
     const newWhereInput = {...variables.where}
-    newWhereInput.species = { name: species }
+    newWhereInput.species = {
+      ...newWhereInput.species,
+      name: species 
+    }
+    variables.where = newWhereInput
+  }
+
+  if (classification) {    
+    const newWhereInput = {...variables.where}
+    newWhereInput.species = {
+      ...newWhereInput.species, 
+      classification: { 
+        name: classification 
+      }
+    }
     variables.where = newWhereInput
   }
 

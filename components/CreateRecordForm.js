@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
-import styled from 'styled-components'
-import { ADD_RECORD } from '../mutations'
+import { ADD_RECORD, DELETE_IMAGE } from '../mutations'
 import { GET_USERS, GET_RECORDS, getRecordsVariables } from '../queries'
 import { useMutation } from '@apollo/react-hooks';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import Select from 'react-select'
 import {
-  ClassesOptions,
+  ClassificationsOptions,
   LocationsOptions,
   SpeciesOptions,
   ObserverOptions,
@@ -15,17 +14,15 @@ import {
   ImageUploading
 } from './fields'
 import ExpandPanel from '../components/ExpandPanel'
-import Icon from '../components/Icon'
-import Spinner from '../components/Spinner'
 import StyledRecordsForm from './styles/StyledRecordsForm'
-import { birdClassId, cloudinaryCloudName } from '../config'
+import { birdClassId } from '../config'
 
 const hours = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"]
 
 const times = hours.map(time => ({ value: time, label: time }))
 
 const CreateRecordForm = props => {  
-  const [classification, setClassification] = useState(birdClassId);
+  const [classification, setClassification] = useState({value: birdClassId, label: "Birds" });
   const [observer, setObserver] = useState({})
   const [species, setSpecies] = useState('')
   const [location, setLocation] = useState('')
@@ -41,9 +38,12 @@ const CreateRecordForm = props => {
   const [images, setImages] = useState([])
   const [latlng, setLatlng] = useState(null)
   const [uploading, setUploading] = useState(false)
+  const [focused, setFocused] = useState(false)
   
   const { queryParams, parentEl } = props
   const variables = getRecordsVariables(queryParams)
+
+  const [deleteImageFromRecord] = useMutation(DELETE_IMAGE)
 
   const [
     addRecord,
@@ -85,8 +85,8 @@ const CreateRecordForm = props => {
     setDateTo(endDate)
   }
 
-  function onClassificationChange(e) {    
-    setClassification(e.target.value)
+  function onDateChange(date) {    
+    setDate(date)
   }
 
   function onStartTimeChange(newValue, metaAction) {
@@ -146,17 +146,12 @@ const CreateRecordForm = props => {
     console.log('Uploading done');
   }
 
-  async function deleteImage(index) {     
-    const data = new FormData()    
-    data.append('token', images[index].delete_token)   
-    data.append('upload_preset', 'records')
-    const res = await fetch('https://api.cloudinary.com/v1_1/dtceo0fjk/image/delete_by_token', {
-      method: 'POST',
-      body: data
-    })
-    const result = await res.json(); 
-
-    return result
+  async function deleteImage(index) {
+    const public_id = images[index].public_id 
+    deleteImageFromRecord({ variables: { public_id: public_id }})
+    let newImages = [...images]
+    newImages.splice(index, 1)    
+    setImages(newImages)
   }
 
 
@@ -251,9 +246,11 @@ const CreateRecordForm = props => {
         onSubmit={e => handleSubmit(e)}>
         <div className="field field__classification">
           <h3>Classification:</h3>         
-          <ClassesOptions 
-              currentClassificationId={classification} 
-              changeHandler={e => onClassificationChange(e)} />
+          <ClassificationsOptions 
+            placeholder="Class"
+            name="class"
+            value={classification} 
+            changeHandler={setClassification} />
         </div>            
         
         <div className="field field__species">
@@ -263,8 +260,7 @@ const CreateRecordForm = props => {
             {showRequiredMsg && !species && <span className="required">Required field</span>}
           </div>
          
-          <SpeciesOptions 
-            isClearable
+          <SpeciesOptions             
             placeholder="Species"
             name="species"
             speciesClass={classification} 
@@ -290,21 +286,16 @@ const CreateRecordForm = props => {
         </div>
         <div className="field field__date">
           <div className="field-status">
-            <h3>Dates</h3>
+            <h3>Date</h3>
             {showRequiredMsg && !date && <span className="required">Start date is required</span>}
           </div>
-          <DateRangePicker
-            startDate={date} // momentPropTypes.momentObj or null,
-            startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-            endDate={dateTo} // momentPropTypes.momentObj or null,
-            endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-            onDatesChange={onDatesChange} // PropTypes.func.isRequired,
-            focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-            onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
-            isOutsideRange={() => false}
-            showClearDates
-            block
-          />      
+          <SingleDatePicker
+            date={date} // momentPropTypes.momentObj or null
+            onDateChange={onDateChange} // PropTypes.func.isRequired
+            focused={focused} // PropTypes.bool
+            onFocusChange={({focused}) => setFocused(focused)} // PropTypes.func.isRequired,
+            id="your_unique_id" // PropTypes.string.isRequired,
+          />
         </div>
 
         <div className="field field__altlocation">
@@ -321,14 +312,7 @@ const CreateRecordForm = props => {
             isClearable
             onChange={onStartTimeChange} 
             options={times} />
-        </div>
-        <div className="field field__endtime">
-          <h3>End time</h3>
-          <Select 
-            isClearable
-            onChange={onEndTimeChange} 
-            options={times} />
-        </div>
+        </div>        
         <div className="field field__count">
           <h3><label htmlFor="count">Count</label></h3>             
           <input 
@@ -356,11 +340,13 @@ const CreateRecordForm = props => {
             deleteImage={deleteImage} />       
         </div> 
 
-        <div className="field field__breeding">
-          <ExpandPanel heading="Breeding Code">
-            <BreedingOptions currentBreedingCode={breedingCode} changeHandler={e => setBreedingCode(e.target.value)} />
-          </ExpandPanel>           
-        </div>
+        {classification && classification.label === "Birds" && 
+          <div className="field field__breeding">
+            <ExpandPanel heading="Breeding Code">
+              <BreedingOptions currentBreedingCode={breedingCode} changeHandler={e => setBreedingCode(e.target.value)} />
+            </ExpandPanel>           
+          </div>
+          }
 
         <div className="field field__submit">
           <button 

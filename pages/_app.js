@@ -15,6 +15,7 @@ const theme = {
     bodyLineHeight: '1.5em',
   },
   colors: {
+    focused: '#2684FF',
     active: '#22bad9',
     activeHover: '#12758C',
     primary: '#616161',

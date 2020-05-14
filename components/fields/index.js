@@ -1,4 +1,4 @@
-export {default as ClassesOptions} from './ClassesOptions'
+export {default as ClassificationsOptions} from './ClassificationsOptions'
 export {default as LocationsOptions} from './LocationsOptions'
 export {default as SpeciesOptions} from './SpeciesOptions'
 export {default as ObserverOptions} from './ObserverOptions'

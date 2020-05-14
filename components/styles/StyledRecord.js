@@ -72,6 +72,10 @@ const StyledRecord = styled.div`
     grid-area: gridref;
   }
 
+  .images {
+    grid-area: images;
+  }
+
   .popup-trigger {    
     &:hover {
       cursor: pointer;
@@ -97,6 +101,11 @@ const StyledRecord = styled.div`
       "notes notes notes notes 1fr";
       grid-template-columns: 1fr 1fr 1fr 50px 1fr;
     }      
+    &.fourth {
+      grid-template-areas:
+      "images images images images 1fr";
+      grid-template-columns: 1fr 1fr 1fr 50px 1fr;
+    }
   }
 
  
@@ -127,10 +136,11 @@ const StyledRecord = styled.div`
     font-size: ${props => props.theme.fonts.sizes.body};
     height: calc(${props => props.theme.fonts.bodyLineHeight} + 24.5px);    
   }
-
   
-
-  
+  .image-link {
+    display: inline-block;
+    margin-right: 1rem;
+  }
 
   .expandpanel__content {
     max-height: 0;

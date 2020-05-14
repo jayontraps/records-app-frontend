@@ -11,16 +11,22 @@ const SpeciesOptions = props => {
     placeholder, 
     name, 
     value } = props
+
+  let variables = {}
+
+  if (speciesClass) {
+    variables = { 
+      where: {
+        classification: { 
+          id: speciesClass.value
+        }
+      }
+    }
+  }   
+    
   const { loading, error, data } = useQuery(
     GET_SPECIES,
-    {
-      variables: { 
-        where: {
-          class: { 
-            id: speciesClass
-          }
-        }},
-    });
+    {variables});
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
   const species = data.specieses.map(species => ({

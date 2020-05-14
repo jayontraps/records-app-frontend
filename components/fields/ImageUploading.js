@@ -4,7 +4,7 @@ import Spinner from '../Spinner'
 import Icon from '../Icon'
 
 const StyledImageUploading = styled.div`
-.file {
+  .file {
     position: relative;
     display: inline-block;
     cursor: pointer;
@@ -21,7 +21,6 @@ const StyledImageUploading = styled.div`
     top: 0;
     right: 0;
     left: 0;
-    z-index: 5;
     height: 2.5rem;
     padding: .5rem 1rem;
     line-height: 1.5;
@@ -43,7 +42,6 @@ const StyledImageUploading = styled.div`
     top: -.075rem;
     right: -.075rem;
     bottom: -.075rem;
-    z-index: 6;
     display: block;
     content: "Browse";
     height: 2.5rem;
@@ -97,7 +95,7 @@ const ImageUploading = props => {
         <span className="file-custom" />
       </label>
       {uploading && <Spinner />}
-      {images && !uploading && <div id="gallery">
+      {images.length > 0 && !uploading && 
         <StyledImageList className="image-list">
           {images.map((img, index) => (
             <li key={`image-${index}`}>
@@ -109,7 +107,7 @@ const ImageUploading = props => {
             )
           )}
         </StyledImageList>
-    </div>}
+        }
     </StyledImageUploading>
   )
 }

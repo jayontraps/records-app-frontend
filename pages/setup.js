@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks';
 import { readString } from 'react-papaparse' 
+import { birdClassId } from '../config'
 
 const StyledPage = styled.div`
   margin: 30px 0;
@@ -163,15 +164,18 @@ S Ricks`
 
 // CLASSIFICATIONS
 const ADD_CLASSES = gql`
-  mutation addClasses($data: ClassCreateInput!) {
-  createClass(data: $data) {
+  mutation addClassification($data: ClassificationCreateInput!) {
+    createClassification(data: $data) {
     name
   }
 }
 `
-const classData = `Bird
-Insect
-Mammal`
+const classData = `Birds
+Insects
+Mammals
+Reptiles & Amphibia
+Butterflies
+Dragonflies & Damselflies`
 
 
 
@@ -251,7 +255,7 @@ const ADD_SPECIES = gql`
 mutation addSpecies($data: SpeciesCreateInput!) {
   createSpecies(data: $data) {
       name
-      class {
+      classification {
         name
       }
     }
@@ -267,12 +271,86 @@ mutation addSpecies($data: SpeciesCreateInput!) {
 //       }
 //     ]
 //   },
-//   class: {
+//   classification: {
 //     connect: {
-//       id: 'ck92znwwk1wa10933vy7q8810'
+//       id: birdClassId
 //     }
 //   }
 // }
+
+const reptiles = `Viviparous Lizard,,
+Grass Snake,,
+Adder,,
+Slow Worm,,
+Common Toad,,
+Common Frog,,
+Smooth Newt,,
+Palmate Newt,,
+Great Crested Newt,,`
+
+const mammals = `Western Hedgehog,,
+Northern Mole,,
+Common Shrew,,
+Pigmy Shrew,,
+Wood Shrew,,
+Lesser Horseshoe Bat,,
+Daubenton's Bat,,
+Whiskered Bat,,
+Natterer's Bat,,
+Noctule,,
+Serotine,,
+Common Pipistrelle,,
+Soprano Pipistrelle,,
+Common Long-eared Bat,,
+Rabbit,,
+Brown Hare,,
+Grey Squirrel,,
+Hazel Dormouse,,
+Bank Vole,,
+Field Vole,,
+Northern Water Vole,,
+Common Rat,,
+Wood Mouse,,
+Yellow-necked Mouse,,
+Harvest Mouse,,
+House Mouse,,
+Stoat,,
+Weasel,,
+Mink (American),,
+Badger,,
+Otter,,
+Fallow Deer,,
+Roe Deer,,
+Muntjac,,`
+
+const dragons = `Beautiful Demoiselle,,
+Banded Demoiselle,,
+Emerald Damselfly,,
+Large Red Damselfly,,
+White-legged Dameselfly,,
+Azure Damselfly,,
+Variable Damselfly,,
+Common Blue Damselfly,,
+Blue-tailed Damselfly,,
+Red-eyed Damselfly,,
+Small Red-eyed Damselfly,,
+Hairy Damselfly,,
+Common Hawker,,
+Migrant Hawker,,
+Southern Hawker,,
+Brown Hawker,,
+Emperor Dragonfly,,
+Lesser Emperor,,
+Common Club-tail,,
+Downy Emerald,,
+Four-spotted Chaser,,
+Broad-bodied Chaser,,
+Black-tailed Skimmer,,
+Black Darter,,
+Common Darter,,
+Ruddy Darter,,
+Red-veined Darter,,`
+
 
 const speciesData = `Red Throated Diver,5,ck9f93bsndz8m0940p3f3gv6c
 Black Throated Diver,5,ck9f93bsndz8m0940p3f3gv6c
@@ -486,14 +564,52 @@ Reed Bunting,1,ck9f938rmia6a0923e3ph7gjt
 Corn Bunting,5,ck9f93bsndz8m0940p3f3gv6c`
 
 
+const butterflies = `Small Blue,,
+Holly Blue,,
+Common Blue,,
+Brown Argus,,
+Green Hairstreak,,
+Purple Hairstreak,,
+Small Copper,,
+Comma,,
+Small Tortoiseshell,,
+Peacock,,
+Painted Lady,,
+Red Admiral,,
+White Admiral,,
+Purple Emperor,,
+Silver-washed Fritillary,,
+Pearl-bordered Fritillary,,
+Dark Green Fritillary,,
+Grayling,,
+Marbled White,,
+Gatekeeper,,
+Meadow Brown,,
+Ringlet,,
+Small Heath,,
+large Heath,,
+Speckled Wood,,
+Wall,,
+Brimstone,,
+Clouded Yellow,,
+Green-veined White,,
+Small White,,
+Large White,,
+Orange-tip,,
+Essex Skipper,,
+Small Skipper,,
+Dingy Skipper,,
+Large Skipper,,
+Grizzled Skipper,,`
 
 
-const results = readString(locationData)
+
+const results = readString(butterflies)
 console.log(results.data)
 
 function Add() {
   let input;
-  const [addRecord, { data }] = useMutation(ADD_LOCATION);
+  const [addRecord, { data }] = useMutation(ADD_SPECIES);
 
   const waitFor = (ms) => new Promise(r => setTimeout(r, ms));
 
@@ -513,9 +629,20 @@ function Add() {
               await waitFor(1000);              
               addRecord({ variables: { 
                 data: {
-                  siteCode: data[0],
-                  site: data[1],
-                  gridRef: data[2]     
+                  name: data[0],
+                  // rarity: data[1],    
+                  // status: {
+                  //   connect: [
+                  //     {
+                  //       id: data[2]
+                  //     }
+                  //   ]
+                  // },
+                  classification: {
+                    connect: {
+                      id: "cka6mq7hfex150918qtsvjkaw"
+                    }
+                  }
                 }
                } 
                });   

@@ -13,28 +13,22 @@ const StyledRecordsForm = styled.form`
   .field__notes { grid-area: notes; }
   .field__submit { grid-area: submit; }
   .field__altlocation { grid-area: altlocation; }
+  .field__images { grid-area: images }
 
-  
+  min-width: 740px;
   display: grid;
-  grid-gap: 20px;
+  grid-gap: 2rem;
   grid-template-areas: 
-  "classification classification"
-  "species observer"
-  "date location"
+  "classification species"  
+  "date starttime"
+  "location ..."
   "altlocation altlocation"
-  "starttime endtime"
-  "count ..."
-  "breeding breeding"
+  "count images"  
   "notes notes"
+  "observer ..."
+  "breeding breeding"
   "submit submit";
   grid-template-columns: 1fr 1fr;
-
-  .select__class {
-    display: flex;
-    label {
-      margin-right: 10px;
-    }    
-  }
 
   .field-status {
     display: flex;
@@ -51,7 +45,8 @@ const StyledRecordsForm = styled.form`
     }
   }
 
-  .input {    
+  .input {  
+    appearance: none;  
     border: 1px solid ${props => props.theme.colors.borderColor};
     border-radius: ${props => props.theme.borderRadius};
     font-size: .8rem;
@@ -62,6 +57,9 @@ const StyledRecordsForm = styled.form`
       display: block;
       width: 100%;
     }
+    &:focus {
+      border-color: ${props => props.theme.colors.focused};
+    }
   }
 
   .DateInput_input  {
@@ -69,11 +67,16 @@ const StyledRecordsForm = styled.form`
     font-size:  ${props => props.theme.fonts.sizes.body}; 
     font-family: ${props => props.theme.fonts.fontFamily};  
     color: ${props => props.theme.colors.primary};   
-    padding: 8px;
+    padding: .5rem 1rem;
+    min-height: 38px;
   }
 
   .CalendarDay__today_3 {
     background-color: #e4e7e7;
+  }
+
+  .SingleDatePickerInput__withBorder {
+    border-radius: ${props => props.theme.borderRadius};
   }
 
   .button__submit {

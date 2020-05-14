@@ -67,9 +67,9 @@ class Record extends Component {
       count,
       date,
       startTime,
-      endTime,
       notes,
-      breeding_code
+      breeding_code,
+      images = []
     } = record    
     const collapsedStatus = this.state.openPanel ? 'open' : 'closed'
     return (
@@ -93,6 +93,13 @@ class Record extends Component {
             </div>
             {notes && <div className="row third">
               <div className="cell notes">Notes: {notes}</div>
+            </div>}
+            {images.length > 0 && <div className="row fourth">
+              <div className="cell images">Images: {
+                images.map((img, index) => (
+                  <a className="image-link" key={`image-${index}`} href={img.src} target="_blank">{index + 1}</a>
+                ))
+              }</div>
             </div>}
           </div>
         </div>
