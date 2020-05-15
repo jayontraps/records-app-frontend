@@ -37,7 +37,10 @@ export default function Dialog(props) {
               <style jsx>{`
                 :global(body) {
                   overflow: hidden;
-                }                 
+                }      
+                .modal {                  
+                  max-height: 700px;                                              
+                }           
               `}</style>
               </StyledDialog>
           </ClientOnlyPortal>

@@ -14,10 +14,10 @@ const USERS_QUERY = gql`
 
 class CreatableSingle extends Component {
   handleChange = (newValue, actionMeta) => {
-    console.group('Value Changed');
-    console.log(newValue);
-    console.log(`action: ${actionMeta.action}`);
-    console.groupEnd();
+    // console.group('Value Changed');
+    // console.log(newValue);
+    // console.log(`action: ${actionMeta.action}`);
+    // console.groupEnd();
     this.props.changeHandler(newValue)
   };
   handleInputChange = (inputValue, actionMeta) => {
@@ -27,8 +27,10 @@ class CreatableSingle extends Component {
     // console.groupEnd();
   };
   render() {
+    const { value } = this.props
     return (
       <CreatableSelect
+        {...{value}}
         isClearable
         onChange={this.handleChange}
         onInputChange={this.handleInputChange}
@@ -40,7 +42,11 @@ class CreatableSingle extends Component {
 }
 
 const ObserverOptions = props => {
-  const { changeHandler, fieldName, name = 'author' } = props
+  const { 
+    changeHandler, 
+    fieldName, 
+    name = 'author',
+    value } = props
   const { loading, error, data } = useQuery(USERS_QUERY);
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
@@ -49,6 +55,7 @@ const ObserverOptions = props => {
     label: observer.name
   }))
   return <CreatableSingle 
+            {...{value}}
             {...{name}} 
             {...{fieldName}} 
             {...{changeHandler}} 

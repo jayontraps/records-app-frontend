@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { ADD_RECORD, DELETE_IMAGE } from '../mutations'
+import { ADD_RECORD, UPDATE_RECORD, DELETE_IMAGE } from '../mutations'
 import { GET_USERS, GET_RECORDS, getRecordsVariables } from '../queries'
 import { useMutation } from '@apollo/react-hooks';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import { useSelector, useDispatch } from 'react-redux'
+import moment from 'moment'
 import Select from 'react-select'
+import { setDialog } from '../actions'
 import {
   ClassificationsOptions,
   LocationsOptions,
@@ -15,28 +18,28 @@ import {
 } from './fields'
 import ExpandPanel from '../components/ExpandPanel'
 import StyledRecordsForm from './styles/StyledRecordsForm'
-import { birdClassId } from '../config'
+import { hours } from '../utils'
 
-const hours = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"]
 
 const times = hours.map(time => ({ value: time, label: time }))
+const DPCenterPoint = {lat: '51.447105', lng: '-0.876939'}
 
-const CreateRecordForm = props => {  
-  const [classification, setClassification] = useState({value: birdClassId, label: "Birds" });
-  const [observer, setObserver] = useState({})
-  const [species, setSpecies] = useState('')
-  const [location, setLocation] = useState('')
-  const [date, setDate] = useState(null)
-  const [dateTo, setDateTo] = useState(null)
-  const [count, setCount] = useState('0')
-  const [notes, setNotes] = useState('')
-  const [breedingCode, setBreedingCode] = useState('')
-  const [focusedInput, setFocusedInput] = useState(null)
-  const [startTime, setStartTime] = useState(null)
-  const [endTime, setEndTime] = useState(null)
+const CreateRecordForm = props => { 
+  const dispatch = useDispatch()
+  const { update, recordId }  = props
+
+  const [classification, setClassification] = useState(!!update ? update.classification : '');
+  const [observer, setObserver] = useState(!!update ? update.observer : '')
+  const [species, setSpecies] = useState(!!update ? update.species : '')
+  const [location, setLocation] = useState(!!update ? update.location : '')
+  const [date, setDate] = useState(!!update ? update.date : null)  
+  const [count, setCount] = useState(!!update ? update.count : '0')
+  const [notes, setNotes] = useState(!!update ? update.notes : '')
+  const [breedingCode, setBreedingCode] = useState(!!update ? update.breedingCode : '')
+  const [startTime, setStartTime] = useState(!!update ? update.startTime : null)  
+  const [images, setImages] = useState(!!update ? update.images : [])
+  const [latlng, setLatlng] = useState(!!update ? update.latlng : DPCenterPoint)
   const [showRequiredMsg, setShowRequiredMsg] = useState(false)
-  const [images, setImages] = useState([])
-  const [latlng, setLatlng] = useState(null)
   const [uploading, setUploading] = useState(false)
   const [focused, setFocused] = useState(false)
   
@@ -52,6 +55,7 @@ const CreateRecordForm = props => {
     ADD_RECORD,
     {
       update(cache, { data: { createRecord } }) {
+        console.log('createRecord: ', createRecord)
         const { records } = cache.readQuery({ 
           query: GET_RECORDS,
           variables: variables
@@ -64,41 +68,42 @@ const CreateRecordForm = props => {
         });
 
         const { users } = cache.readQuery({ 
-          query: GET_USERS,
-          // variables: variables
+          query: GET_USERS
         });
 
         cache.writeQuery({
-          query: GET_USERS,
-          // variables: variables,
+          query: GET_USERS,          
           data: { users: [createRecord.author, ...users] }
-        });
+        });        
       },
       onCompleted: () => {
         console.log('complete!');
         props.setOpen(false);
+        close();
       }
     })
 
-  function onDatesChange({ startDate, endDate }) {
-    setDate(startDate)
-    setDateTo(endDate)
-  }
+    const [updateRecord] = useMutation(
+      UPDATE_RECORD,
+      {
+        onCompleted: () => {
+          console.log('complete!');
+          props.setOpen(false);
+          close();
+        }
+      }) 
 
+  function close() {
+    dispatch(setDialog({ id: '', action: ''}))
+  }
   function onDateChange(date) {    
     setDate(date)
   }
 
   function onStartTimeChange(newValue, metaAction) {
     if (metaAction.action === 'select-option') {
-      setStartTime(newValue.value)
+      setStartTime(newValue)
     }      
-  }
-
-  function onEndTimeChange(newValue, metaAction) {
-    if (metaAction.action === 'select-option') {
-      setEndTime(newValue.value)
-    } 
   }
 
   function requiredFieldsComplete() {
@@ -110,13 +115,11 @@ const CreateRecordForm = props => {
     return true    
   }
   
-
   async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array);
     }
   }
-
 
   async function uploadFile(file) {
     const data = new FormData()
@@ -131,7 +134,6 @@ const CreateRecordForm = props => {
     return result  
   }
     
-
   async function handleFiles(e) {    
     e.preventDefault()
     setUploading(true)
@@ -139,7 +141,13 @@ const CreateRecordForm = props => {
     await asyncForEach(files, async (file) => {    
       const newImage = await uploadFile(file);   
       if (newImage) {
-        setImages(images => [...images, newImage])
+        // extract what we need 
+        const img = { 
+          src: newImage.secure_url, 
+          public_id: newImage.public_id,
+          original_filename: newImage.original_filename
+        }
+        setImages(images => [...images, img])
       }      
     });    
     setUploading(false)
@@ -154,11 +162,9 @@ const CreateRecordForm = props => {
     setImages(newImages)
   }
 
-
   function handleSubmit(event) {
     event.preventDefault();
     const formattedDate = date ? date.format() : null
-    const formattedDateTo = dateTo ? dateTo.format() : null
             
     // validate required fields
     if (requiredFieldsComplete()) {
@@ -192,10 +198,8 @@ const CreateRecordForm = props => {
               id: location.value
             }
           },
-          date: formattedDate,
-          dateTo: formattedDateTo,
-          startTime: startTime,
-          endTime: endTime,
+          date: formattedDate,          
+          startTime: startTime ? startTime.value : null,
           notes: notes,
           count: count
         }
@@ -208,12 +212,13 @@ const CreateRecordForm = props => {
         }
       }
 
-      if (images.length) {
-        const imgArr = images.map(img => img.secure_url)        
+      if (images.length) {     
         const createArr = []
-        imgArr.forEach(imgSrc => { 
+        images.forEach(img => { 
           createArr.push({
-            src: imgSrc,
+            src: img.src,
+            public_id: img.public_id,
+            original_filename: img.original_filename,
             author
           })
         })
@@ -230,15 +235,22 @@ const CreateRecordForm = props => {
           }
         }
       }
+      // add the RecordWhereUniqueInput when we are updating the record 
+      if (!!update) {
+        vars.where = {
+          id: recordId
+        }
+      }
+  
+      console.log('vars: ', vars)
 
-      // console.log('vars: ', vars)
-      addRecord({ variables: vars })
+      !!update ? updateRecord({ variables: vars }) : addRecord({ variables: vars })
+
     } else {
       setShowRequiredMsg(true)
       parentEl.current.scrollTop = 0;
     }       
   }
-  
   
   return (
       <StyledRecordsForm 
@@ -254,13 +266,12 @@ const CreateRecordForm = props => {
         </div>            
         
         <div className="field field__species">
-
           <div className="field-status">
             <h3>Species:</h3>
             {showRequiredMsg && !species && <span className="required">Required field</span>}
-          </div>
-         
-          <SpeciesOptions             
+          </div>         
+          <SpeciesOptions   
+            value={species}
             placeholder="Species"
             name="species"
             speciesClass={classification} 
@@ -273,35 +284,42 @@ const CreateRecordForm = props => {
             {(showRequiredMsg && !location) && <span className="required">Required field</span>}
           </div>
           <LocationsOptions 
+            value={location}
             isClearable 
             fieldName="location" 
             changeHandler={setLocation} />
         </div>
+
         <div className="field field__observer">
           <div className="field-status">
             <h3>Observer</h3>
             {showRequiredMsg && (observer === null || !observer.label) && <span className="required">Required field</span>}
           </div>
-          <ObserverOptions fieldName="observer" changeHandler={setObserver} />
+          <ObserverOptions 
+            value={observer}
+            fieldName="observer" 
+            changeHandler={setObserver} />
         </div>
+
         <div className="field field__date">
           <div className="field-status">
             <h3>Date</h3>
             {showRequiredMsg && !date && <span className="required">Start date is required</span>}
           </div>
           <SingleDatePicker
-            date={date} // momentPropTypes.momentObj or null
-            onDateChange={onDateChange} // PropTypes.func.isRequired
-            focused={focused} // PropTypes.bool
-            onFocusChange={({focused}) => setFocused(focused)} // PropTypes.func.isRequired,
-            id="your_unique_id" // PropTypes.string.isRequired,
+            displayFormat="DD MM YYYY"
+            date={date} 
+            onDateChange={onDateChange} 
+            focused={focused}
+            onFocusChange={({focused}) => setFocused(focused)} 
+            id="your_unique_id"
           />
         </div>
 
         <div className="field field__altlocation">
           <ExpandPanel heading="Alternative Location">
             <div className="altlocation">
-              <MapContainer setLatlng={setLatlng} />
+              <MapContainer setLatlng={setLatlng} initialMarker={latlng} />
               </div>
             </ExpandPanel>
         </div>
@@ -309,10 +327,12 @@ const CreateRecordForm = props => {
         <div className="field field__starttime">
           <h3>Start time</h3>
           <Select 
+            value={startTime}
             isClearable
             onChange={onStartTimeChange} 
             options={times} />
         </div>        
+
         <div className="field field__count">
           <h3><label htmlFor="count">Count</label></h3>             
           <input 
@@ -322,6 +342,7 @@ const CreateRecordForm = props => {
             value={count} 
             onChange={e => setCount(e.target.value)} />
         </div>
+        
         <div className="field field__notes">
           <h3>Notes</h3>
           <textarea

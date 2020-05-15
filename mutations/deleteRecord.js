@@ -20,6 +20,7 @@ const DELETE_RECORD = gql`
         }
       }
       location {
+        id
         site
         gridRef
       }
@@ -30,13 +31,18 @@ const DELETE_RECORD = gql`
       count
       notes
       breeding_code {
+        id
         description
         code
       }
       images {
+        id
         src
+        public_id
+        original_filename
       }
       latlng {
+        id
         lat 
         lng
       }

@@ -10,7 +10,7 @@ var centerPoint = {lat:  51.447105, lng: -0.876939};
 
 export class MapContainer extends Component {
   state = {
-    location: centerPoint
+    location: this.props.initialMarker
   }  
   
   addMarker = (location, map) => {
@@ -33,10 +33,7 @@ export class MapContainer extends Component {
           onClick={(t, map, c) => {
             this.addMarker(c.latLng, map)
           }}
-          initialCenter={{          
-          lat: 51.447105,
-          lng: -0.876939,          
-          }}          
+          initialCenter={this.state.location}          
         >   
         <Marker position={this.state.location} />
       </Map>

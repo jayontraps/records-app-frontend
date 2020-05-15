@@ -1,10 +1,8 @@
-
 import gql from 'graphql-tag'
-import {perPage} from '../config'
 
-const GET_RECORDS = gql`
-  query getRecords($where: RecordWhereInput, $orderBy: RecordOrderByInput, $skip: Int = 0, $first: Int = ${perPage}) {
-    records(where: $where, orderBy: $orderBy, skip: $skip, first: $first) {
+const UPDATE_RECORD = gql`
+  mutation updateRecord($data: RecordUpdateInput!, $where: RecordWhereUniqueInput!) {
+    updateRecord(data: $data, where: $where) {
       id
       status
       author {
@@ -15,7 +13,7 @@ const GET_RECORDS = gql`
       species {        
         id
         name
-        rarity
+        rarity        
         classification {
           name
           id
@@ -48,9 +46,9 @@ const GET_RECORDS = gql`
         lat 
         lng
       }
-      createdAt    
+      createdAt      
     }
   }
 `
 
-export default GET_RECORDS
+export default UPDATE_RECORD

@@ -1,10 +1,9 @@
 
 import gql from 'graphql-tag'
-import {perPage} from '../config'
 
-const GET_RECORDS = gql`
-  query getRecords($where: RecordWhereInput, $orderBy: RecordOrderByInput, $skip: Int = 0, $first: Int = ${perPage}) {
-    records(where: $where, orderBy: $orderBy, skip: $skip, first: $first) {
+const GET_RECORD = gql`
+  query getRecord($where: RecordWhereUniqueInput!) {
+    record(where: $where) {
       id
       status
       author {
@@ -53,4 +52,4 @@ const GET_RECORDS = gql`
   }
 `
 
-export default GET_RECORDS
+export default GET_RECORD

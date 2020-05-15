@@ -87,7 +87,7 @@ class Record extends Component {
           </div>
           <div className="expandpanel__content">
             <div className="row second">
-              <div className="cell times">Times: {startTime}</div> 
+              <div className="cell times">Time: {startTime}</div> 
               <div className="cell breeding_code">Breeding code: {breeding_code ? breeding_code.code : ''}</div> 
               <div className="cell gridref">Grid ref: {gridRef}</div>           
             </div>
@@ -97,7 +97,9 @@ class Record extends Component {
             {images.length > 0 && <div className="row fourth">
               <div className="cell images">Images: {
                 images.map((img, index) => (
-                  <a className="image-link" key={`image-${index}`} href={img.src} target="_blank">{index + 1}</a>
+                  <a className="image-link" key={`image-${index}`} href={img.src} target="_blank">                  
+                    {img.original_filename}
+                  </a>
                 ))
               }</div>
             </div>}

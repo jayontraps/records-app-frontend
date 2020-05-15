@@ -86,7 +86,7 @@ const StyledImageList = styled.ul`
 `
 
 const ImageUploading = props => {
-  const { images, uploading, handleFiles, deleteImage } = props
+  const { images = [], uploading, handleFiles, deleteImage } = props
   return (
     <StyledImageUploading>
       <h3>Images</h3>

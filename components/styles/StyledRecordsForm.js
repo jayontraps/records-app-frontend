@@ -15,7 +15,9 @@ const StyledRecordsForm = styled.form`
   .field__altlocation { grid-area: altlocation; }
   .field__images { grid-area: images }
 
+  min-height: 75vh; 
   min-width: 740px;
+  margin: 2rem 0;
   display: grid;
   grid-gap: 2rem;
   grid-template-areas: 
