@@ -27,26 +27,35 @@ const DPCenterPoint = {lat: '51.447105', lng: '-0.876939'}
 const CreateRecordForm = props => { 
   const dispatch = useDispatch()
   const { update, recordId }  = props
-
-  const [classification, setClassification] = useState(!!update ? update.classification : '');
-  const [observer, setObserver] = useState(!!update ? update.observer : '')
-  const [species, setSpecies] = useState(!!update ? update.species : '')
-  const [location, setLocation] = useState(!!update ? update.location : '')
-  const [date, setDate] = useState(!!update ? update.date : null)  
-  const [count, setCount] = useState(!!update ? update.count : '0')
-  const [notes, setNotes] = useState(!!update ? update.notes : '')
-  const [breedingCode, setBreedingCode] = useState(!!update ? update.breedingCode : '')
-  const [startTime, setStartTime] = useState(!!update ? update.startTime : null)  
-  const [images, setImages] = useState(!!update ? update.images : [])
-  const [latlng, setLatlng] = useState(!!update ? update.latlng : DPCenterPoint)
+  const isUpdate = !!update
+  const [classification, setClassification] = useState(isUpdate ? update.classification : '');
+  const [observer, setObserver] = useState(isUpdate ? update.observer : '')
+  const [species, setSpecies] = useState(isUpdate ? update.species : '')
+  const [location, setLocation] = useState(isUpdate ? update.location : '')
+  const [date, setDate] = useState(isUpdate ? update.date : null)  
+  const [count, setCount] = useState(isUpdate ? update.count : '0')
+  const [notes, setNotes] = useState(isUpdate ? update.notes : '')
+  const [breedingCode, setBreedingCode] = useState(isUpdate ? update.breedingCode : '')
+  const [startTime, setStartTime] = useState(isUpdate ? update.startTime : null)  
+  const [images, setImages] = useState(isUpdate ? update.images : [])
+  const [latlng, setLatlng] = useState(isUpdate ? update.latlng : DPCenterPoint)
   const [showRequiredMsg, setShowRequiredMsg] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [focused, setFocused] = useState(false)
   
   const { queryParams, parentEl } = props
   const variables = getRecordsVariables(queryParams)
-
-  const [deleteImageFromRecord] = useMutation(DELETE_IMAGE)
+  const submitButtonText = isUpdate ? 'Update' : 'Submit'
+  const [deleteImageFromRecord] = useMutation(
+    DELETE_IMAGE,
+    {
+      update(cache, { data: { deleteImageFromRecord: updatedRecord } }) {
+        console.log('updatedRecord: ', updatedRecord)                       
+      },
+      onCompleted: () => {
+        console.log('complete!');       
+      }
+    })
 
   const [
     addRecord,
@@ -212,9 +221,15 @@ const CreateRecordForm = props => {
         }
       }
 
-      if (images.length) {     
+      // images
+      if (isUpdate) {
+        console.log('update.images: ', update.images)
+        console.log('images: ', images)
+        const dedupedImages = images.filter(val => !update.images.includes(val));
+        console.log('dedupedImages: ', dedupedImages)
+
         const createArr = []
-        images.forEach(img => { 
+        dedupedImages.forEach(img => { 
           createArr.push({
             src: img.src,
             public_id: img.public_id,
@@ -225,7 +240,24 @@ const CreateRecordForm = props => {
         vars.data.images = {
           create: createArr
         }
+      } else {
+        if (images.length) {     
+          const createArr = []
+          images.forEach(img => { 
+            createArr.push({
+              src: img.src,
+              public_id: img.public_id,
+              original_filename: img.original_filename,
+              author
+            })
+          })
+          vars.data.images = {
+            create: createArr
+          }
+        }
       }
+
+      
 
       // add breeding code if available
       if (breedingCode) {
@@ -236,15 +268,15 @@ const CreateRecordForm = props => {
         }
       }
       // add the RecordWhereUniqueInput when we are updating the record 
-      if (!!update) {
+      if (isUpdate) {
         vars.where = {
           id: recordId
         }
       }
   
-      console.log('vars: ', vars)
+      // console.log('vars: ', vars)
 
-      !!update ? updateRecord({ variables: vars }) : addRecord({ variables: vars })
+      isUpdate ? updateRecord({ variables: vars }) : addRecord({ variables: vars })
 
     } else {
       setShowRequiredMsg(true)
@@ -372,7 +404,7 @@ const CreateRecordForm = props => {
         <div className="field field__submit">
           <button 
             className="button__submit" 
-            type="submit">{mutationLoading ? 'Submitting' : 'Submit'}</button>
+            type="submit">{mutationLoading ? 'Submitting' : submitButtonText}</button>
         </div>
       </StyledRecordsForm>
     )

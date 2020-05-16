@@ -24,9 +24,8 @@ const RecordOptions = ({recordId}) => {
 
   return (
     <Popup align="right" className="record-options">
-      <StyledList className="options">
-        <li>Publish</li>        
-        <li onClick={() => handleClick({action: 'update', id: recordId})}>Update</li>
+      <StyledList className="options">     
+        <li onClick={() => handleClick({action: 'update', id: recordId})}>Edit</li>
         <li onClick={() => handleClick({action: 'delete', id: recordId})}>Delete</li>       
       </StyledList>
     </Popup>
