@@ -8,7 +8,7 @@ import FilterList from '../components/FilterList'
 import Pagination from '../components/Pagination'
 import Modal from '../components/Modal'
 import Dialog from '../components/Dialog'
-import CreateRecordForm from '../components/CreateRecordForm'
+import RecordForm from '../components/RecordForm'
 import { useRouter } from 'next/router'
 import { withApollo } from '../lib/apollo'
 
@@ -48,7 +48,7 @@ const IndexPage = props => {
         <div className="btn-group">
           <div className="btn">
             <Modal buttonText="Create record">
-              <CreateRecordForm queryParams={router.query} />
+              <RecordForm queryParams={router.query} />
             </Modal>
           </div>          
         </div>              

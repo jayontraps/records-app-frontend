@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import App from '../components/App'
 import Header from '../components/Header'
-import CreateRecordForm from '../components/CreateRecordForm'
+import RecordForm from '../components/RecordForm'
 import ExpandPanel from '../components/ExpandPanel'
 import BreedingOptions from '../components/fields/BreedingOptions'
 import { withApollo } from '../lib/apollo'
@@ -19,7 +19,7 @@ const IndexPage = () => {
     <App>
       <Header />
       <StyledPage>        
-        <CreateRecordForm setOpen={() => {console.log('setOpen')}} queryParams={router.query} />
+        <RecordForm setOpen={() => {console.log('setOpen')}} queryParams={router.query} />
       </StyledPage>
     </App>
   )

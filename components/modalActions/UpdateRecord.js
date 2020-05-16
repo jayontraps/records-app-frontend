@@ -4,7 +4,7 @@ import moment from 'moment'
 import { GET_RECORD } from '../../queries'
 import { useQuery } from '@apollo/react-hooks'
 import { useSelector } from 'react-redux'
-import CreateRecordForm from '../CreateRecordForm'
+import RecordForm from '../RecordForm'
 import RecordOptions from '../RecordOptions'
 
 const UpdateRecord = props => {
@@ -82,7 +82,7 @@ if (RecordOptions.legacyObserver) {
 }
 
 return (
-    <CreateRecordForm setOpen={() => {}} recordId={recordId} update={update} queryParams={router.query} />
+    <RecordForm setOpen={() => {}} recordId={recordId} update={update} queryParams={router.query} />
   )
 }
 

@@ -24,7 +24,7 @@ import { hours } from '../utils'
 const times = hours.map(time => ({ value: time, label: time }))
 const DPCenterPoint = {lat: '51.447105', lng: '-0.876939'}
 
-const CreateRecordForm = props => { 
+const RecordForm = props => { 
   const dispatch = useDispatch()
   const { update, recordId }  = props
   const isUpdate = !!update
@@ -291,7 +291,7 @@ const CreateRecordForm = props => {
         <div className="field field__classification">
           <h3>Classification:</h3>         
           <ClassificationsOptions 
-            placeholder="Class"
+            placeholder="Select class"
             name="class"
             value={classification} 
             changeHandler={setClassification} />
@@ -304,7 +304,7 @@ const CreateRecordForm = props => {
           </div>         
           <SpeciesOptions   
             value={species}
-            placeholder="Species"
+            placeholder="Select species"
             name="species"
             speciesClass={classification} 
             changeHandler={setSpecies} />
@@ -316,6 +316,7 @@ const CreateRecordForm = props => {
             {(showRequiredMsg && !location) && <span className="required">Required field</span>}
           </div>
           <LocationsOptions 
+            placeholder="Select location"
             value={location}
             isClearable 
             fieldName="location" 
@@ -349,7 +350,7 @@ const CreateRecordForm = props => {
         </div>
 
         <div className="field field__altlocation">
-          <ExpandPanel heading="Alternative Location">
+          <ExpandPanel heading="Map marker">
             <div className="altlocation">
               <MapContainer setLatlng={setLatlng} initialMarker={latlng} />
               </div>
@@ -357,8 +358,9 @@ const CreateRecordForm = props => {
         </div>
                         
         <div className="field field__starttime">
-          <h3>Start time</h3>
+          <h3>Time</h3>
           <Select 
+            placeholder="Select time"
             value={startTime}
             isClearable
             onChange={onStartTimeChange} 
@@ -411,4 +413,4 @@ const CreateRecordForm = props => {
   }
 
 
-export default CreateRecordForm
+export default RecordForm
