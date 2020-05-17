@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const StyledSpinner = styled.div`       
+const StyledSpinner = styled.div`
   width: 50px;
   text-align: center;
   position: relative;
   display: flex;
   justify-content: space-between;
-  
+
   div {
     width: 12px;
     height: 12px;
@@ -26,20 +26,29 @@ const StyledSpinner = styled.div`
   .bounce2 {
     -webkit-animation-delay: -0.16s;
     animation-delay: -0.16s;
-  }   
-  
+  }
+
   @-webkit-keyframes sk-bouncedelay {
-    0%, 80%, 100% { -webkit-transform: scale(0) }
-    40% { -webkit-transform: scale(1.0) }
+    0%,
+    80%,
+    100% {
+      -webkit-transform: scale(0);
+    }
+    40% {
+      -webkit-transform: scale(1);
+    }
   }
 
   @keyframes sk-bouncedelay {
-    0%, 80%, 100% { 
+    0%,
+    80%,
+    100% {
       -webkit-transform: scale(0);
       transform: scale(0);
-    } 40% { 
-      -webkit-transform: scale(1.0);
-      transform: scale(1.0);
+    }
+    40% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
     }
   }
 `

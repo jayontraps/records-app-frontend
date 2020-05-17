@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const StyledRecordHeadings = styled.div`   
    
@@ -28,4 +28,4 @@ const StyledRecordHeadings = styled.div`
     padding: 0px; 
   `
 
-  export default StyledRecordHeadings
+export default StyledRecordHeadings

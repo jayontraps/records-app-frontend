@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { withRouter } from 'next/router'
-import styled from "styled-components"
+import styled from 'styled-components'
 
 const StyledHeader = styled.header`
   header {

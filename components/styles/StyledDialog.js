@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const StyledDialog = styled.div`
   :global(body) {
@@ -19,13 +19,13 @@ const StyledDialog = styled.div`
 
   .modal {
     min-width: 30vw;
-    max-width: 800px;                                  
-    overflow: auto;            
-    background-color: white; 
-    border-radius: 4px;               
-    padding: 30px; 
-    position: relative;    
-    
+    max-width: 800px;
+    overflow: auto;
+    background-color: white;
+    border-radius: 4px;
+    padding: 30px;
+    position: relative;
+
     .close-modal {
       &:hover {
         cursor: pointer;
@@ -35,18 +35,15 @@ const StyledDialog = styled.div`
         top: 10px;
         right: 10px;
         width: 1.2rem;
-        height: 1.2rem;   
-      }             
-    }           
+        height: 1.2rem;
+      }
+    }
   }
 
   h3 {
     font-size: 1rem;
     margin-bottom: 1rem;
   }
+`
 
-  
-
-`;
-
-export default StyledDialog;
+export default StyledDialog

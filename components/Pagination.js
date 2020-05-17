@@ -7,7 +7,6 @@ import ErrorMessage from './ErrorMessage'
 import { perPage } from '../config'
 import { getRecordsVariables } from '../queries'
 
-
 const PAGINATION_QUERY = gql`
   query PAGINATION_QUERY($where: RecordWhereInput) {
     recordsConnection(where: $where) {
@@ -24,7 +23,7 @@ const Loading = () => (
   </PaginationStyles>
 )
 
-const Pagination = props => { 
+const Pagination = props => {
   const { queryParams } = props
   const variables = getRecordsVariables(queryParams)
   const { loading, error, data } = useQuery(PAGINATION_QUERY, { variables })
@@ -32,35 +31,42 @@ const Pagination = props => {
   if (error) return <ErrorMessage message="Error loading records." />
   if (loading) return <Loading />
 
-  
   const page = parseFloat(queryParams.page) || 1
   const count = data.recordsConnection.aggregate.count
   const pages = Math.ceil(count / perPage)
 
   return (
     <PaginationStyles>
-    <Link       
-      href={{
-        pathname: '/',
-        query: { 
-          ...queryParams,
-          page: page - 1
-        }
-      }}>
-        <a aria-disabled={page <= 1} className="prev">prev</a>
+      <Link
+        href={{
+          pathname: '/',
+          query: {
+            ...queryParams,
+            page: page - 1
+          }
+        }}
+      >
+        <a aria-disabled={page <= 1} className="prev">
+          prev
+        </a>
       </Link>
-      <p>Page {page} of {pages}</p>
+      <p>
+        Page {page} of {pages}
+      </p>
       <p>{count} records total</p>
-    <Link       
-      href={{
-        pathname: '/',
-        query: { 
-          ...queryParams,
-          page: page + 1
-        }
-      }}>
-        <a aria-disabled={page >= pages} className="next">next</a>
-      </Link>      
+      <Link
+        href={{
+          pathname: '/',
+          query: {
+            ...queryParams,
+            page: page + 1
+          }
+        }}
+      >
+        <a aria-disabled={page >= pages} className="next">
+          next
+        </a>
+      </Link>
     </PaginationStyles>
   )
 }

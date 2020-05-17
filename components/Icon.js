@@ -5,15 +5,11 @@ const StyledIcon = styled.svg`
   fill: ${props => props.theme.icon.fill};
   height: ${props => props.theme.icon.height};
   width: ${props => props.theme.icon.width};
-  transition: all .2s ease-in-out;  
+  transition: all 0.2s ease-in-out;
 `
 
-const Icon = ({
-  className,
-  name,
-  onClick = () => { }
-}) => (
-  <StyledIcon {...{onClick} } className={`icon ${className}`}>
+const Icon = ({ className, name, onClick = () => {} }) => (
+  <StyledIcon {...{ onClick }} className={`icon ${className}`}>
     <use xlinkHref={`#icon-${name}`} />
   </StyledIcon>
 )

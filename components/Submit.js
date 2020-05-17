@@ -30,18 +30,18 @@ export default function Submit() {
       update: (proxy, { data: { createPost } }) => {
         const data = proxy.readQuery({
           query: ALL_POSTS_QUERY,
-          variables: allPostsQueryVars,
+          variables: allPostsQueryVars
         })
         // Update the cache with the new post at the top of the
         proxy.writeQuery({
           query: ALL_POSTS_QUERY,
           data: {
             ...data,
-            allPosts: [createPost, ...data.allPosts],
+            allPosts: [createPost, ...data.allPosts]
           },
-          variables: allPostsQueryVars,
+          variables: allPostsQueryVars
         })
-      },
+      }
     })
   }
 

@@ -18,32 +18,32 @@ export default function Dialog(props) {
   const Action = action ? Actions[action] : null
 
   function close() {
-    dispatch(setDialog({action: '', id: ''}))
+    dispatch(setDialog({ action: '', id: '' }))
   }
 
   return (
-    <React.Fragment>     
-      {id && (        
-          <ClientOnlyPortal selector="#modal">
-            <StyledDialog>
-              <div className="backdrop">
-                <div className="modal"> 
-                  <Action />                
-                  <div className="close-modal">
-                    <Icon name="close" onClick={close} />
-                  </div>                                    
+    <React.Fragment>
+      {id && (
+        <ClientOnlyPortal selector="#modal">
+          <StyledDialog>
+            <div className="backdrop">
+              <div className="modal">
+                <Action />
+                <div className="close-modal">
+                  <Icon name="close" onClick={close} />
                 </div>
               </div>
-              <style jsx>{`
-                :global(body) {
-                  overflow: hidden;
-                }      
-                .modal {                  
-                  max-height: 700px;                                              
-                }           
-              `}</style>
-              </StyledDialog>
-          </ClientOnlyPortal>
+            </div>
+            <style jsx>{`
+              :global(body) {
+                overflow: hidden;
+              }
+              .modal {
+                max-height: 700px;
+              }
+            `}</style>
+          </StyledDialog>
+        </ClientOnlyPortal>
       )}
     </React.Fragment>
   )

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const PaginationStyles = styled.div`
   min-height: 45px;
@@ -28,6 +28,6 @@ const PaginationStyles = styled.div`
     display: block;
     text-align: left;
   }
-`;
+`
 
-export default PaginationStyles;
+export default PaginationStyles

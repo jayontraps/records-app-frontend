@@ -4,8 +4,6 @@ import React, { Fragment } from 'react'
 export default ({ children }) => (
   <Fragment>
     <GlobalStyle />
-    <main>
-      {children}  
-    </main>
+    <main>{children}</main>
   </Fragment>
 )

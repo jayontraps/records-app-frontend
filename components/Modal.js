@@ -7,7 +7,7 @@ export default function Modal(props) {
   const { children, buttonText = 'Open Modal' } = props
   const [open, setOpen] = useState()
   const modalEl = useRef(null)
-  
+
   return (
     <React.Fragment>
       <button type="button" onClick={event => setOpen(true)}>
@@ -17,29 +17,31 @@ export default function Modal(props) {
         <ClientOnlyPortal selector="#modal">
           <StyledDialog>
             <div className="backdrop">
-              <div ref={modalEl} className="modal">              
-                
-                {React.cloneElement(children, { 
+              <div ref={modalEl} className="modal">
+                {React.cloneElement(children, {
                   parentEl: modalEl,
                   setOpen: setOpen
                 })}
 
                 <div className="close-modal">
-                  <Icon className="icon" name="close" onClick={event => setOpen(false)} />
+                  <Icon
+                    className="icon"
+                    name="close"
+                    onClick={event => setOpen(false)}
+                  />
                 </div>
-              </div>                          
+              </div>
             </div>
             <style jsx>{`
-                :global(body) {
-                  overflow: hidden;
-                }
-                
-                .modal {
-                  height: 75vh;
-                  max-height: 700px;                                               
-                }
-                
-              `}</style>
+              :global(body) {
+                overflow: hidden;
+              }
+
+              .modal {
+                height: 75vh;
+                max-height: 700px;
+              }
+            `}</style>
           </StyledDialog>
         </ClientOnlyPortal>
       )}

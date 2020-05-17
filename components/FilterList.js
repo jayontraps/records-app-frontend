@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react'
+import React, { Fragment, useState } from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import SpeciesOptions from './fields/SpeciesOptions'
@@ -8,7 +8,6 @@ import SortOptions from './fields/SortOptions'
 import ClassificationsOptions from './fields/ClassificationsOptions'
 
 const StyledFilterList = styled.div`
-
   .classifications {
     grid-area: classifications;
   }
@@ -32,12 +31,12 @@ const StyledFilterList = styled.div`
     justify-content: flex-end;
   }
 
-  .filter-list, 
+  .filter-list,
   .sort-list {
     margin-bottom: 1rem;
     h3 {
       font-size: 1rem;
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
   }
 
@@ -45,7 +44,7 @@ const StyledFilterList = styled.div`
     .options {
       display: grid;
       grid-gap: 20px;
-      grid-template-areas: "classifications species location observer";      
+      grid-template-areas: 'classifications species location observer';
       grid-template-columns: 1fr 1fr 1fr 1fr;
     }
   }
@@ -54,61 +53,60 @@ const StyledFilterList = styled.div`
     .options {
       display: grid;
       grid-gap: 20px;
-      grid-template-areas: "sorting sorting ... clear-filters";      
+      grid-template-areas: 'sorting sorting ... clear-filters';
       grid-template-columns: 1fr 1fr 1fr 1fr;
     }
   }
-
-
-
-  
 `
 
-
-const FilterList = props => {  
+const FilterList = props => {
   const router = useRouter()
   const [sortValue, setSortValue] = useState(null)
   const [classification, setClassification] = useState(
-    props.queryParams.classification 
-    ? { value: '', label: props.queryParams.classification } 
-    : null)
+    props.queryParams.classification
+      ? { value: '', label: props.queryParams.classification }
+      : null
+  )
 
   const [species, setSpecies] = useState(
-    props.queryParams.species 
-    ? { value: '', label: props.queryParams.species } 
-    : null)
+    props.queryParams.species
+      ? { value: '', label: props.queryParams.species }
+      : null
+  )
 
   const [author, setAuthor] = useState(
-      props.queryParams.author 
-      ? { value: '', label: props.queryParams.author } 
-      : null)
+    props.queryParams.author
+      ? { value: '', label: props.queryParams.author }
+      : null
+  )
 
   const [location, setLocation] = useState(
-    props.queryParams.location 
-    ? { value: '', label: props.queryParams.location } 
-    : null)
-  
+    props.queryParams.location
+      ? { value: '', label: props.queryParams.location }
+      : null
+  )
+
   function handleSelectChange(newValue, actionMeta) {
-    const newParams = {...router.query}
-    if (actionMeta.action === 'clear') {            
-      delete newParams[actionMeta.name]   
+    const newParams = { ...router.query }
+    if (actionMeta.action === 'clear') {
+      delete newParams[actionMeta.name]
       if (actionMeta.name === 'classification') setClassification(null)
       if (actionMeta.name === 'species') setSpecies(null)
       if (actionMeta.name === 'author') setAuthor(null)
       if (actionMeta.name === 'location') setLocation(null)
       if (actionMeta.name === 'sort') setSortValue(null)
-    } else {     
+    } else {
       // species
       if (actionMeta.name === 'species') setSpecies(newValue)
       // author
       if (actionMeta.name === 'author') setAuthor(newValue)
       // location
-      if (actionMeta.name === 'location') setLocation(newValue)            
+      if (actionMeta.name === 'location') setLocation(newValue)
       // sorting
       if (actionMeta.name === 'sort') setSortValue(newValue)
-       // classification
-       if (actionMeta.name === 'classification') {
-        // changing the classification should reset the species        
+      // classification
+      if (actionMeta.name === 'classification') {
+        // changing the classification should reset the species
         delete newParams.species
         setSpecies(null)
         setClassification(newValue)
@@ -116,10 +114,9 @@ const FilterList = props => {
 
       // use the label to create readable query strings except for sorting options
       const value = actionMeta.name === 'sort' ? newValue.value : newValue.label
-    
-      newParams[actionMeta.name] = value       
-    }
 
+      newParams[actionMeta.name] = value
+    }
 
     // reset to page 1
     delete newParams.page
@@ -127,10 +124,10 @@ const FilterList = props => {
     router.push({
       pathname: router.pathname,
       query: newParams
-    })  
+    })
   }
 
-  function clearFilters() {   
+  function clearFilters() {
     setClassification(null)
     setSpecies(null)
     setAuthor(null)
@@ -140,49 +137,50 @@ const FilterList = props => {
       pathname: router.pathname
     })
   }
-  
+
   const HeadingRow = () => (
     <Fragment>
       <div className="filter-options">
         <h4>Filter-by:</h4>
-        </div>
+      </div>
       <div className="order-by-options">
         <h4>Order-by:</h4>
-      </div>      
-            
-    </Fragment>      
+      </div>
+    </Fragment>
   )
 
-
   return (
-    <StyledFilterList>      
+    <StyledFilterList>
       <div className="filter-list">
         <h3>Filter by</h3>
         <div className="options">
           <div className="classifications">
-            <ClassificationsOptions 
-              isClearable={true}  
+            <ClassificationsOptions
+              isClearable={true}
               placeholder="Class"
               name="classification"
               value={classification}
-              changeHandler={handleSelectChange} />
+              changeHandler={handleSelectChange}
+            />
           </div>
           <div className="species">
-            <SpeciesOptions 
+            <SpeciesOptions
               isClearable={true}
               placeholder="Species"
               name="species"
               value={species}
-              speciesClass={classification} 
-              changeHandler={handleSelectChange} />
-          </div>      
+              speciesClass={classification}
+              changeHandler={handleSelectChange}
+            />
+          </div>
           <div className="observer">
             <UserOptions
               isClearable={true}
               placeholder="Observer"
               name="author"
               value={author}
-              changeHandler={handleSelectChange} />
+              changeHandler={handleSelectChange}
+            />
           </div>
           <div className="location">
             <LocationsOptions
@@ -190,9 +188,10 @@ const FilterList = props => {
               placeholder="Location"
               name="location"
               value={location}
-              changeHandler={handleSelectChange} />
-          </div>     
-        </div>                      
+              changeHandler={handleSelectChange}
+            />
+          </div>
+        </div>
       </div>
 
       <div className="sort-list">
@@ -204,14 +203,14 @@ const FilterList = props => {
               isClearable={true}
               placeholder="Sort by"
               name="sort"
-              changeHandler={handleSelectChange} />
+              changeHandler={handleSelectChange}
+            />
           </div>
           <div className="clear-filters">
             <button onClick={() => clearFilters()}>Clear filters</button>
           </div>
-          </div>
+        </div>
       </div>
-
     </StyledFilterList>
   )
 }

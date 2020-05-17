@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Icon from './Icon'
 
@@ -19,16 +19,15 @@ const StyledExpandPanel = styled.div`
       line-height: 1em;
     }
   }
-  
-  .expandpanel__icon {
 
+  .expandpanel__icon {
   }
 
   .expandpanel__content {
     margin: 0 1rem;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.35s ease-out;   
+    transition: max-height 0.35s ease-out;
   }
 
   &.open {
@@ -42,8 +41,8 @@ const StyledExpandPanel = styled.div`
 const ExpandPanel = props => {
   const { children, heading } = props
   const [open, setOpen] = useState(false)
-  
-  function expand(e) {    
+
+  function expand(e) {
     e.preventDefault()
     setOpen(!open)
   }
@@ -52,13 +51,16 @@ const ExpandPanel = props => {
 
   return (
     <StyledExpandPanel className={`expandpanel ${collapsedStatus}`}>
-      <div onClick={e => {expand(e)}} className="expandpanel__header">
+      <div
+        onClick={e => {
+          expand(e)
+        }}
+        className="expandpanel__header"
+      >
         <h3>{heading}</h3>
         <Icon className="expandpanel__icon" name="down-arow" />
       </div>
-      <div className={`expandpanel__content`}>
-        {children}
-      </div>     
+      <div className={`expandpanel__content`}>{children}</div>
     </StyledExpandPanel>
   )
 }
