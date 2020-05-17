@@ -346,6 +346,8 @@ const RecordForm = props => {
             focused={focused}
             onFocusChange={({focused}) => setFocused(focused)} 
             id="your_unique_id"
+            isOutsideRange={() => false}
+            numberOfMonths={1}
           />
         </div>
 

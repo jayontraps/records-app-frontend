@@ -1,0 +1,10 @@
+# Ignore everything:
+/*
+
+# Except...
+!/components
+!/mutations
+!/queries
+!/utils
+!/pages
+

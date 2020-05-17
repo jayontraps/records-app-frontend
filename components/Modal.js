@@ -7,7 +7,7 @@ export default function Modal(props) {
   const { children, buttonText = 'Open Modal' } = props
   const [open, setOpen] = useState()
   const modalEl = useRef(null)
-
+  
   return (
     <React.Fragment>
       <button type="button" onClick={event => setOpen(true)}>
