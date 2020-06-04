@@ -1,23 +1,21 @@
 import App from '../components/App'
-import Header from '../components/Header'
 import { withApollo } from '../lib/apollo'
 import styled from 'styled-components'
 import gql from 'graphql-tag'
-import { useMutation } from '@apollo/react-hooks';
-import { readString } from 'react-papaparse' 
+import { useMutation } from '@apollo/react-hooks'
+import { readString } from 'react-papaparse'
 import { birdClassId } from '../config'
 
 const StyledPage = styled.div`
   margin: 30px 0;
 `
 
-
 // LOCATIONS
 const ADD_LOCATION = gql`
   mutation createLocation($data: LocationCreateInput!) {
     createLocation(data: $data) {
       site
-    }  
+    }
   }
 `
 
@@ -34,16 +32,15 @@ DP,Dinton Pastures,47811724`
 // data: {
 //   siteCode: data[0],
 //   site: data[1],
-//   gridRef: data[1]     
+//   gridRef: data[1]
 // }
-
 
 // USERS
 const ADD_USERS = gql`
   mutation createUser($data: UserCreateInput!) {
     createUser(data: $data) {
       name
-    }  
+    }
   }
 `
 
@@ -155,20 +152,13 @@ J Sandell
 R Gilham
 S Ricks`
 
-
-
-
-
-
-
-
 // CLASSIFICATIONS
 const ADD_CLASSES = gql`
   mutation addClassification($data: ClassificationCreateInput!) {
     createClassification(data: $data) {
-    name
+      name
+    }
   }
-}
 `
 const classData = `Birds
 Insects
@@ -177,26 +167,20 @@ Reptiles & Amphibia
 Butterflies
 Dragonflies & Damselflies`
 
-
-
-
-
-
-
 // BREEDING CODES
 const ADD_BRREDINGCODE = gql`
   mutation addBreedingCode($data: BreedingCodeCreateInput!) {
     createBreedingCode(data: $data) {
       code
+    }
   }
-}
 `
 // data: {
 //   code: ,
 //   group: ,
-//   description:     
+//   description:
 // }
-  
+
 const breedingData = `H,Possible,Species observed in breeding season in suitable nesting Habitat
 S,Possible,Singing male present (or breeding calls heard) in breeding season in suitable breeding habitat
 P,Probable,Pair observed in suitable nesting habitat in breeding season
@@ -217,12 +201,6 @@ F,Non breeding,Flying over
 M,Non breeding,Species observed but suspected to be still on Migration
 U,Non breeding,Species observed but suspected to be sUmmering non-breeder`
 
-
-
-
-
-
-
 // SPECIES STATUS
 const statusData = `R,Resident and breeds
 S,Summer breeder
@@ -236,24 +214,18 @@ const ADD_SPECIES_STATUS = gql`
   mutation addSpeciesStatus($data: SpeciesStatusCreateInput!) {
     createSpeciesStatus(data: $data) {
       code
+    }
   }
-}
 `
 // data: {
 //   code: ,
-//   description:     
+//   description:
 // }
-
-
-
-
-
-
 
 // SPECIES
 const ADD_SPECIES = gql`
-mutation addSpecies($data: SpeciesCreateInput!) {
-  createSpecies(data: $data) {
+  mutation addSpecies($data: SpeciesCreateInput!) {
+    createSpecies(data: $data) {
       name
       classification {
         name
@@ -263,7 +235,7 @@ mutation addSpecies($data: SpeciesCreateInput!) {
 `
 // data: {
 //   name: data[0],
-//   rarity: data[1],    
+//   rarity: data[1],
 //   status: {
 //     connect: [
 //       {
@@ -350,7 +322,6 @@ Black Darter,,
 Common Darter,,
 Ruddy Darter,,
 Red-veined Darter,,`
-
 
 const speciesData = `Red Throated Diver,5,ck9f93bsndz8m0940p3f3gv6c
 Black Throated Diver,5,ck9f93bsndz8m0940p3f3gv6c
@@ -563,7 +534,6 @@ Yellowhammer,5,ck9f93bsndz8m0940p3f3gv6c
 Reed Bunting,1,ck9f938rmia6a0923e3ph7gjt
 Corn Bunting,5,ck9f93bsndz8m0940p3f3gv6c`
 
-
 const butterflies = `Small Blue,,
 Holly Blue,,
 Common Blue,,
@@ -602,20 +572,18 @@ Dingy Skipper,,
 Large Skipper,,
 Grizzled Skipper,,`
 
-
-
 const results = readString(butterflies)
 console.log(results.data)
 
 function Add() {
-  let input;
-  const [addRecord, { data }] = useMutation(ADD_SPECIES);
+  let input
+  const [addRecord, { data }] = useMutation(ADD_SPECIES)
 
-  const waitFor = (ms) => new Promise(r => setTimeout(r, ms));
+  const waitFor = ms => new Promise(r => setTimeout(r, ms))
 
   async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
-      await callback(array[index], index, array);
+      await callback(array[index], index, array)
     }
   }
 
@@ -623,49 +591,48 @@ function Add() {
     <div>
       <form
         onSubmit={e => {
-          e.preventDefault();                    
+          e.preventDefault()
           const start = async () => {
-            await asyncForEach(results.data, async (data) => {
-              await waitFor(1000);              
-              addRecord({ variables: { 
-                data: {
-                  name: data[0],
-                  // rarity: data[1],    
-                  // status: {
-                  //   connect: [
-                  //     {
-                  //       id: data[2]
-                  //     }
-                  //   ]
-                  // },
-                  classification: {
-                    connect: {
-                      id: "cka6mq7hfex150918qtsvjkaw"
+            await asyncForEach(results.data, async data => {
+              await waitFor(1000)
+              addRecord({
+                variables: {
+                  data: {
+                    name: data[0],
+                    // rarity: data[1],
+                    // status: {
+                    //   connect: [
+                    //     {
+                    //       id: data[2]
+                    //     }
+                    //   ]
+                    // },
+                    classification: {
+                      connect: {
+                        id: 'cka6mq7hfex150918qtsvjkaw'
+                      }
                     }
                   }
                 }
-               } 
-               });   
-               console.log('Complete: ', data[0])                       
-            });
-            console.log('Done');
+              })
+              console.log('Complete: ', data[0])
+            })
+            console.log('Done')
           }
 
-          start();          
+          start()
         }}
       >
-        
         <button type="submit">Add Todo</button>
       </form>
     </div>
-  );
+  )
 }
 
 const IndexPage = () => (
   <App>
-    <Header />
     <StyledPage>
-      <Add />     
+      <Add />
     </StyledPage>
   </App>
 )

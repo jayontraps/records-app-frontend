@@ -3,9 +3,10 @@ import { withRouter } from 'next/router'
 import styled from 'styled-components'
 
 const StyledHeader = styled.header`
-  header {
-    margin-bottom: 25px;
-  }
+  max-width: ${props => props.theme.maxWidth};
+  margin: 0 auto;
+  padding: 1rem;
+
   a {
     font-size: 14px;
     margin-right: 15px;
@@ -21,17 +22,12 @@ const Header = ({ router: { pathname } }) => (
     <Link href="/">
       <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
     </Link>
-    {/*    
     <Link href="/create">
-      <a className={pathname === '/create' ? 'is-active' : ''}>Create</a>
+      <a className={pathname === '/create' ? 'is-active' : ''}>Create Record</a>
     </Link>
-    <Link href="/setup">
-      <a className={pathname === '/setup' ? 'is-active' : ''}>setup</a>
+    <Link href="/signup">
+      <a className={pathname === '/signup' ? 'is-active' : ''}>Log in</a>
     </Link>
-    <Link href="/records">
-      <a className={pathname === '/records' ? 'is-active' : ''}>records</a>
-    </Link> 
-    */}
   </StyledHeader>
 )
 

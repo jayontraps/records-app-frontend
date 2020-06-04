@@ -1,8 +1,9 @@
 import App from 'next/app'
 import React from 'react'
+import Page from '../components/Page'
 import { ThemeProvider } from 'styled-components'
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
+import 'react-dates/initialize'
+import 'react-dates/lib/css/_datepicker.css'
 
 const theme = {
   fonts: {
@@ -12,7 +13,7 @@ const theme = {
     sizes: {
       body: '13px'
     },
-    bodyLineHeight: '1.5em',
+    bodyLineHeight: '1.5em'
   },
   colors: {
     focused: '#2684FF',
@@ -28,12 +29,13 @@ const theme = {
       vertical: '.75rem'
     }
   },
-  borderRadius: '4px'  ,
+  borderRadius: '4px',
   icon: {
     width: '1rem',
     height: '1rem',
     fill: '#616161'
-  }
+  },
+  maxWidth: '1200px'
 }
 
 export default class MyApp extends App {
@@ -41,7 +43,9 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props
     return (
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <Page>
+          <Component {...pageProps} />
+        </Page>
       </ThemeProvider>
     )
   }

@@ -61,7 +61,6 @@ const GlobalStyle = createGlobalStyle`
     font-size: ${props => props.theme.fonts.sizes.body};
     line-height: ${props => props.theme.fonts.bodyLineHeight};
     margin: 0;
-    padding: 25px 50px;
   }
   a {
     color: ${props => props.theme.colors.active};
