@@ -5,6 +5,7 @@ import { withApollo } from '../lib/apollo'
 import { withRedux } from '../lib/redux'
 import App from '../components/App'
 import RecordForm from '../components/RecordForm'
+import Header from '../components/Header'
 
 const StyledPage = styled.div`
   margin: 30px 0;
@@ -15,6 +16,7 @@ const IndexPage = () => {
   return (
     <App>
       <StyledPage>
+        <Header />
         <RecordForm
           setOpen={() => {
             console.log('setOpen')

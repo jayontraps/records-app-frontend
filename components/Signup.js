@@ -17,7 +17,6 @@ const Signup = props => {
   async function submit(e) {
     e.preventDefault()
     const res = await signup({ variables: { email, name, password } })
-    console.log(res)
     setName('')
     setEmail('')
     setPassword('')

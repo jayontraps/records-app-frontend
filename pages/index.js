@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import { withRedux } from '../lib/redux'
 import { compose } from 'redux'
 import App from '../components/App'
@@ -11,55 +10,29 @@ import Dialog from '../components/Dialog'
 import RecordForm from '../components/RecordForm'
 import { useRouter } from 'next/router'
 import { withApollo } from '../lib/apollo'
-
-const StyledPage = styled.div`
-  max-width: 1080px;
-  margin: 30px 0;
-  .nav,
-  .records-list {
-    margin-bottom: 20px;
-  }
-
-  .nav {
-  
-  }
-
-  .btn-group {   
-    display: flex;
-    justify-content: flex-end;
-    button {
-     background-color: ${props => props.theme.colors.active};
-     border-color: ${props => props.theme.colors.active};
-     color: white;
-     &:hover {
-      background-color: ${props => props.theme.colors.activeHover};
-      border-color: ${props => props.theme.colors.activeHover};
-     }
-    }
-  }
-`
+import Header from '../components/Header'
 
 const IndexPage = props => {
   const router = useRouter()
   return (
-  <App>
-    <StyledPage>
-      <div className="nav"> 
+    <App>
+      <Header />
+      <div className="nav">
         <div className="btn-group">
           <div className="btn">
             <Modal buttonText="Create record">
               <RecordForm queryParams={router.query} />
             </Modal>
-          </div>          
-        </div>              
-      </div>    
+          </div>
+        </div>
+      </div>
       <FilterList queryParams={router.query} />
       <RecordsList queryParams={router.query} />
-      <Pagination  queryParams={router.query} />     
-    </StyledPage>
-    <Dialog />
-  </App>
-)}
+      <Pagination queryParams={router.query} />
+      <Dialog />
+    </App>
+  )
+}
 
 export default compose(withApollo({ ssr: true }), withRedux)(IndexPage)
 

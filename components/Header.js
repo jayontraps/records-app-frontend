@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { withRouter } from 'next/router'
 import styled from 'styled-components'
+import User from './User'
 
 const StyledHeader = styled.header`
   max-width: ${props => props.theme.maxWidth};
@@ -28,6 +29,11 @@ const Header = ({ router: { pathname } }) => (
     <Link href="/signup">
       <a className={pathname === '/signup' ? 'is-active' : ''}>Log in</a>
     </Link>
+    <User>
+      {data => {
+        return <p>User</p>
+      }}
+    </User>
   </StyledHeader>
 )
 
