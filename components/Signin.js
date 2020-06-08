@@ -1,27 +1,22 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/react-hooks'
-import { SIGN_UP } from '../mutations'
+import { SIGN_IN } from '../mutations'
 import { GET_CURRENT_USER } from '../queries'
 import Error from './ErrorMessage'
 import FormStyles from './styles/Form'
 
-const Signup = props => {
-  const [name, setName] = useState('')
+const Signin = props => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const [
-    signup,
-    { loading: mutationLoading, error: mutationError, data }
-  ] = useMutation(SIGN_UP)
+  const [signin, { loading, error, data }] = useMutation(SIGN_IN)
 
   async function submit(e) {
     e.preventDefault()
-    const res = await signup({
-      variables: { email, name, password },
+    const res = await signin({
+      variables: { email, password },
       refetchQueries: [{ query: GET_CURRENT_USER }]
     })
-    setName('')
     setEmail('')
     setPassword('')
   }
@@ -29,7 +24,7 @@ const Signup = props => {
   return (
     <FormStyles method="post" onSubmit={e => submit(e)}>
       <fieldset>
-        <h3>Sign up for an account</h3>
+        <h3>Sign in</h3>
         <label htmlFor="email">Email</label>
         <input
           type="email"
@@ -37,14 +32,6 @@ const Signup = props => {
           placeholder="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-        />
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          name="name"
-          placeholder="name"
-          value={name}
-          onChange={e => setName(e.target.value)}
         />
         <label htmlFor="password">Password</label>
         <input
@@ -54,12 +41,12 @@ const Signup = props => {
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
-        <button type="submit">Submit</button>
+        <button type="submit">Sign in</button>
       </fieldset>
-      {mutationLoading && <p>Loading...</p>}
-      {mutationError && <Error error={mutationError} />}
+      {loading && <p>Loading...</p>}
+      {error && <Error error={error} />}
     </FormStyles>
   )
 }
 
-export default Signup
+export default Signin

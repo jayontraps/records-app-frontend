@@ -13,21 +13,24 @@ const loading = keyframes`
 `
 
 const FormStyles = styled.form`
-  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
-  background: rgba(0, 0, 0, 0.02);
-  border: 5px solid white;
+  border: 1px solid ${props => props.theme.colors.borderColor};
+  border-radius: ${props => props.theme.borderRadius};
   padding: 20px;
+  margin-bottom: 20px;
   line-height: 1.5;
   font-weight: 600;
   label {
     display: block;
-    margin-bottom: 1rem;
+  }
+  h3 {
+    margin: 1rem 0;
   }
   input,
   textarea,
   select {
     width: 100%;
     padding: 0.5rem;
+    margin-bottom: 1rem;
     border: 1px solid black;
     &:focus {
       outline: 0;

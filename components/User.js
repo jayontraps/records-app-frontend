@@ -4,10 +4,7 @@ import PropTypes from 'prop-types'
 
 const User = props => (
   <Query {...props} query={GET_CURRENT_USER}>
-    {payload => {
-      // console.log('payload: ', payload)
-      return props.children(payload)
-    }}
+    {payload => props.children(payload)}
   </Query>
 )
 
