@@ -18,7 +18,7 @@ const delay = setContext(
 
 const http = new HttpLink({
   uri: process.env.NODE_ENV === 'development' ? devEndpoint : prodEndpoint,
-  credentials: 'include', // Additional fetch() options like `credentials` or `headers`
+  credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
   fetch
 })
 
@@ -30,7 +30,7 @@ const link = ApolloLink.from([
 const newLink = cookieHeader => {
   let settings = {
     uri: process.env.NODE_ENV === 'development' ? devEndpoint : prodEndpoint,
-    credentials: 'include', // Additional fetch() options like `credentials` or `headers`
+    credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
     fetch
   }
 
