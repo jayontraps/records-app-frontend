@@ -1,4 +1,4 @@
-export { default as ADD_RECORD } from './addRecord'
+export { default as CREATE_RECORD } from './createRecord'
 export { default as UPDATE_RECORD } from './updateRecord'
 export { default as DELETE_RECORD } from './deleteRecord'
 export { default as DELETE_IMAGE } from './deleteImage'

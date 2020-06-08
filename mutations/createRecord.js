@@ -1,14 +1,14 @@
 import gql from 'graphql-tag'
 import { recordFragment } from '../fragments'
 
-const ADD_RECORD = gql`
-  mutation addRecord($data: RecordCreateInput!) {
+const CREATE_RECORD = gql`
+  mutation createRecord($data: RecordCreateInput!) {
     createRecord(data: $data) {
-      ...record      
+      ...record
     }
   }
 
   ${recordFragment}
 `
 
-export default ADD_RECORD
+export default CREATE_RECORD

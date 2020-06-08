@@ -1,14 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { ADD_RECORD, UPDATE_RECORD, DELETE_IMAGE } from '../mutations'
+import React, { useState } from 'react'
+import { CREATE_RECORD, UPDATE_RECORD, DELETE_IMAGE } from '../mutations'
 import { GET_USERS, GET_RECORDS, getRecordsVariables } from '../queries'
 import { useMutation } from '@apollo/react-hooks'
-import {
-  DateRangePicker,
-  SingleDatePicker,
-  DayPickerRangeController
-} from 'react-dates'
-import { useSelector, useDispatch } from 'react-redux'
-import moment from 'moment'
+import { SingleDatePicker } from 'react-dates'
+import { useDispatch } from 'react-redux'
 import Select from 'react-select'
 import { setDialog } from '../actions'
 import {
@@ -23,6 +18,7 @@ import {
 import ExpandPanel from '../components/ExpandPanel'
 import StyledRecordsForm from './styles/StyledRecordsForm'
 import { hours } from '../utils'
+import ErrorMessage from './ErrorMessage'
 
 const times = hours.map(time => ({ value: time, label: time }))
 const DPCenterPoint = { lat: '51.447105', lng: '-0.876939' }
@@ -63,9 +59,9 @@ const RecordForm = props => {
   })
 
   const [
-    addRecord,
+    createRecord,
     { loading: mutationLoading, error: mutationError, data: mutationDat }
-  ] = useMutation(ADD_RECORD, {
+  ] = useMutation(CREATE_RECORD, {
     update(cache, { data: { createRecord } }) {
       console.log('createRecord: ', createRecord)
       const { records } = cache.readQuery({
@@ -280,7 +276,7 @@ const RecordForm = props => {
 
       isUpdate
         ? updateRecord({ variables: vars })
-        : addRecord({ variables: vars })
+        : createRecord({ variables: vars })
     } else {
       setShowRequiredMsg(true)
       parentEl.current.scrollTop = 0
@@ -435,6 +431,11 @@ const RecordForm = props => {
           {mutationLoading ? 'Submitting' : submitButtonText}
         </button>
       </div>
+      {mutationError && (
+        <div className="error-msg">
+          <ErrorMessage error={mutationError} />
+        </div>
+      )}
     </StyledRecordsForm>
   )
 }

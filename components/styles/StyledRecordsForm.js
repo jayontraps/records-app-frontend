@@ -41,6 +41,10 @@ const StyledRecordsForm = styled.form`
     grid-area: images;
   }
 
+  .error-msg {
+    grid-area: error;
+  }
+
   min-height: 75vh;
   min-width: 740px;
   margin: 2rem 0;
@@ -55,7 +59,8 @@ const StyledRecordsForm = styled.form`
     'notes notes'
     'observer ...'
     'breeding breeding'
-    'submit submit';
+    'submit submit'
+    'error error';
   grid-template-columns: 1fr 1fr;
 
   .field-status {

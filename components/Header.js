@@ -47,6 +47,7 @@ const Header = ({ router: { pathname } }) => (
                   </a>
                 </Link>
                 <SignOut />
+                {me.name}
               </>
             )}
             {!me && (

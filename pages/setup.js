@@ -577,7 +577,7 @@ console.log(results.data)
 
 function Add() {
   let input
-  const [addRecord, { data }] = useMutation(ADD_SPECIES)
+  const [createRecord, { data }] = useMutation(ADD_SPECIES)
 
   const waitFor = ms => new Promise(r => setTimeout(r, ms))
 
@@ -595,7 +595,7 @@ function Add() {
           const start = async () => {
             await asyncForEach(results.data, async data => {
               await waitFor(1000)
-              addRecord({
+              createRecord({
                 variables: {
                   data: {
                     name: data[0],

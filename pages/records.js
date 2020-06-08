@@ -20,8 +20,8 @@ const test = '13/01/1976'
 console.log(formatDateString(test))
 
 // LOCATIONS
-const ADD_RECORD = gql`
-  mutation addRecordFromCSV($data: RecordFromCSVInput!) {
+const CREATE_RECORD = gql`
+  mutation createRecordFromCSV($data: RecordFromCSVInput!) {
     createRecordFromCSV(data: $data) {
       id
     }
@@ -47,7 +47,7 @@ console.log(results.data)
 
 function Add() {
   let input
-  const [addRecord, { data }] = useMutation(ADD_RECORD)
+  const [createRecord, { data }] = useMutation(CREATE_RECORD)
 
   const waitFor = ms => new Promise(r => setTimeout(r, ms))
 
@@ -66,7 +66,7 @@ function Add() {
             await asyncForEach(results.data, async data => {
               await waitFor(1000)
 
-              addRecord({
+              createRecord({
                 variables: {
                   data: {
                     species: data[0],
