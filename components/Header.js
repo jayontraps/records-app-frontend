@@ -6,8 +6,8 @@ import SignOut from './SignOut'
 
 const StyledHeader = styled.header`
   max-width: ${props => props.theme.maxWidth};
-  margin: 0 auto;
-  padding: 1rem;
+  margin: 0 auto 2rem auto;
+  padding: 1rem 0;
   a,
   .signout {
     font-size: 14px;
@@ -44,6 +44,11 @@ const Header = ({ router: { pathname } }) => (
                 <Link href="/account">
                   <a className={pathname === '/account' ? 'is-active' : ''}>
                     Account
+                  </a>
+                </Link>
+                <Link href="/permissions">
+                  <a className={pathname === '/permissions' ? 'is-active' : ''}>
+                    Permissions
                   </a>
                 </Link>
                 <SignOut />

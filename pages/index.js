@@ -11,21 +11,29 @@ import RecordForm from '../components/RecordForm'
 import { useRouter } from 'next/router'
 import { withApollo } from '../lib/apollo'
 import Header from '../components/Header'
+import User from '../components/User'
 
 const IndexPage = props => {
   const router = useRouter()
   return (
     <App>
       <Header />
-      <div className="nav">
-        <div className="btn-group">
-          <div className="btn">
-            <Modal buttonText="Create record">
-              <RecordForm queryParams={router.query} />
-            </Modal>
-          </div>
-        </div>
-      </div>
+      <User>
+        {({ data }) => {
+          const me = data ? data.me : null
+          return me ? (
+            <div className="nav">
+              <div className="btn-group">
+                <div className="btn">
+                  <Modal buttonText="Create record">
+                    <RecordForm queryParams={router.query} />
+                  </Modal>
+                </div>
+              </div>
+            </div>
+          ) : null
+        }}
+      </User>
       <FilterList queryParams={router.query} />
       <RecordsList queryParams={router.query} />
       <Pagination queryParams={router.query} />
