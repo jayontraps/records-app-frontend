@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setDialog } from '../../actions'
 import { GET_RECORDS, getRecordsVariables } from '../../queries'
 import { DELETE_RECORD } from '../../mutations'
+import ErrorMessage from '../ErrorMessage'
 
 const StyledDiv = styled.div`
   display: flex;
@@ -27,10 +28,7 @@ const DeleteRecord = props => {
     dispatch(setDialog({ id: '', action: '' }))
   }
 
-  const [
-    deleteRecord,
-    { loading: mutationLoading, error: mutationError, data: mutationDat }
-  ] = useMutation(DELETE_RECORD, {
+  const [deleteRecord, { error }] = useMutation(DELETE_RECORD, {
     update(cache, { data: { deleteRecord } }) {
       const { records } = cache.readQuery({
         query: GET_RECORDS,
@@ -45,6 +43,7 @@ const DeleteRecord = props => {
     },
     onCompleted: () => {
       console.log('delete complete!')
+      close()
     }
   })
 
@@ -57,12 +56,12 @@ const DeleteRecord = props => {
           onClick={e => {
             e.preventDefault()
             deleteRecord({ variables: { where: { id: id } } })
-            close()
           }}
         >
           Confrm
         </button>
       </StyledDiv>
+      <ErrorMessage error={error} />
     </div>
   )
 }
