@@ -19,6 +19,7 @@ import ExpandPanel from '../components/ExpandPanel'
 import StyledRecordsForm from './styles/StyledRecordsForm'
 import { hours } from '../utils'
 import ErrorMessage from './ErrorMessage'
+import Permission from './Permission'
 
 const times = hours.map(time => ({ value: time, label: time }))
 const DPCenterPoint = { lat: '51.447105', lng: '-0.876939' }
@@ -116,7 +117,6 @@ const RecordForm = props => {
     if (!species) return false
     if (!date) return false
     if (!location) return false
-    if (!observer || !observer.label) return false
 
     return true
   }
@@ -177,19 +177,9 @@ const RecordForm = props => {
 
     // validate required fields
     if (requiredFieldsComplete()) {
-      // if no author id provided, create a new one
-      let author
-      if (observer.__isNew__) {
-        author = {
-          create: {
-            name: observer.value
-          }
-        }
-      } else {
-        author = {
-          connect: {
-            id: observer.value
-          }
+      const author = {
+        connect: {
+          id: observer.value
         }
       }
 
@@ -330,19 +320,22 @@ const RecordForm = props => {
         />
       </div>
 
-      <div className="field field__observer">
-        <div className="field-status">
-          <h3>Observer</h3>
-          {showRequiredMsg && (observer === null || !observer.label) && (
-            <span className="required">Required field</span>
-          )}
+      <Permission permissions={['ADMIN']}>
+        <div className="field field__observer">
+          <div className="field-status">
+            <h3>Observer</h3>
+            {showRequiredMsg && (observer === null || !observer.label) && (
+              <span className="required">Required field</span>
+            )}
+          </div>
+
+          <ObserverOptions
+            value={observer}
+            fieldName="observer"
+            changeHandler={setObserver}
+          />
         </div>
-        <ObserverOptions
-          value={observer}
-          fieldName="observer"
-          changeHandler={setObserver}
-        />
-      </div>
+      </Permission>
 
       <div className="field field__date">
         <div className="field-status">

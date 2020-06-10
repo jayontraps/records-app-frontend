@@ -1,5 +1,7 @@
 import App from '../components/App'
+import { compose } from 'redux'
 import { withApollo } from '../lib/apollo'
+import { withRedux } from '../lib/redux'
 import Header from '../components/Header'
 import PleaseSignIn from '../components/PleaseSignIn'
 import Permissions from '../components/Permissions'
@@ -15,4 +17,4 @@ const PermissionsPage = () => {
   )
 }
 
-export default withApollo({ ssr: true })(PermissionsPage)
+export default compose(withApollo({ ssr: true }), withRedux)(PermissionsPage)
