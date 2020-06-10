@@ -36,8 +36,7 @@ const Signup = props => {
   return (
     <FormStyles method="post" onSubmit={e => submit(e)}>
       <fieldset>
-        <h3>Sign up for an account</h3>
-        <label htmlFor="email">Email</label>
+        <h3>Create your account</h3>
         <input
           type="email"
           name="email"
@@ -46,7 +45,6 @@ const Signup = props => {
           required
           onChange={e => setEmail(e.target.value)}
         />
-        <label htmlFor="name">Name</label>
         <input
           type="text"
           name="name"
@@ -55,7 +53,6 @@ const Signup = props => {
           required
           onChange={e => setName(e.target.value)}
         />
-        <label htmlFor="password">Password</label>
         <input
           type="password"
           name="password"
@@ -64,7 +61,7 @@ const Signup = props => {
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
-        <button type="submit">Submit</button>
+        <button type="submit">Sign up</button>
       </fieldset>
       {loading && <p>Loading...</p>}
       {error && <Error error={error} />}

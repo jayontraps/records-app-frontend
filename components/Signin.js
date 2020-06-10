@@ -33,8 +33,7 @@ const Signin = props => {
   return (
     <FormStyles method="post" onSubmit={e => submit(e)}>
       <fieldset>
-        <h3>Sign in</h3>
-        <label htmlFor="email">Email</label>
+        <h3>Sign in to your account</h3>
         <input
           type="email"
           name="email"
@@ -43,7 +42,6 @@ const Signin = props => {
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
-        <label htmlFor="password">Password</label>
         <input
           type="password"
           name="password"

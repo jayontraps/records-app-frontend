@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { CREATE_RECORD, UPDATE_RECORD, DELETE_IMAGE } from '../mutations'
-import { GET_USERS, GET_RECORDS, getRecordsVariables } from '../queries'
+import { GET_RECORDS, getRecordsVariables } from '../queries'
 import { useMutation } from '@apollo/react-hooks'
 import { SingleDatePicker } from 'react-dates'
 import { useDispatch } from 'react-redux'
@@ -74,15 +74,6 @@ const RecordForm = props => {
         query: GET_RECORDS,
         variables: variables,
         data: { records: [createRecord, ...records] }
-      })
-
-      const { users } = cache.readQuery({
-        query: GET_USERS
-      })
-
-      cache.writeQuery({
-        query: GET_USERS,
-        data: { users: [createRecord.author, ...users] }
       })
     },
     onCompleted: () => {

@@ -1,9 +1,10 @@
+import { useContext } from 'react'
 import Link from 'next/link'
 import { withRouter } from 'next/router'
 import styled from 'styled-components'
-import User from './User'
 import SignOut from './SignOut'
 import Permission from './Permission'
+import UserContext from '../UserContext'
 
 const StyledHeader = styled.header`
   max-width: ${props => props.theme.maxWidth};
@@ -25,58 +26,45 @@ const StyledHeader = styled.header`
   }
 `
 
-const Header = ({ router: { pathname } }) => (
-  <StyledHeader>
-    <User>
-      {({ data }) => {
-        const me = data ? data.me : null
-        return (
-          <>
-            {me && (
-              <>
-                <Link href="/">
-                  <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
-                </Link>
-                <Link href="/create">
-                  <a className={pathname === '/create' ? 'is-active' : ''}>
-                    Create Record
-                  </a>
-                </Link>
-                <Link href="/account">
-                  <a className={pathname === '/account' ? 'is-active' : ''}>
-                    Account
-                  </a>
-                </Link>
-                <Permission permissions={['ADMIN']} user={me}>
-                  <Link href="/permissions">
-                    <a
-                      className={pathname === '/permissions' ? 'is-active' : ''}
-                    >
-                      Permissions
-                    </a>
-                  </Link>
-                </Permission>
-                <SignOut />
-                {me.name}
-              </>
-            )}
-            {!me && (
-              <>
-                <Link href="/">
-                  <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
-                </Link>
-                <Link href="/signup">
-                  <a className={pathname === '/signup' ? 'is-active' : ''}>
-                    Log in
-                  </a>
-                </Link>
-              </>
-            )}
-          </>
-        )
-      }}
-    </User>
-  </StyledHeader>
-)
+const Header = ({ router: { pathname } }) => {
+  const userInfo = useContext(UserContext)
+  const { me } = userInfo
+  return (
+    <StyledHeader>
+      {me && (
+        <>
+          <Link href="/">
+            <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
+          </Link>
+          <Link href="/account">
+            <a className={pathname === '/account' ? 'is-active' : ''}>
+              Account
+            </a>
+          </Link>
+          <Permission permissions={['ADMIN']} user={me}>
+            <Link href="/permissions">
+              <a className={pathname === '/permissions' ? 'is-active' : ''}>
+                Permissions
+              </a>
+            </Link>
+          </Permission>
+          <SignOut />
+          user: {me.name}
+        </>
+      )}
+
+      {!me && (
+        <>
+          <Link href="/">
+            <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
+          </Link>
+          <Link href="/signup">
+            <a className={pathname === '/signup' ? 'is-active' : ''}>Sign in</a>
+          </Link>
+        </>
+      )}
+    </StyledHeader>
+  )
+}
 
 export default withRouter(Header)

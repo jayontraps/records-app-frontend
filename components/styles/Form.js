@@ -18,7 +18,7 @@ const FormStyles = styled.form`
   padding: 20px;
   margin-bottom: 20px;
   line-height: 1.5;
-  font-weight: 600;
+
   label {
     display: block;
   }
@@ -31,7 +31,7 @@ const FormStyles = styled.form`
     width: 100%;
     padding: 0.5rem;
     margin-bottom: 1rem;
-    border: 1px solid black;
+    border: 1px solid ${props => props.theme.colors.borderColor};
     &:focus {
       outline: 0;
       border-color: ${props => props.theme.colors.primary};
@@ -43,8 +43,11 @@ const FormStyles = styled.form`
     background: ${props => props.theme.colors.primary};
     color: white;
     border: 0;
-    font-weight: 600;
+    text-transform: uppercase;
     padding: 0.5rem 1.2rem;
+    &:hover {
+      background: rgba(0, 0, 0, 0.85);
+    }
   }
   fieldset {
     border: 0;
@@ -53,7 +56,7 @@ const FormStyles = styled.form`
     &[disabled] {
       opacity: 0.5;
     }
-    &::before {
+    /* &::before {
       height: 10px;
       content: '';
       display: block;
@@ -63,7 +66,7 @@ const FormStyles = styled.form`
         #e2b04a 50%,
         #ff3019 100%
       );
-    }
+    } */
     &[aria-busy='true']::before {
       background-size: 50% auto;
       animation: ${loading} 0.5s linear infinite;
