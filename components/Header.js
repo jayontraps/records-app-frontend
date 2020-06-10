@@ -3,6 +3,7 @@ import { withRouter } from 'next/router'
 import styled from 'styled-components'
 import User from './User'
 import SignOut from './SignOut'
+import Permission from './Permission'
 
 const StyledHeader = styled.header`
   max-width: ${props => props.theme.maxWidth};
@@ -46,11 +47,15 @@ const Header = ({ router: { pathname } }) => (
                     Account
                   </a>
                 </Link>
-                <Link href="/permissions">
-                  <a className={pathname === '/permissions' ? 'is-active' : ''}>
-                    Permissions
-                  </a>
-                </Link>
+                <Permission permissions={['ADMIN']} user={me}>
+                  <Link href="/permissions">
+                    <a
+                      className={pathname === '/permissions' ? 'is-active' : ''}
+                    >
+                      Permissions
+                    </a>
+                  </Link>
+                </Permission>
                 <SignOut />
                 {me.name}
               </>
